@@ -17,6 +17,7 @@ import {
   Info,
   Plus,
   Minus,
+  ChevronDown,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -246,6 +247,91 @@ const PERIODS = [
   { key: "si", bmKey: "bmsi", label: "SI" },
 ];
 
+/* ------------------------------------------------------------------ */
+/* MUTUAL FUNDS — real data, verified per-scheme against Groww's live  */
+/* fund pages (not search snippets), 12 Aug 2026. Direct Plan Growth   */
+/* variant used throughout. Returns are annualised (3Y/5Y); 1Y is      */
+/* absolute. "—" fields are genuinely not available for that fund      */
+/* (either too new, or the source didn't surface that period).         */
+/* Covers the top 15 AMCs by AUM across 4 categories; not every AMC    */
+/* runs every category (gaps noted, not guessed).                      */
+/* ------------------------------------------------------------------ */
+const MF_CATEGORIES = ["Aggressive Hybrid", "Balanced Advantage", "Multi Asset Allocation", "Conservative Hybrid"];
+
+const MUTUAL_FUNDS = [
+  // Aggressive Hybrid (14)
+  { category: "Aggressive Hybrid", provider: "SBI", scheme: "SBI Equity Hybrid Fund", r1y: 8.2, r3y: 13.8, r5y: 11.6 },
+  { category: "Aggressive Hybrid", provider: "ICICI Prudential", scheme: "ICICI Prudential Equity & Debt Fund", r1y: 6.6, r3y: 15.4, r5y: 16.5 },
+  { category: "Aggressive Hybrid", provider: "HDFC", scheme: "HDFC Hybrid Equity Fund", r1y: -0.5, r3y: 8.1, r5y: 9.7 },
+  { category: "Aggressive Hybrid", provider: "Nippon India", scheme: "Nippon India Aggressive Hybrid Fund", r1y: 6.0, r3y: 12.6, r5y: 12.4 },
+  { category: "Aggressive Hybrid", provider: "Edelweiss", scheme: "Edelweiss Aggressive Hybrid Fund", r1y: 7.2, r3y: 15.2, r5y: 15.0 },
+  { category: "Aggressive Hybrid", provider: "Axis", scheme: "Axis Aggressive Hybrid Fund", r1y: 6.2, r3y: 11.1, r5y: 8.8 },
+  { category: "Aggressive Hybrid", provider: "Bandhan", scheme: "Bandhan Aggressive Hybrid Fund", r1y: 12.2, r3y: 16.1, r5y: 13.1 },
+  { category: "Aggressive Hybrid", provider: "Kotak Mahindra", scheme: "Kotak Aggressive Hybrid Fund", r1y: null, r3y: null, r5y: 13.5 },
+  { category: "Aggressive Hybrid", provider: "Aditya Birla Sun Life", scheme: "ABSL Equity Hybrid '95 Fund", r1y: null, r3y: null, r5y: 9.9 },
+  { category: "Aggressive Hybrid", provider: "Mirae Asset", scheme: "Mirae Asset Aggressive Hybrid Fund", r1y: null, r3y: 12.5, r5y: 11.4 },
+  { category: "Aggressive Hybrid", provider: "UTI", scheme: "UTI Aggressive Hybrid Fund", r1y: null, r3y: 12.7, r5y: 12.7 },
+  { category: "Aggressive Hybrid", provider: "DSP", scheme: "DSP Aggressive Hybrid Fund", r1y: null, r3y: 12.0, r5y: 10.3 },
+  { category: "Aggressive Hybrid", provider: "Tata", scheme: "Tata Aggressive Hybrid Fund", r1y: null, r3y: 9.7, r5y: 10.7 },
+  { category: "Aggressive Hybrid", provider: "Invesco", scheme: "Invesco India Aggressive Hybrid Fund", r1y: -1.7, r3y: 12.8, r5y: 10.9 },
+
+  // Balanced Advantage (14)
+  { category: "Balanced Advantage", provider: "HDFC", scheme: "HDFC Balanced Advantage Fund", r1y: 4.1, r3y: 13.7, r5y: 15.8 },
+  { category: "Balanced Advantage", provider: "ICICI Prudential", scheme: "ICICI Prudential Balanced Advantage Fund", r1y: 10.0, r3y: 13.0, r5y: 11.9 },
+  { category: "Balanced Advantage", provider: "Aditya Birla Sun Life", scheme: "ABSL Balanced Advantage Fund", r1y: 10.2, r3y: 13.1, r5y: 11.3 },
+  { category: "Balanced Advantage", provider: "Axis", scheme: "Axis Balanced Advantage Fund", r1y: 6.2, r3y: 13.4, r5y: 10.9 },
+  { category: "Balanced Advantage", provider: "Nippon India", scheme: "Nippon India Balanced Advantage Fund", r1y: 7.9, r3y: 12.3, r5y: 10.8 },
+  { category: "Balanced Advantage", provider: "Bandhan", scheme: "Bandhan Balanced Advantage Fund", r1y: null, r3y: 11.3, r5y: 9.2 },
+  { category: "Balanced Advantage", provider: "Edelweiss", scheme: "Edelweiss Balanced Advantage Fund", r1y: 9.2, r3y: 11.9, r5y: 10.7 },
+  { category: "Balanced Advantage", provider: "Invesco", scheme: "Invesco India Balanced Advantage Fund", r1y: null, r3y: 10.5, r5y: 9.5 },
+  { category: "Balanced Advantage", provider: "Tata", scheme: "Tata Balanced Advantage Fund", r1y: 6.4, r3y: 10.1, r5y: 10.3 },
+  { category: "Balanced Advantage", provider: "Kotak Mahindra", scheme: "Kotak Balanced Advantage Fund", r1y: 6.3, r3y: 11.0, r5y: 10.2 },
+  { category: "Balanced Advantage", provider: "Mirae Asset", scheme: "Mirae Asset Balanced Advantage Fund", r1y: 7.3, r3y: 11.4, r5y: null },
+  { category: "Balanced Advantage", provider: "SBI", scheme: "SBI Balanced Advantage Fund", r1y: 6.4, r3y: 11.2, r5y: null },
+  { category: "Balanced Advantage", provider: "DSP", scheme: "DSP Dynamic Asset Allocation Fund", r1y: 6.9, r3y: 11.7, r5y: null },
+  { category: "Balanced Advantage", provider: "PPFAS", scheme: "Parag Parikh Dynamic Asset Allocation Fund", r1y: 4.1, r3y: null, r5y: null },
+
+  // Multi Asset Allocation (13)
+  { category: "Multi Asset Allocation", provider: "Nippon India", scheme: "Nippon India Multi Asset Allocation Fund", r1y: 19.2, r3y: 20.2, r5y: 16.7 },
+  { category: "Multi Asset Allocation", provider: "ICICI Prudential", scheme: "ICICI Prudential Multi Asset Fund", r1y: 10.9, r3y: 16.1, r5y: 17.8 },
+  { category: "Multi Asset Allocation", provider: "SBI", scheme: "SBI Multi Asset Allocation Fund", r1y: 15.6, r3y: 16.3, r5y: 14.6 },
+  { category: "Multi Asset Allocation", provider: "Aditya Birla Sun Life", scheme: "ABSL Multi Asset Allocation Fund", r1y: 18.4, r3y: 17.4, r5y: null },
+  { category: "Multi Asset Allocation", provider: "Axis", scheme: "Axis Multi Asset Allocation Fund", r1y: null, r3y: 15.3, r5y: 11.0 },
+  { category: "Multi Asset Allocation", provider: "UTI", scheme: "UTI Multi Asset Allocation Fund", r1y: 10.9, r3y: 17.7, r5y: 14.8 },
+  { category: "Multi Asset Allocation", provider: "Tata", scheme: "Tata Multi Asset Allocation Fund", r1y: 12.4, r3y: 14.9, r5y: 14.0 },
+  { category: "Multi Asset Allocation", provider: "HDFC", scheme: "HDFC Multi Asset Allocation Fund", r1y: 8.3, r3y: 13.3, r5y: 12.2 },
+  { category: "Multi Asset Allocation", provider: "Mirae Asset", scheme: "Mirae Asset Multi Asset Allocation Fund", r1y: 15.0, r3y: null, r5y: null },
+  { category: "Multi Asset Allocation", provider: "DSP", scheme: "DSP Multi Asset Allocation Fund", r1y: 21.6, r3y: null, r5y: null },
+  { category: "Multi Asset Allocation", provider: "Kotak Mahindra", scheme: "Kotak Multi Asset Allocation Fund", r1y: 24.4, r3y: null, r5y: null },
+  { category: "Multi Asset Allocation", provider: "Bandhan", scheme: "Bandhan Multi Asset Allocation Fund", r1y: 19.3, r3y: null, r5y: null },
+  { category: "Multi Asset Allocation", provider: "Invesco", scheme: "Invesco India Multi Asset Allocation Fund", r1y: 18.8, r3y: null, r5y: null },
+
+  // Conservative Hybrid (10)
+  { category: "Conservative Hybrid", provider: "PPFAS", scheme: "Parag Parikh Conservative Hybrid Fund", r1y: 5.8, r3y: 10.7, r5y: 10.0 },
+  { category: "Conservative Hybrid", provider: "Nippon India", scheme: "Nippon India Conservative Hybrid Fund", r1y: 8.1, r3y: 9.1, r5y: 8.7 },
+  { category: "Conservative Hybrid", provider: "UTI", scheme: "UTI Conservative Hybrid Fund", r1y: null, r3y: 8.7, r5y: 8.6 },
+  { category: "Conservative Hybrid", provider: "Aditya Birla Sun Life", scheme: "ABSL Regular Savings Fund", r1y: 6.5, r3y: 9.3, r5y: 8.9 },
+  { category: "Conservative Hybrid", provider: "SBI", scheme: "SBI Conservative Hybrid Fund", r1y: 6.9, r3y: 9.2, r5y: 9.3 },
+  { category: "Conservative Hybrid", provider: "ICICI Prudential", scheme: "ICICI Prudential Regular Savings Fund", r1y: 5.7, r3y: 9.7, r5y: 9.2 },
+  { category: "Conservative Hybrid", provider: "Kotak Mahindra", scheme: "Kotak Debt Hybrid Fund", r1y: 5.2, r3y: 9.6, r5y: 9.5 },
+  { category: "Conservative Hybrid", provider: "DSP", scheme: "DSP Regular Savings Fund", r1y: 5.1, r3y: 9.2, r5y: 8.0 },
+  { category: "Conservative Hybrid", provider: "Axis", scheme: "Axis Conservative Hybrid Fund", r1y: null, r3y: 7.5, r5y: 6.8 },
+  { category: "Conservative Hybrid", provider: "HDFC", scheme: "HDFC Hybrid Debt Fund", r1y: 3.8, r3y: 8.3, r5y: 8.6 },
+].map((f, i) => ({ ...f, id: 1000 + i }));
+
+const ALL_FUNDS = [...FUNDS, ...MUTUAL_FUNDS];
+
+/* ------------------------------------------------------------------ */
+/* ASSET_CLASSES — registry driving the Calculator tab. Each entry is  */
+/* one self-contained "block" (own amount, own fund picker, own        */
+/* subtotal). Adding a future asset class (REITs, Commodities, etc.)   */
+/* is just adding one more entry here — no other code changes needed.  */
+/* ------------------------------------------------------------------ */
+const ASSET_CLASSES = [
+  { key: "pms", label: "PMS", funds: FUNDS },
+  { key: "mf", label: "Mutual Funds", funds: MUTUAL_FUNDS },
+];
+
 const INK = "#1B2430";
 const MUTED = "#6B7280";
 const GOLD = "#A6812E";
@@ -286,10 +372,43 @@ export default function App() {
   const [sortDir, setSortDir] = useState("desc");
   const [openFund, setOpenFund] = useState(null);
 
-  const [calcIds, setCalcIds] = useState([]);
+  const [mfQuery, setMfQuery] = useState("");
+  const [mfCategory, setMfCategory] = useState("Aggressive Hybrid");
+  const [mfSortKey, setMfSortKey] = useState("r5y");
+  const [mfSortDir, setMfSortDir] = useState("desc");
+
+  const [classSelections, setClassSelections] = useState({});
+  const [classAmounts, setClassAmounts] = useState({});
   const [overrides, setOverrides] = useState({});
-  const [amount, setAmount] = useState(1000000);
   const [years, setYears] = useState(5);
+
+  const mfFiltered = useMemo(() => {
+    let list = MUTUAL_FUNDS.filter(
+      (f) =>
+        f.category === mfCategory &&
+        (f.scheme.toLowerCase().includes(mfQuery.toLowerCase()) || f.provider.toLowerCase().includes(mfQuery.toLowerCase()))
+    );
+    list.sort((a, b) => {
+      let av = a[mfSortKey];
+      let bv = b[mfSortKey];
+      if (av === null || av === undefined) av = -9999;
+      if (bv === null || bv === undefined) bv = -9999;
+      if (mfSortKey === "scheme" || mfSortKey === "provider") {
+        return mfSortDir === "asc" ? a[mfSortKey].localeCompare(b[mfSortKey]) : b[mfSortKey].localeCompare(a[mfSortKey]);
+      }
+      return mfSortDir === "asc" ? av - bv : bv - av;
+    });
+    return list;
+  }, [mfQuery, mfCategory, mfSortKey, mfSortDir]);
+
+  function toggleMfSort(key) {
+    if (mfSortKey === key) {
+      setMfSortDir(mfSortDir === "asc" ? "desc" : "asc");
+    } else {
+      setMfSortKey(key);
+      setMfSortDir("desc");
+    }
+  }
 
   const filtered = useMemo(() => {
     let list = FUNDS.filter(
@@ -320,28 +439,37 @@ export default function App() {
     }
   }
 
-  function toggleCalc(id) {
-    setCalcIds((prev) => {
-      if (prev.includes(id)) return prev.filter((x) => x !== id);
-      return [...prev, id];
+  function toggleClassFund(classKey, id) {
+    setClassSelections((prev) => {
+      const cur = prev[classKey] || [];
+      const next = cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id];
+      return { ...prev, [classKey]: next };
     });
     setOverrides((prev) => {
       if (prev[id] !== undefined) return prev;
-      const f = FUNDS.find((x) => x.id === id);
+      const f = ALL_FUNDS.find((x) => x.id === id);
       return { ...prev, [id]: bestReturn(f).value };
     });
   }
 
-  const selectedFunds = calcIds.map((id) => FUNDS.find((f) => f.id === id));
-  const perFundAmount = calcIds.length ? amount / calcIds.length : 0;
-
-  const projections = selectedFunds.map((f) => {
-    const r = overrides[f.id] ?? bestReturn(f).value;
-    const fv = perFundAmount * Math.pow(1 + r / 100, years);
-    return { fund: f, r, fv, gain: fv - perFundAmount };
+  const classData = ASSET_CLASSES.map((ac) => {
+    const ids = classSelections[ac.key] || [];
+    const classAmount = classAmounts[ac.key] || 0;
+    const selected = ids.map((id) => ac.funds.find((f) => f.id === id)).filter(Boolean);
+    const perFundAmount = selected.length ? classAmount / selected.length : 0;
+    const projections = selected.map((f) => {
+      const r = overrides[f.id] ?? bestReturn(f).value;
+      const fv = perFundAmount * Math.pow(1 + r / 100, years);
+      return { fund: f, r, fv, gain: fv - perFundAmount };
+    });
+    const classFV = projections.reduce((s, p) => s + p.fv, 0);
+    return { ...ac, ids, amount: classAmount, projections, classFV };
   });
-  const totalFV = projections.reduce((s, p) => s + p.fv, 0);
-  const totalGain = totalFV - amount;
+
+  const totalInvested = classData.reduce((s, c) => s + c.amount, 0);
+  const totalFV = classData.reduce((s, c) => s + c.classFV, 0);
+  const totalGain = totalFV - totalInvested;
+  const blendedReturn = totalInvested > 0 && years > 0 ? (Math.pow(totalFV / totalInvested, 1 / years) - 1) * 100 : 0;
 
   return (
     <div style={{ minHeight: "100vh", background: PAPER, color: INK, fontFamily: "'Inter', sans-serif" }}>
@@ -367,7 +495,7 @@ export default function App() {
                 PMS Ledger
               </h1>
               <p style={{ color: MUTED, fontSize: 13.5, margin: "4px 0 16px" }}>
-                Bank-approved PMS shelf — real fund manager, strategy & returns data.
+                Bank-approved PMS shelf, plus top-15-AMC mutual funds — real manager, strategy & returns data.
               </p>
             </div>
             <div
@@ -384,14 +512,15 @@ export default function App() {
                 marginBottom: 16,
               }}
             >
-              13 PMS · RECKONER 30 JUN 2026
+              14 PMS · 51 MUTUAL FUNDS
             </div>
           </div>
 
           {/* TABS */}
           <div style={{ display: "flex", gap: 4 }}>
             {[
-              { id: "explore", label: "Explore", icon: LayoutList },
+              { id: "explore", label: "PMS", icon: LayoutList },
+              { id: "mutualfunds", label: "Mutual Funds", icon: LayoutList },
               { id: "calculator", label: "Calculator", icon: CalcIcon },
             ].map((t) => {
               const Icon = t.icon;
@@ -433,20 +562,31 @@ export default function App() {
             toggleSort={toggleSort}
             onOpen={setOpenFund}
           />
+        ) : tab === "mutualfunds" ? (
+          <MutualFundsView
+            funds={mfFiltered}
+            query={mfQuery}
+            setQuery={setMfQuery}
+            category={mfCategory}
+            setCategory={setMfCategory}
+            sortKey={mfSortKey}
+            sortDir={mfSortDir}
+            toggleSort={toggleMfSort}
+          />
         ) : (
           <CalculatorView
-            calcIds={calcIds}
-            toggleCalc={toggleCalc}
+            classData={classData}
+            toggleClassFund={toggleClassFund}
             overrides={overrides}
             setOverrides={setOverrides}
-            amount={amount}
-            setAmount={setAmount}
+            classAmounts={classAmounts}
+            setClassAmounts={setClassAmounts}
             years={years}
             setYears={setYears}
-            projections={projections}
+            totalInvested={totalInvested}
             totalFV={totalFV}
             totalGain={totalGain}
-            perFundAmount={perFundAmount}
+            blendedReturn={blendedReturn}
           />
         )}
       </main>
@@ -455,9 +595,10 @@ export default function App() {
 
       <footer style={{ borderTop: `1px solid ${RULE}`, padding: "18px 20px", textAlign: "center" }}>
         <p style={{ fontSize: 12, color: MUTED, margin: 0, maxWidth: 640, marginInline: "auto" }}>
-          14 PMS schemes shown — 13 from the bank's PMS Reckoner (30 Jun 2026), plus Carnelian Shift, added from
-          Carnelian's own investor deck. Manager bios, strategy details and benchmark comparisons are shown only
-          where the source document provides them. Past returns don't guarantee future performance.
+          14 PMS schemes (bank Reckoner + provider decks) and 51 mutual fund schemes across 4 categories
+          (Aggressive Hybrid, Balanced Advantage, Multi Asset Allocation, Conservative Hybrid), verified per-scheme
+          against Groww's live fund pages as of 12 Aug 2026. Direct Plan – Growth throughout. Gaps are funds
+          genuinely not offered by that AMC or not reliably available, not guesses. Past returns don't guarantee future performance.
         </p>
       </footer>
     </div>
@@ -555,6 +696,94 @@ function ExploreView({ funds, query, setQuery, sortKey, sortDir, toggleSort, onO
       {funds.length === 0 && (
         <p style={{ textAlign: "center", color: MUTED, marginTop: 40 }}>No fund matches "{query}".</p>
       )}
+    </div>
+  );
+}
+
+function MutualFundsView({ funds, query, setQuery, category, setCategory, sortKey, sortDir, toggleSort }) {
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 6, marginBottom: 14, flexWrap: "wrap" }}>
+        {MF_CATEGORIES.map((c) => {
+          const active = c === category;
+          return (
+            <button
+              key={c}
+              onClick={() => setCategory(c)}
+              style={{
+                padding: "7px 13px",
+                borderRadius: 20,
+                border: `1px solid ${active ? GOLD : RULE}`,
+                background: active ? GOLD : CARD,
+                color: active ? "#fff" : INK,
+                fontSize: 12.5,
+                fontWeight: 600,
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {c}
+            </button>
+          );
+        })}
+      </div>
+
+      <div style={{ position: "relative", marginBottom: 16, maxWidth: 380 }}>
+        <Search size={16} style={{ position: "absolute", left: 12, top: 12, color: MUTED }} />
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search AMC or scheme…"
+          style={{
+            width: "100%",
+            padding: "10px 12px 10px 36px",
+            border: `1px solid ${RULE}`,
+            borderRadius: 6,
+            fontSize: 14,
+            background: CARD,
+            outline: "none",
+          }}
+        />
+      </div>
+
+      <div style={{ background: CARD, border: `1px solid ${RULE}`, borderRadius: 8, overflow: "auto" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 480 }}>
+          <thead>
+            <tr style={{ borderBottom: `1px solid ${RULE}` }}>
+              <SortHeader label="Scheme" k="scheme" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} align="left" />
+              <SortHeader label="1Y" k="r1y" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} />
+              <SortHeader label="3Y" k="r3y" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} />
+              <SortHeader label="5Y" k="r5y" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} />
+            </tr>
+          </thead>
+          <tbody>
+            {funds.map((f) => (
+              <tr key={f.id} className="row-hover" style={{ borderBottom: `1px solid ${RULE}` }}>
+                <td style={{ padding: "12px" }}>
+                  <div style={{ fontWeight: 600, fontSize: 13.5 }}>{f.scheme}</div>
+                  <div style={{ fontSize: 12, color: MUTED, marginTop: 2 }}>{f.provider}</div>
+                </td>
+                <td className="mono" style={{ padding: "12px", textAlign: "right", fontSize: 13, color: colorFor(f.r1y) }}>
+                  {fmtPct(f.r1y)}
+                </td>
+                <td className="mono" style={{ padding: "12px", textAlign: "right", fontSize: 13, color: colorFor(f.r3y) }}>
+                  {fmtPct(f.r3y)}
+                </td>
+                <td className="mono" style={{ padding: "12px", textAlign: "right", fontSize: 13, color: colorFor(f.r5y), fontWeight: 600 }}>
+                  {fmtPct(f.r5y)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {funds.length === 0 && (
+        <p style={{ textAlign: "center", color: MUTED, marginTop: 40 }}>No fund matches "{query}".</p>
+      )}
+      <p style={{ fontSize: 11.5, color: MUTED, marginTop: 12, lineHeight: 1.5 }}>
+        Direct Plan – Growth returns, verified against Groww's live fund pages (12 Aug 2026). "—" means that
+        period genuinely isn't available for this fund (too new, or not reliably sourced) — not a zero.
+      </p>
     </div>
   );
 }
@@ -770,162 +999,211 @@ function FundDetail({ fund, onClose }) {
 }
 
 function CalculatorView({
-  calcIds,
-  toggleCalc,
+  classData,
+  toggleClassFund,
   overrides,
   setOverrides,
-  amount,
-  setAmount,
+  classAmounts,
+  setClassAmounts,
   years,
   setYears,
-  projections,
+  totalInvested,
   totalFV,
   totalGain,
-  perFundAmount,
+  blendedReturn,
 }) {
+  const [expanded, setExpanded] = useState(() => Object.fromEntries(ASSET_CLASSES.map((c) => [c.key, true])));
+
+  return (
+    <div style={{ maxWidth: 640, marginInline: "auto" }}>
+      <div style={{ marginBottom: 16 }}>
+        <label style={{ fontSize: 11.5, color: MUTED, display: "block", marginBottom: 4 }}>Investment horizon (years)</label>
+        <input
+          type="number"
+          min={1}
+          max={30}
+          value={years}
+          onChange={(e) => setYears(Math.min(30, Math.max(1, Number(e.target.value))))}
+          className="mono"
+          style={{ width: 110, padding: "9px 10px", border: `1px solid ${RULE}`, borderRadius: 6, fontSize: 14 }}
+        />
+        <p style={{ fontSize: 11.5, color: MUTED, margin: "6px 0 0" }}>Shared across every asset class below.</p>
+      </div>
+
+      {classData.map((cls) => (
+        <AssetClassCard
+          key={cls.key}
+          cls={cls}
+          expanded={expanded[cls.key]}
+          onToggleExpand={() => setExpanded((e) => ({ ...e, [cls.key]: !e[cls.key] }))}
+          setClassAmounts={setClassAmounts}
+          toggleClassFund={toggleClassFund}
+          overrides={overrides}
+          setOverrides={setOverrides}
+        />
+      ))}
+
+      <div style={{ background: INK, borderRadius: 10, padding: 18, marginTop: 8, color: "#fff" }}>
+        <div style={{ fontSize: 11, letterSpacing: 0.6, opacity: 0.7 }}>
+          PORTFOLIO PROJECTION · {years} YEAR{years > 1 ? "S" : ""}
+        </div>
+        <div className="mono" style={{ fontSize: 28, fontWeight: 700, marginTop: 4 }}>{fmtINR(totalFV)}</div>
+        <div className="mono" style={{ fontSize: 13, marginTop: 2, opacity: 0.85 }}>
+          {totalGain >= 0 ? "+" : ""}{fmtINR(totalGain)} gain on {fmtINR(totalInvested)} invested
+        </div>
+        {totalInvested > 0 && (
+          <div className="mono" style={{ fontSize: 12, marginTop: 8, opacity: 0.75 }}>
+            Blended return: {blendedReturn >= 0 ? "+" : ""}{blendedReturn.toFixed(2)}% p.a.
+          </div>
+        )}
+        {classData.filter((c) => c.amount > 0).length > 0 && (
+          <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.15)" }}>
+            {classData
+              .filter((c) => c.amount > 0)
+              .map((c) => (
+                <div key={c.key} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, padding: "3px 0", opacity: 0.85 }}>
+                  <span>{c.label}</span>
+                  <span className="mono">{fmtINR(c.classFV)}</span>
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
+
+      {totalInvested === 0 && (
+        <p style={{ fontSize: 12.5, color: MUTED, textAlign: "center", marginTop: 12 }}>
+          Pick funds and enter an amount in one or more sections above to see a projection.
+        </p>
+      )}
+
+      <p style={{ fontSize: 11.5, color: MUTED, marginTop: 14, lineHeight: 1.5, textAlign: "center" }}>
+        Assumed annual return is pre-filled per fund from its longest available track record and is editable with
+        +/−. Illustrative only — past performance doesn't predict future returns.
+      </p>
+    </div>
+  );
+}
+
+function AssetClassCard({ cls, expanded, onToggleExpand, setClassAmounts, toggleClassFund, overrides, setOverrides }) {
   const [query, setQuery] = useState("");
-  const list = FUNDS.filter(
+  const list = cls.funds.filter(
     (f) => f.scheme.toLowerCase().includes(query.toLowerCase()) || f.provider.toLowerCase().includes(query.toLowerCase())
   );
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "minmax(260px, 1fr) minmax(280px, 1.1fr)", gap: 20 }}>
-      <div>
-        <h3 className="disp" style={{ fontSize: 17, margin: "0 0 10px" }}>1. Pick funds</h3>
-        <div style={{ position: "relative", marginBottom: 10 }}>
-          <Search size={15} style={{ position: "absolute", left: 10, top: 10, color: MUTED }} />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search…"
-            style={{ width: "100%", padding: "8px 10px 8px 32px", border: `1px solid ${RULE}`, borderRadius: 6, fontSize: 13.5, background: CARD }}
-          />
+    <div style={{ border: `1px solid ${RULE}`, borderRadius: 10, background: CARD, marginBottom: 14, overflow: "hidden" }}>
+      <button
+        onClick={onToggleExpand}
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "14px 16px",
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          textAlign: "left",
+        }}
+      >
+        <div>
+          <div className="disp" style={{ fontSize: 16, fontWeight: 700 }}>{cls.label}</div>
+          <div style={{ fontSize: 11.5, color: MUTED, marginTop: 2 }}>
+            {cls.ids.length > 0 ? `${cls.ids.length} fund${cls.ids.length > 1 ? "s" : ""} · ${fmtINR(cls.amount)} invested` : "No funds selected"}
+          </div>
         </div>
-        <div style={{ border: `1px solid ${RULE}`, borderRadius: 8, maxHeight: 360, overflowY: "auto", background: CARD }}>
-          {list.map((f) => {
-            const checked = calcIds.includes(f.id);
-            const br = bestReturn(f);
-            return (
-              <label
-                key={f.id}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  padding: "10px 12px",
-                  borderBottom: `1px solid ${RULE}`,
-                  cursor: "pointer",
-                  background: checked ? "#F8F5EA" : "transparent",
-                }}
-              >
-                <input type="checkbox" checked={checked} onChange={() => toggleCalc(f.id)} style={{ width: 15, height: 15 }} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{f.scheme}</div>
-                  <div style={{ fontSize: 11.5, color: MUTED, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{f.provider}</div>
-                </div>
-                <div className="mono" style={{ fontSize: 12, color: colorFor(br.value), flexShrink: 0 }}>{fmtPct(br.value)} {br.label}</div>
-              </label>
-            );
-          })}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+          {cls.classFV > 0 && <div className="mono" style={{ fontSize: 14, fontWeight: 700, color: GOLD }}>{fmtINR(cls.classFV)}</div>}
+          <ChevronDown size={18} color={MUTED} style={{ transform: expanded ? "rotate(180deg)" : "none", transition: "transform 0.15s" }} />
         </div>
+      </button>
 
-        <h3 className="disp" style={{ fontSize: 17, margin: "20px 0 10px" }}>2. Set amount & horizon</h3>
-        <div style={{ display: "flex", gap: 12 }}>
-          <div style={{ flex: 1 }}>
-            <label style={{ fontSize: 11.5, color: MUTED, display: "block", marginBottom: 4 }}>Amount to invest (₹)</label>
+      {expanded && (
+        <div style={{ padding: "0 16px 16px" }}>
+          <div style={{ marginBottom: 10 }}>
+            <label style={{ fontSize: 11.5, color: MUTED, display: "block", marginBottom: 4 }}>
+              Amount to invest in {cls.label} (₹)
+            </label>
             <input
               type="number"
-              value={amount}
-              onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
-              style={{ width: "100%", padding: "9px 10px", border: `1px solid ${RULE}`, borderRadius: 6, fontSize: 14 }}
+              value={cls.amount}
+              onChange={(e) => setClassAmounts((a) => ({ ...a, [cls.key]: Math.max(0, Number(e.target.value)) }))}
               className="mono"
+              style={{ width: "100%", padding: "9px 10px", border: `1px solid ${RULE}`, borderRadius: 6, fontSize: 14 }}
             />
           </div>
-          <div style={{ width: 110 }}>
-            <label style={{ fontSize: 11.5, color: MUTED, display: "block", marginBottom: 4 }}>Years</label>
+
+          <div style={{ position: "relative", marginBottom: 8 }}>
+            <Search size={14} style={{ position: "absolute", left: 9, top: 9, color: MUTED }} />
             <input
-              type="number"
-              min={1}
-              max={30}
-              value={years}
-              onChange={(e) => setYears(Math.min(30, Math.max(1, Number(e.target.value))))}
-              style={{ width: "100%", padding: "9px 10px", border: `1px solid ${RULE}`, borderRadius: 6, fontSize: 14 }}
-              className="mono"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={`Search ${cls.label}…`}
+              style={{ width: "100%", padding: "7px 9px 7px 30px", border: `1px solid ${RULE}`, borderRadius: 6, fontSize: 13, background: PAPER }}
             />
           </div>
-        </div>
-        {calcIds.length > 1 && (
-          <p style={{ fontSize: 12, color: MUTED, marginTop: 8 }}>
-            Amount is split equally across {calcIds.length} selected funds — {fmtINR(perFundAmount)} each.
-          </p>
-        )}
-      </div>
-
-      <div>
-        <h3 className="disp" style={{ fontSize: 17, margin: "0 0 10px" }}>3. Projection</h3>
-        {calcIds.length === 0 ? (
-          <div style={{ border: `1px dashed ${RULE}`, borderRadius: 8, padding: 30, textAlign: "center", color: MUTED, fontSize: 13.5 }}>
-            Select one or more funds on the left to see a projection.
-          </div>
-        ) : (
-          <>
-            <div style={{ background: CARD, border: `1px solid ${RULE}`, borderRadius: 8, padding: 16, marginBottom: 14 }}>
-              <div style={{ fontSize: 11.5, color: MUTED, letterSpacing: 0.4 }}>PROJECTED VALUE AFTER {years} YEAR{years > 1 ? "S" : ""}</div>
-              <div className="mono" style={{ fontSize: 26, fontWeight: 700, marginTop: 4 }}>{fmtINR(totalFV)}</div>
-              <div className="mono" style={{ fontSize: 13, color: colorFor(totalGain), marginTop: 2 }}>
-                {totalGain >= 0 ? "+" : ""}{fmtINR(totalGain)} gain on {fmtINR(amount)} invested
-              </div>
-            </div>
-
-            <div style={{ height: Math.max(140, projections.length * 44) }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  layout="vertical"
-                  data={projections.map((p) => ({ name: p.fund.scheme.length > 22 ? p.fund.scheme.slice(0, 22) + "…" : p.fund.scheme, value: Math.round(p.fv) }))}
-                  margin={{ top: 4, right: 30, left: 4, bottom: 4 }}
+          <div style={{ border: `1px solid ${RULE}`, borderRadius: 8, maxHeight: 220, overflowY: "auto" }}>
+            {list.map((f) => {
+              const checked = cls.ids.includes(f.id);
+              const br = bestReturn(f);
+              return (
+                <label
+                  key={f.id}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "8px 10px",
+                    borderBottom: `1px solid ${RULE}`,
+                    cursor: "pointer",
+                    background: checked ? "#F8F5EA" : "transparent",
+                  }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke={RULE} horizontal={false} />
-                  <XAxis type="number" tick={{ fontSize: 10.5, fill: MUTED }} axisLine={{ stroke: RULE }} tickLine={false} />
-                  <YAxis type="category" dataKey="name" width={150} tick={{ fontSize: 11, fill: INK }} axisLine={false} tickLine={false} />
-                  <Tooltip formatter={(v) => fmtINR(v)} contentStyle={{ fontSize: 12, borderRadius: 6, border: `1px solid ${RULE}` }} />
-                  <Bar dataKey="value" fill={GOLD} radius={[0, 3, 3, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-
-            <div style={{ marginTop: 14, background: CARD, border: `1px solid ${RULE}`, borderRadius: 8, overflow: "hidden" }}>
-              {projections.map((p) => (
-                <div key={p.fund.id} style={{ padding: "10px 12px", borderBottom: `1px solid ${RULE}`, display: "flex", alignItems: "center", gap: 10 }}>
+                  <input type="checkbox" checked={checked} onChange={() => toggleClassFund(cls.key, f.id)} style={{ width: 14, height: 14 }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 12.5, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.fund.scheme}</div>
+                    <div style={{ fontSize: 12.5, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{f.scheme}</div>
+                    <div style={{ fontSize: 11, color: MUTED, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{f.provider}</div>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                  <div className="mono" style={{ fontSize: 11.5, color: colorFor(br.value), flexShrink: 0 }}>{fmtPct(br.value)} {br.label}</div>
+                </label>
+              );
+            })}
+            {list.length === 0 && <p style={{ fontSize: 12, color: MUTED, textAlign: "center", padding: 16 }}>No match.</p>}
+          </div>
+
+          {cls.projections.length > 0 && (
+            <div style={{ marginTop: 12 }}>
+              {cls.projections.map((p) => (
+                <div key={p.fund.id} style={{ padding: "8px 0", borderBottom: `1px solid ${RULE}`, display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ flex: 1, minWidth: 0, fontSize: 12, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {p.fund.scheme}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
                     <button
                       onClick={() => setOverrides((o) => ({ ...o, [p.fund.id]: Math.round((o[p.fund.id] - 0.5) * 10) / 10 }))}
-                      style={{ border: `1px solid ${RULE}`, background: "none", borderRadius: 4, width: 22, height: 22, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                      style={{ border: `1px solid ${RULE}`, background: "none", borderRadius: 4, width: 20, height: 20, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
                     >
-                      <Minus size={11} />
+                      <Minus size={10} />
                     </button>
-                    <span className="mono" style={{ fontSize: 12.5, width: 52, textAlign: "center" }}>{p.r.toFixed(1)}%</span>
+                    <span className="mono" style={{ fontSize: 11.5, width: 44, textAlign: "center" }}>{p.r.toFixed(1)}%</span>
                     <button
                       onClick={() => setOverrides((o) => ({ ...o, [p.fund.id]: Math.round((o[p.fund.id] + 0.5) * 10) / 10 }))}
-                      style={{ border: `1px solid ${RULE}`, background: "none", borderRadius: 4, width: 22, height: 22, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                      style={{ border: `1px solid ${RULE}`, background: "none", borderRadius: 4, width: 20, height: 20, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
                     >
-                      <Plus size={11} />
+                      <Plus size={10} />
                     </button>
                   </div>
-                  <div className="mono" style={{ fontSize: 12.5, width: 90, textAlign: "right", fontWeight: 600 }}>{fmtINR(p.fv)}</div>
+                  <div className="mono" style={{ fontSize: 12, width: 80, textAlign: "right", fontWeight: 600 }}>{fmtINR(p.fv)}</div>
                 </div>
               ))}
+              <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 8, marginTop: 4 }}>
+                <span style={{ fontSize: 12, fontWeight: 700 }}>{cls.label} subtotal</span>
+                <span className="mono" style={{ fontSize: 13, fontWeight: 700, color: GOLD }}>{fmtINR(cls.classFV)}</span>
+              </div>
             </div>
-            <p style={{ fontSize: 11.5, color: MUTED, marginTop: 8, lineHeight: 1.5 }}>
-              Assumed annual return is pre-filled with each fund's longest available track record (5Y, or 3Y/1Y where 5Y isn't
-              available yet) and is editable with +/−. This is an illustrative projection, not a guarantee — past
-              performance doesn't predict future returns.
-            </p>
-          </>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
