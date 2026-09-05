@@ -405,8 +405,8 @@ const ALL_FUNDS = [...FUNDS, ...MUTUAL_FUNDS];
 /* is just adding one more entry here — no other code changes needed.  */
 /* ------------------------------------------------------------------ */
 const ASSET_CLASSES = [
-  { key: "pms", label: "PMS", funds: FUNDS },
-  { key: "mf", label: "Mutual Funds", funds: MUTUAL_FUNDS },
+  { key: "pms", label: "PMS", funds: FUNDS, supportsSip: false },
+  { key: "mf", label: "Mutual Funds", funds: MUTUAL_FUNDS, supportsSip: true },
 ];
 
 const INK = "#1B2430";
@@ -442,6 +442,23 @@ function bestReturn(f) {
   return { value: 0, label: "\u2014" };
 }
 
+/* Lump sum: standard compound growth. SIP: future value of a monthly annuity-due,
+   using the same convention (monthly rate = annual/12/100) as most Indian SIP
+   calculators, so the numbers match what people are used to seeing elsewhere. */
+function computeFutureValue(principal, annualReturnPct, years, mode) {
+  if (mode === "sip") {
+    const n = years * 12;
+    const i = annualReturnPct / 1200;
+    if (i === 0) return principal * n;
+    return principal * (((Math.pow(1 + i, n) - 1) / i) * (1 + i));
+  }
+  return principal * Math.pow(1 + annualReturnPct / 100, years);
+}
+
+function investedForMode(principal, years, mode) {
+  return mode === "sip" ? principal * years * 12 : principal;
+}
+
 export default function App() {
   const [tab, setTab] = useState("explore");
   const [query, setQuery] = useState("");
@@ -456,6 +473,7 @@ export default function App() {
 
   const [classSelections, setClassSelections] = useState({});
   const [classAmounts, setClassAmounts] = useState({});
+  const [classModes, setClassModes] = useState({});
   const [overrides, setOverrides] = useState({});
   const [years, setYears] = useState(5);
 
@@ -532,18 +550,21 @@ export default function App() {
   const classData = ASSET_CLASSES.map((ac) => {
     const ids = classSelections[ac.key] || [];
     const classAmount = classAmounts[ac.key] || 0;
+    const mode = ac.supportsSip ? classModes[ac.key] || "lumpsum" : "lumpsum";
     const selected = ids.map((id) => ac.funds.find((f) => f.id === id)).filter(Boolean);
     const perFundAmount = selected.length ? classAmount / selected.length : 0;
     const projections = selected.map((f) => {
       const r = overrides[f.id] ?? bestReturn(f).value;
-      const fv = perFundAmount * Math.pow(1 + r / 100, years);
-      return { fund: f, r, fv, gain: fv - perFundAmount };
+      const fv = computeFutureValue(perFundAmount, r, years, mode);
+      const invested = investedForMode(perFundAmount, years, mode);
+      return { fund: f, r, fv, invested, gain: fv - invested };
     });
     const classFV = projections.reduce((s, p) => s + p.fv, 0);
-    return { ...ac, ids, amount: classAmount, projections, classFV };
+    const classInvested = projections.reduce((s, p) => s + p.invested, 0);
+    return { ...ac, ids, amount: classAmount, mode, projections, classFV, classInvested };
   });
 
-  const totalInvested = classData.reduce((s, c) => s + c.amount, 0);
+  const totalInvested = classData.reduce((s, c) => s + c.classInvested, 0);
   const totalFV = classData.reduce((s, c) => s + c.classFV, 0);
   const totalGain = totalFV - totalInvested;
   const blendedReturn = totalInvested > 0 && years > 0 ? (Math.pow(totalFV / totalInvested, 1 / years) - 1) * 100 : 0;
@@ -658,6 +679,8 @@ export default function App() {
             setOverrides={setOverrides}
             classAmounts={classAmounts}
             setClassAmounts={setClassAmounts}
+            classModes={classModes}
+            setClassModes={setClassModes}
             years={years}
             setYears={setYears}
             totalInvested={totalInvested}
@@ -1089,6 +1112,8 @@ function CalculatorView({
   setOverrides,
   classAmounts,
   setClassAmounts,
+  classModes,
+  setClassModes,
   years,
   setYears,
   totalInvested,
@@ -1121,6 +1146,7 @@ function CalculatorView({
           expanded={expanded[cls.key]}
           onToggleExpand={() => setExpanded((e) => ({ ...e, [cls.key]: !e[cls.key] }))}
           setClassAmounts={setClassAmounts}
+          setClassModes={setClassModes}
           toggleClassFund={toggleClassFund}
           overrides={overrides}
           setOverrides={setOverrides}
@@ -1140,13 +1166,13 @@ function CalculatorView({
             Blended return: {blendedReturn >= 0 ? "+" : ""}{blendedReturn.toFixed(2)}% p.a.
           </div>
         )}
-        {classData.filter((c) => c.amount > 0).length > 0 && (
+        {classData.filter((c) => c.classInvested > 0).length > 0 && (
           <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.15)" }}>
             {classData
-              .filter((c) => c.amount > 0)
+              .filter((c) => c.classInvested > 0)
               .map((c) => (
                 <div key={c.key} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, padding: "3px 0", opacity: 0.85 }}>
-                  <span>{c.label}</span>
+                  <span>{c.label}{c.mode === "sip" ? " (SIP)" : ""}</span>
                   <span className="mono">{fmtINR(c.classFV)}</span>
                 </div>
               ))}
@@ -1168,7 +1194,7 @@ function CalculatorView({
   );
 }
 
-function AssetClassCard({ cls, expanded, onToggleExpand, setClassAmounts, toggleClassFund, overrides, setOverrides }) {
+function AssetClassCard({ cls, expanded, onToggleExpand, setClassAmounts, setClassModes, toggleClassFund, overrides, setOverrides }) {
   const [query, setQuery] = useState("");
   const list = cls.funds.filter(
     (f) => f.scheme.toLowerCase().includes(query.toLowerCase()) || f.provider.toLowerCase().includes(query.toLowerCase())
@@ -1193,7 +1219,11 @@ function AssetClassCard({ cls, expanded, onToggleExpand, setClassAmounts, toggle
         <div>
           <div className="disp" style={{ fontSize: 16, fontWeight: 700 }}>{cls.label}</div>
           <div style={{ fontSize: 11.5, color: MUTED, marginTop: 2 }}>
-            {cls.ids.length > 0 ? `${cls.ids.length} fund${cls.ids.length > 1 ? "s" : ""} · ${fmtINR(cls.amount)} invested` : "No funds selected"}
+            {cls.ids.length > 0
+              ? cls.mode === "sip"
+                ? `${cls.ids.length} fund${cls.ids.length > 1 ? "s" : ""} · ${fmtINR(cls.amount)}/mo SIP`
+                : `${cls.ids.length} fund${cls.ids.length > 1 ? "s" : ""} · ${fmtINR(cls.amount)} invested`
+              : "No funds selected"}
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
@@ -1204,9 +1234,38 @@ function AssetClassCard({ cls, expanded, onToggleExpand, setClassAmounts, toggle
 
       {expanded && (
         <div style={{ padding: "0 16px 16px" }}>
+          {cls.supportsSip && (
+            <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
+              {[
+                { key: "lumpsum", label: "Lump Sum" },
+                { key: "sip", label: "Monthly SIP" },
+              ].map((m) => {
+                const active = (cls.mode || "lumpsum") === m.key;
+                return (
+                  <button
+                    key={m.key}
+                    onClick={() => setClassModes((prev) => ({ ...prev, [cls.key]: m.key }))}
+                    style={{
+                      flex: 1,
+                      padding: "7px 10px",
+                      borderRadius: 6,
+                      border: `1px solid ${active ? GOLD : RULE}`,
+                      background: active ? GOLD : PAPER,
+                      color: active ? "#fff" : INK,
+                      fontSize: 12.5,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {m.label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
           <div style={{ marginBottom: 10 }}>
             <label style={{ fontSize: 11.5, color: MUTED, display: "block", marginBottom: 4 }}>
-              Amount to invest in {cls.label} (₹)
+              {cls.mode === "sip" ? `Monthly SIP amount in ${cls.label} (₹)` : `Amount to invest in ${cls.label} (₹)`}
             </label>
             <input
               type="number"
