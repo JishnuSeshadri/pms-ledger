@@ -58,14 +58,18 @@ const FUNDS = [
   },
   {
     scheme: "ICICI Prudential Contra Portfolio PMS", provider: "ICICI Prudential PMS",
-    managers: ["Anand Shah", "Chockalingam Narayanan"], aum: 13837, inception: "Sept 2018",
+    managers: ["Anand Shah", "Chockalingam Narayanan", "Prem Khurana", "Sandip Santdasani"], aum: 13837, inception: "Sept 2018",
+    benchmarkName: "BSE 500 TRI", stockUniverse: "25\u201330 stocks",
+    sourceNote: "Source: bank PMS Reckoner (30 Jun 2026) and ICICI Prudential's own investor deck (Aug 2026, performance as on 31 Jul 2026).",
     strategy: "Contrarian PMS focusing on stocks performing contrary to current markets and available at a reasonable valuation.",
-    capLarge: 70.0, capMid: 5.8, capSmall: 22.3, capMicro: null,
+    capLarge: 71.46, capMid: 5.42, capSmall: 21.55, capMicro: null,
     holdings: [
-      { name: "Bharti Airtel Ltd", weight: null }, { name: "L&T", weight: null }, { name: "TATA Steel", weight: null },
-      { name: "Eternal Ltd", weight: null }, { name: "ICICI Bank", weight: null },
+      { name: "Bharti Airtel Ltd", weight: 6.77 }, { name: "Tata Steel Ltd", weight: 4.97 }, { name: "Eternal Ltd", weight: 4.94 },
+      { name: "Larsen & Toubro Ltd", weight: 4.75 }, { name: "ICICI Bank Ltd", weight: 4.64 }, { name: "Samvardhana Motherson International Ltd", weight: 4.49 },
+      { name: "Interglobe Aviation Ltd", weight: 3.73 }, { name: "State Bank of India", weight: 3.61 }, { name: "Vardhman Textiles Ltd", weight: 3.61 },
+      { name: "HDFC Bank Ltd", weight: 3.58 },
     ],
-    r1m: 1.0, bm1m: 1.7, r3m: 10.7, bm3m: 12.1, r6m: -1.4, bm6m: -3.5, r1y: 2.0, bm1y: -2.0, r3y: 16.6, bm3y: 12.5, r5y: 17.5, bm5y: 12.2,
+    r1m: 1.99, bm1m: 2.19, r3m: 2.86, bm3m: 3.78, r6m: 2.60, bm6m: 1.99, r1y: 6.26, bm1y: 2.98, r2y: 2.59, bm2y: 0.42, r3y: 15.09, bm3y: 11.89, r5y: 16.56, bm5y: 12.35, si: 18.10, bmsi: 13.07,
   },
   {
     scheme: "Helios India Rising PMS", provider: "Helios Capital",
@@ -120,14 +124,18 @@ const FUNDS = [
   },
   {
     scheme: "ICICI Prudential Value Portfolio PMS", provider: "ICICI Prudential PMS",
-    managers: ["Anand Shah", "Chockalingam Narayanan", "Geetika Gupta"], aum: 1148, inception: "Jan 2004",
+    managers: ["Anand Shah", "Chockalingam Narayanan", "Prem Khurana", "Sandip Santdasani"], aum: 1148, inception: "Jan 2004",
+    benchmarkName: "BSE 500 TRI", stockUniverse: "25\u201330 stocks",
+    sourceNote: "Source: bank PMS Reckoner (30 Jun 2026) and ICICI Prudential's own investor deck (Aug 2026, performance as on 31 Jul 2026).",
     strategy: "Flexicap PMS following a value investment style \u2014 diversified stocks with high potential quoting at a discount to fair/intrinsic value.",
-    capLarge: 47.6, capMid: 12.2, capSmall: 37.9, capMicro: null,
+    capLarge: 50.57, capMid: 9.58, capSmall: 37.13, capMicro: null,
     holdings: [
-      { name: "L&T Ltd", weight: null }, { name: "Bharti Airtel Ltd", weight: null }, { name: "Samvardhana Motherson International Ltd", weight: null },
-      { name: "ICICI Bank", weight: null }, { name: "SBI", weight: null },
+      { name: "Bharti Airtel Ltd", weight: 5.88 }, { name: "ICICI Bank Ltd", weight: 5.51 }, { name: "Samvardhana Motherson International Ltd", weight: 5.39 },
+      { name: "Larsen & Toubro Ltd", weight: 5.30 }, { name: "State Bank of India", weight: 4.67 }, { name: "Tata Steel Ltd", weight: 4.46 },
+      { name: "Sarda Energy and Minerals Ltd", weight: 4.34 }, { name: "Vardhman Textiles Ltd", weight: 3.77 }, { name: "Jindal Stainless Ltd", weight: 3.50 },
+      { name: "HDFC Bank Ltd", weight: 3.37 },
     ],
-    r1m: 0.5, bm1m: 1.7, r3m: 9.4, bm3m: 12.1, r6m: 1.2, bm6m: -3.5, r1y: 8.3, bm1y: -2.0, r3y: 21.0, bm3y: 12.5, r5y: 21.4, bm5y: 12.2,
+    r1m: 0.40, bm1m: 2.19, r3m: -0.61, bm3m: 3.78, r6m: 1.81, bm6m: 1.99, r1y: 10.63, bm1y: 2.98, r2y: 3.16, bm2y: 0.42, r3y: 18.17, bm3y: 11.89, r5y: 20.05, bm5y: 12.35, si: 12.97, bmsi: 12.36,
   },
   {
     scheme: "Abakkus All Cap Approach PMS", provider: "Abakkus Asset Manager",
@@ -146,25 +154,33 @@ const FUNDS = [
   },
   {
     scheme: "ICICI Prudential Growth Leaders Strategy PMS", provider: "ICICI Prudential PMS",
-    managers: ["Chockalingam Narayanan", "Geetika Gupta"], aum: 1622, inception: "Dec 2000",
+    managers: ["Anand Shah", "Chockalingam Narayanan", "Prem Khurana", "Sandip Santdasani"], aum: 1622, inception: "Dec 2000",
+    benchmarkName: "BSE 500 TRI", stockUniverse: "25\u201330 stocks",
+    sourceNote: "Source: bank PMS Reckoner (30 Jun 2026) and ICICI Prudential's own investor deck (Aug 2026, performance as on 31 Jul 2026).",
     strategy: "Flexicap PMS focused on finding growth companies \u2014 prominent businesses with competent management, at reasonable valuations.",
-    capLarge: 57.7, capMid: 19.7, capSmall: 17.7, capMicro: null,
+    capLarge: 60.56, capMid: 14.74, capSmall: 20.55, capMicro: null,
     holdings: [
-      { name: "ICICI Bank Ltd", weight: null }, { name: "SBI", weight: null }, { name: "L&T", weight: null },
-      { name: "FSN E-Commerce Ventures Ltd", weight: null }, { name: "Tata Steel", weight: null },
+      { name: "ICICI Bank Ltd", weight: 6.05 }, { name: "FSN E-Commerce Ventures Ltd", weight: 5.03 }, { name: "Bharti Airtel Ltd", weight: 4.92 },
+      { name: "State Bank of India", weight: 4.85 }, { name: "Eternal Ltd", weight: 4.72 }, { name: "Larsen & Toubro Ltd", weight: 4.58 },
+      { name: "Tata Steel Ltd", weight: 4.24 }, { name: "HDFC Bank Ltd", weight: 3.83 }, { name: "Honasa Consumer Ltd", weight: 3.70 },
+      { name: "Jindal Stainless Ltd", weight: 3.64 },
     ],
-    r1m: 3.2, bm1m: 1.7, r3m: 12.2, bm3m: 12.1, r6m: -0.8, bm6m: -3.5, r1y: 1.0, bm1y: -2.0, r3y: 15.9, bm3y: 12.5, r5y: 14.7, bm5y: 12.2,
+    r1m: 3.39, bm1m: 2.19, r3m: 6.43, bm3m: 3.78, r6m: 4.74, bm6m: 1.99, r1y: 6.37, bm1y: 2.98, r2y: 2.07, bm2y: 0.42, r3y: 15.84, bm3y: 11.89, r5y: 14.52, bm5y: 12.35, si: 12.16, bmsi: 12.36,
   },
   {
     scheme: "ICICI Prudential ACE Portfolio PMS", provider: "ICICI Prudential PMS",
-    managers: ["Anand Shah", "Chockalingam Narayanan", "Geetika Gupta"], aum: 1423, inception: "Dec 2008",
+    managers: ["Anand Shah", "Chockalingam Narayanan", "Prem Khurana", "Sandip Santdasani"], aum: 1423, inception: "Dec 2010",
+    benchmarkName: "BSE 500 TRI", stockUniverse: "25\u201330 stocks",
+    sourceNote: "Source: bank PMS Reckoner (30 Jun 2026) and ICICI Prudential's own investor deck (Aug 2026, performance as on 31 Jul 2026). Inception date corrected to Dec 2010 per the deck (reckoner listed Dec 2008).",
     strategy: "Flexicap PMS aiming for exposure to \u201Cnon-zero sum, under-penetrated themes\u201D in India.",
-    capLarge: 48.0, capMid: 22.3, capSmall: 27.7, capMicro: null,
+    capLarge: 51.38, capMid: 15.33, capSmall: 30.78, capMicro: null,
     holdings: [
-      { name: "ICICI Bank", weight: null }, { name: "FSN E-Commerce Ventures Ltd", weight: null }, { name: "Eternal Ltd", weight: null },
-      { name: "SBI", weight: null }, { name: "L&T", weight: null },
+      { name: "FSN E-Commerce Ventures Ltd", weight: 5.67 }, { name: "ICICI Bank Ltd", weight: 5.66 }, { name: "Eternal Ltd", weight: 5.22 },
+      { name: "State Bank of India", weight: 4.98 }, { name: "Larsen & Toubro Ltd", weight: 4.47 }, { name: "Bharti Airtel Ltd", weight: 4.02 },
+      { name: "Tata Steel Ltd", weight: 3.84 }, { name: "BSE Ltd", weight: 3.61 }, { name: "TVS Motor Company Ltd", weight: 3.45 },
+      { name: "Honasa Consumer Ltd", weight: 3.37 },
     ],
-    r1m: 4.9, bm1m: 1.7, r3m: 14.9, bm3m: 12.1, r6m: -0.3, bm6m: -3.5, r1y: 2.4, bm1y: -2.0, r3y: 19.3, bm3y: 12.5, r5y: 15.6, bm5y: 12.2,
+    r1m: 2.77, bm1m: 2.19, r3m: 7.24, bm3m: 3.78, r6m: 6.11, bm6m: 1.99, r1y: 6.90, bm1y: 2.98, r2y: 5.23, bm2y: 0.42, r3y: 19.62, bm3y: 11.89, r5y: 14.33, bm5y: 12.35, si: 14.51, bmsi: 11.90,
   },
   {
     scheme: "AAA India Opportunity PMS", provider: "AlfAccurate Advisors",
@@ -234,6 +250,13 @@ const PROVIDER_INFO = {
       { name: "Hitesh Arora", credentials: "B.Tech, MS, MBA, CFA", bio: "Fund Manager. 19 years of experience; previously at Unifi Capital, Deutsche Bank, and J.P. Morgan." },
     ],
   },
+  "ICICI Prudential PMS": {
+    // Partial entry: only one manager bio confirmed so far (from the Contra Strategy deck).
+    // No firm-level founded/AUM/team stats included since we don't have them from a source yet.
+    managers: [
+      { name: "Anand Shah", credentials: null, bio: "CIO \u2013 PMS & AIF at ICICI Prudential Asset Management Company Limited. Oversees all PMS strategies offered by the AMC." },
+    ],
+  },
 };
 
 const PERIODS = [
@@ -256,7 +279,7 @@ const PERIODS = [
 /* Covers the top 15 AMCs by AUM across 4 categories; not every AMC    */
 /* runs every category (gaps noted, not guessed).                      */
 /* ------------------------------------------------------------------ */
-const MF_CATEGORIES = ["Aggressive Hybrid", "Balanced Advantage", "Multi Asset Allocation", "Conservative Hybrid"];
+const MF_CATEGORIES = ["Aggressive Hybrid", "Balanced Advantage", "Multi Asset Allocation", "Conservative Hybrid", "Banking & PSU", "Corporate Bond", "Short Duration", "Gilt"];
 
 const MUTUAL_FUNDS = [
   // Aggressive Hybrid (14)
@@ -317,6 +340,60 @@ const MUTUAL_FUNDS = [
   { category: "Conservative Hybrid", provider: "DSP", scheme: "DSP Regular Savings Fund", r1y: 5.1, r3y: 9.2, r5y: 8.0 },
   { category: "Conservative Hybrid", provider: "Axis", scheme: "Axis Conservative Hybrid Fund", r1y: null, r3y: 7.5, r5y: 6.8 },
   { category: "Conservative Hybrid", provider: "HDFC", scheme: "HDFC Hybrid Debt Fund", r1y: 3.8, r3y: 8.3, r5y: 8.6 },
+
+  // Banking & PSU (14)
+  { category: "Banking & PSU", provider: "UTI", scheme: "UTI Banking & PSU Debt Fund", r1y: 6.1, r3y: 7.4, r5y: 7.7 },
+  { category: "Banking & PSU", provider: "ICICI Prudential", scheme: "ICICI Prudential Banking and PSU Debt Fund", r1y: 5.8, r3y: 7.3, r5y: 6.7 },
+  { category: "Banking & PSU", provider: "DSP", scheme: "DSP Banking & PSU Debt Fund", r1y: 7.5, r3y: 7.7, r5y: 6.2 },
+  { category: "Banking & PSU", provider: "Kotak Mahindra", scheme: "Kotak Banking and PSU Debt Fund", r1y: 5.7, r3y: 7.4, r5y: 6.5 },
+  { category: "Banking & PSU", provider: "Bandhan", scheme: "Bandhan Banking and PSU Debt Fund", r1y: 6.0, r3y: 7.2, r5y: 6.2 },
+  { category: "Banking & PSU", provider: "Invesco", scheme: "Invesco India Banking and PSU Fund", r1y: 5.4, r3y: 7.3, r5y: 5.9 },
+  { category: "Banking & PSU", provider: "HDFC", scheme: "HDFC Banking and PSU Debt Fund", r1y: 5.4, r3y: 7.2, r5y: 6.3 },
+  { category: "Banking & PSU", provider: "Nippon India", scheme: "Nippon India Banking and PSU Debt Fund", r1y: 5.3, r3y: 7.2, r5y: 6.3 },
+  { category: "Banking & PSU", provider: "SBI", scheme: "SBI Banking and PSU Debt Fund", r1y: 5.5, r3y: 7.2, r5y: 6.1 },
+  { category: "Banking & PSU", provider: "Edelweiss", scheme: "Edelweiss Banking and PSU Debt Fund", r1y: null, r3y: 7.1, r5y: 6.2 },
+  { category: "Banking & PSU", provider: "Aditya Birla Sun Life", scheme: "ABSL Banking and PSU Debt Fund", r1y: 5.2, r3y: 7.1, r5y: 6.3 },
+  { category: "Banking & PSU", provider: "Mirae Asset", scheme: "Mirae Asset Banking and PSU Fund", r1y: 5.1, r3y: 6.9, r5y: 5.9 },
+  { category: "Banking & PSU", provider: "Axis", scheme: "Axis Banking & PSU Debt Fund", r1y: 5.3, r3y: 7.0, r5y: 6.2 },
+  { category: "Banking & PSU", provider: "Tata", scheme: "Tata Banking & PSU Debt Fund", r1y: 7.0, r3y: 5.5, r5y: null },
+
+  // Corporate Bond (12; PPFAS, Edelweiss, Mirae Asset not reliably available)
+  { category: "Corporate Bond", provider: "ICICI Prudential", scheme: "ICICI Prudential Corporate Bond Fund", r1y: 6.2, r3y: 7.49, r5y: 6.82 },
+  { category: "Corporate Bond", provider: "HDFC", scheme: "HDFC Corporate Bond Fund", r1y: 5.1, r3y: 7.15, r5y: 6.3 },
+  { category: "Corporate Bond", provider: "SBI", scheme: "SBI Corporate Bond Fund", r1y: 5.5, r3y: 7.3, r5y: 6.29 },
+  { category: "Corporate Bond", provider: "Nippon India", scheme: "Nippon India Corporate Bond Fund", r1y: 5.7, r3y: 7.57, r5y: 6.79 },
+  { category: "Corporate Bond", provider: "Axis", scheme: "Axis Corporate Bond Fund", r1y: 5.8, r3y: 7.71, r5y: 6.78 },
+  { category: "Corporate Bond", provider: "Aditya Birla Sun Life", scheme: "ABSL Corporate Bond Fund", r1y: 5.4, r3y: 7.17, r5y: 6.38 },
+  { category: "Corporate Bond", provider: "Tata", scheme: "Tata Corporate Bond Fund", r1y: 5.5, r3y: 7.3, r5y: null },
+  { category: "Corporate Bond", provider: "Bandhan", scheme: "Bandhan Corporate Bond Fund", r1y: 6.0, r3y: 7.32, r5y: 6.09 },
+  { category: "Corporate Bond", provider: "Kotak Mahindra", scheme: "Kotak Corporate Bond Fund", r1y: 5.5, r3y: 7.41, r5y: 6.47 },
+  { category: "Corporate Bond", provider: "DSP", scheme: "DSP Corporate Bond Fund", r1y: 6.1, r3y: 7.36, r5y: 6.0 },
+  { category: "Corporate Bond", provider: "Invesco", scheme: "Invesco India Corporate Bond Fund", r1y: 5.3, r3y: 7.27, r5y: 6.14 },
+  { category: "Corporate Bond", provider: "UTI", scheme: "UTI Corporate Bond Fund", r1y: 5.5, r3y: 7.3, r5y: 6.28 },
+
+  // Short Duration (10; DSP, Kotak Mahindra, Edelweiss, Invesco, PPFAS not reliably available)
+  { category: "Short Duration", provider: "ICICI Prudential", scheme: "ICICI Prudential Short Term Fund", r1y: 6.5, r3y: 7.84, r5y: 7.16 },
+  { category: "Short Duration", provider: "HDFC", scheme: "HDFC Short Term Fund", r1y: 5.8, r3y: 7.51, r5y: 6.58 },
+  { category: "Short Duration", provider: "Axis", scheme: "Axis Short Term Fund", r1y: 6.2, r3y: 7.76, r5y: 6.77 },
+  { category: "Short Duration", provider: "SBI", scheme: "SBI Short Term Fund", r1y: 5.5, r3y: 7.33, r5y: 6.37 },
+  { category: "Short Duration", provider: "Nippon India", scheme: "Nippon India Short Term Fund", r1y: 6.0, r3y: 7.68, r5y: 6.68 },
+  { category: "Short Duration", provider: "Aditya Birla Sun Life", scheme: "ABSL Short Term Fund", r1y: 6.1, r3y: 7.66, r5y: 6.84 },
+  { category: "Short Duration", provider: "Bandhan", scheme: "Bandhan Short Term Fund", r1y: 6.6, r3y: 7.73, r5y: 6.46 },
+  { category: "Short Duration", provider: "Tata", scheme: "Tata Short Term Bond Fund", r1y: 7.3, r3y: 7.78, r5y: 6.36 },
+  { category: "Short Duration", provider: "UTI", scheme: "UTI Short Term Fund", r1y: 5.6, r3y: 7.39, r5y: 7.52 },
+  { category: "Short Duration", provider: "Mirae Asset", scheme: "Mirae Asset Short Duration Fund", r1y: null, r3y: 6.45, r5y: 6.58 },
+
+  // Gilt (10; UTI, Mirae Asset, Edelweiss, Invesco, PPFAS not reliably available)
+  { category: "Gilt", provider: "SBI", scheme: "SBI Gilt Fund", r1y: 5.5, r3y: 6.65, r5y: 6.34 },
+  { category: "Gilt", provider: "Bandhan", scheme: "Bandhan Gilt Fund", r1y: 9.4, r3y: 7.97, r5y: 6.43 },
+  { category: "Gilt", provider: "ICICI Prudential", scheme: "ICICI Prudential Gilt Fund", r1y: 6.0, r3y: 7.31, r5y: 6.82 },
+  { category: "Gilt", provider: "HDFC", scheme: "HDFC Gilt Fund", r1y: 5.1, r3y: 6.56, r5y: 5.61 },
+  { category: "Gilt", provider: "Kotak Mahindra", scheme: "Kotak Gilt Fund", r1y: 5.0, r3y: 5.87, r5y: 5.59 },
+  { category: "Gilt", provider: "Nippon India", scheme: "Nippon India Gilt Fund", r1y: 5.4, r3y: 6.46, r5y: 5.77 },
+  { category: "Gilt", provider: "Tata", scheme: "Tata Gilt Fund", r1y: 5.4, r3y: 6.69, r5y: 6.09 },
+  { category: "Gilt", provider: "DSP", scheme: "DSP Gilt Fund", r1y: 5.2, r3y: 6.77, r5y: 6.13 },
+  { category: "Gilt", provider: "Axis", scheme: "Axis Gilt Fund", r1y: 6.0, r3y: 7.26, r5y: 6.16 },
+  { category: "Gilt", provider: "Aditya Birla Sun Life", scheme: "ABSL Gilt Fund", r1y: null, r3y: null, r5y: 5.38 },
 ].map((f, i) => ({ ...f, id: 1000 + i }));
 
 const ALL_FUNDS = [...FUNDS, ...MUTUAL_FUNDS];
@@ -512,7 +589,7 @@ export default function App() {
                 marginBottom: 16,
               }}
             >
-              14 PMS · 51 MUTUAL FUNDS
+              14 PMS · 97 MUTUAL FUNDS
             </div>
           </div>
 
@@ -595,10 +672,11 @@ export default function App() {
 
       <footer style={{ borderTop: `1px solid ${RULE}`, padding: "18px 20px", textAlign: "center" }}>
         <p style={{ fontSize: 12, color: MUTED, margin: 0, maxWidth: 640, marginInline: "auto" }}>
-          14 PMS schemes (bank Reckoner + provider decks) and 51 mutual fund schemes across 4 categories
-          (Aggressive Hybrid, Balanced Advantage, Multi Asset Allocation, Conservative Hybrid), verified per-scheme
-          against Groww's live fund pages as of 12 Aug 2026. Direct Plan – Growth throughout. Gaps are funds
-          genuinely not offered by that AMC or not reliably available, not guesses. Past returns don't guarantee future performance.
+          14 PMS schemes (bank Reckoner + provider decks) and 97 mutual fund schemes across 8 categories —
+          Aggressive Hybrid, Balanced Advantage, Multi Asset Allocation, Conservative Hybrid, Banking & PSU,
+          Corporate Bond, Short Duration, Gilt — verified per-scheme against Groww's live fund pages as of
+          Aug/Sep 2026. Direct Plan – Growth throughout. Gaps are funds genuinely not offered by that AMC or
+          not reliably available, not guesses. Past returns don't guarantee future performance.
         </p>
       </footer>
     </div>
@@ -964,10 +1042,16 @@ function FundDetail({ fund, onClose }) {
         {provInfo && (
           <div style={{ marginTop: 16 }}>
             <div style={{ fontSize: 11, color: MUTED, letterSpacing: 0.4, marginBottom: 8 }}>ABOUT {fund.provider.toUpperCase()}</div>
-            <p style={{ fontSize: 12.5, color: INK, lineHeight: 1.5, margin: "0 0 10px" }}>
-              Founded {provInfo.founded} · ~USD {provInfo.aumUsdBn}bn managed · {provInfo.team} people across {provInfo.locations} locations.
-              {" "}{provInfo.philosophy} {provInfo.framework}
-            </p>
+            {provInfo.founded && (
+              <p style={{ fontSize: 12.5, color: INK, lineHeight: 1.5, margin: "0 0 10px" }}>
+                Founded {provInfo.founded}
+                {provInfo.aumUsdBn ? ` · ~USD ${provInfo.aumUsdBn}bn managed` : ""}
+                {provInfo.aumCr ? ` · ~\u20B9${provInfo.aumCr.toLocaleString("en-IN")} Cr managed` : ""}
+                {provInfo.team ? ` · ${provInfo.team} people` : ""}
+                {provInfo.locations ? ` across ${provInfo.locations} locations` : ""}.
+                {" "}{provInfo.philosophy} {provInfo.framework}
+              </p>
+            )}
             {fund.managers.filter((m) => provInfo.managers.some((pm) => pm.name === m)).length > 0 && (
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {fund.managers.map((m) => {
@@ -976,7 +1060,7 @@ function FundDetail({ fund, onClose }) {
                   return (
                     <div key={m} style={{ background: PAPER, borderRadius: 8, padding: 12 }}>
                       <div style={{ fontSize: 13, fontWeight: 700 }}>
-                        {bio.name} <span style={{ fontWeight: 400, color: MUTED, fontSize: 12 }}>({bio.credentials})</span>
+                        {bio.name} {bio.credentials && <span style={{ fontWeight: 400, color: MUTED, fontSize: 12 }}>({bio.credentials})</span>}
                       </div>
                       <p style={{ fontSize: 12.5, color: MUTED, margin: "4px 0 0", lineHeight: 1.5 }}>{bio.bio}</p>
                     </div>
