@@ -7,6 +7,9 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
 import {
   Search,
@@ -280,7 +283,7 @@ const PERIODS = [
 /* Covers the top 15 AMCs by AUM across 4 categories; not every AMC    */
 /* runs every category (gaps noted, not guessed).                      */
 /* ------------------------------------------------------------------ */
-const MF_CATEGORIES = ["Aggressive Hybrid", "Balanced Advantage", "Multi Asset Allocation", "Conservative Hybrid", "Banking & PSU", "Corporate Bond", "Short Duration", "Gilt"];
+const MF_CATEGORIES = ["Aggressive Hybrid", "Balanced Advantage", "Multi Asset Allocation", "Conservative Hybrid", "Banking & PSU", "Corporate Bond", "Short Duration", "Gilt", "Gold"];
 
 const MUTUAL_FUNDS = [
   // Aggressive Hybrid (14)
@@ -395,9 +398,40 @@ const MUTUAL_FUNDS = [
   { category: "Gilt", provider: "DSP", scheme: "DSP Gilt Fund", r1y: 5.2, r3y: 6.77, r5y: 6.13 },
   { category: "Gilt", provider: "Axis", scheme: "Axis Gilt Fund", r1y: 6.0, r3y: 7.26, r5y: 6.16 },
   { category: "Gilt", provider: "Aditya Birla Sun Life", scheme: "ABSL Gilt Fund", r1y: null, r3y: null, r5y: 5.38 },
+
+  // Gold (12; Bandhan excluded as too new to have a track record, PPFAS doesn't offer gold)
+  { category: "Gold", provider: "UTI", scheme: "UTI Gold Fund", r1y: 44.6, r3y: 36.4, r5y: null },
+  { category: "Gold", provider: "ICICI Prudential", scheme: "ICICI Prudential Gold Fund", r1y: 44.5, r3y: 36.1, r5y: 25.5 },
+  { category: "Gold", provider: "SBI", scheme: "SBI Gold Fund", r1y: 44.4, r3y: 36.0, r5y: 25.6 },
+  { category: "Gold", provider: "DSP", scheme: "DSP Gold ETF FoF", r1y: 44.4, r3y: null, r5y: null },
+  { category: "Gold", provider: "HDFC", scheme: "HDFC Gold Fund", r1y: 44.3, r3y: 35.9, r5y: 25.4 },
+  { category: "Gold", provider: "Aditya Birla Sun Life", scheme: "ABSL Gold Fund", r1y: 44.3, r3y: 35.9, r5y: 25.3 },
+  { category: "Gold", provider: "Nippon India", scheme: "Nippon India Gold Savings Fund", r1y: 44.0, r3y: 35.9, r5y: 25.3 },
+  { category: "Gold", provider: "Mirae Asset", scheme: "Mirae Asset Gold ETF FoF", r1y: 44.0, r3y: null, r5y: null },
+  { category: "Gold", provider: "Axis", scheme: "Axis Gold Fund", r1y: 43.8, r3y: 35.6, r5y: 25.4 },
+  { category: "Gold", provider: "Tata", scheme: "Tata Gold ETF FoF", r1y: 43.0, r3y: null, r5y: null },
+  { category: "Gold", provider: "Kotak Mahindra", scheme: "Kotak Gold Fund", r1y: null, r3y: 35.9, r5y: 25.3 },
+  { category: "Gold", provider: "Invesco", scheme: "Invesco India Gold ETF FoF", r1y: null, r3y: 35.6, r5y: 25.1 },
 ].map((f, i) => ({ ...f, id: 1000 + i }));
 
-const ALL_FUNDS = [...FUNDS, ...MUTUAL_FUNDS];
+/* ------------------------------------------------------------------ */
+/* REITs — India has only 5 listed REITs, so this is a complete list,  */
+/* not a curated subset like PMS/MF. Verified against INDmoney's       */
+/* Historical Returns table (a single consistent source, 4-7 Sept      */
+/* 2026) rather than mixing sources, since REIT price data proved      */
+/* far more inconsistent across sites than fund NAV data. Knowledge    */
+/* Realty Trust only listed Aug 2025, so it genuinely has no 3Y/5Y      */
+/* track record yet — left blank, not guessed.                        */
+/* ------------------------------------------------------------------ */
+const REIT_FUNDS = [
+  { scheme: "Mindspace Business Parks REIT", provider: "K Raheja Corp", r1y: 19.44, r3y: 57.13, r5y: 68.89 },
+  { scheme: "Nexus Select Trust", provider: "Blackstone", r1y: 12.67, r3y: 35.06, r5y: 59.07 },
+  { scheme: "Embassy Office Parks REIT", provider: "Blackstone / Embassy Group", r1y: 12.81, r3y: 42.6, r5y: 17.93 },
+  { scheme: "Brookfield India Real Estate Trust", provider: "Brookfield Asset Management", r1y: 7.05, r3y: 37.85, r5y: 29.73 },
+  { scheme: "Knowledge Realty Trust", provider: "Sattva / Blackstone", r1y: 4.18, r3y: null, r5y: null },
+].map((f, i) => ({ ...f, id: 2000 + i }));
+
+const ALL_FUNDS = [...FUNDS, ...MUTUAL_FUNDS, ...REIT_FUNDS];
 
 /* ------------------------------------------------------------------ */
 /* ASSET_CLASSES — registry driving the Calculator tab. Each entry is  */
@@ -406,65 +440,99 @@ const ALL_FUNDS = [...FUNDS, ...MUTUAL_FUNDS];
 /* is just adding one more entry here — no other code changes needed.  */
 /* ------------------------------------------------------------------ */
 const ASSET_CLASSES = [
-  { key: "pms", label: "PMS", funds: FUNDS, supportsSip: false },
-  { key: "mf", label: "Mutual Funds", funds: MUTUAL_FUNDS, supportsSip: true },
+  { key: "pms", label: "PMS", funds: FUNDS, supportsSip: false, color: "#2563EB" },
+  { key: "mf", label: "Mutual Funds", funds: MUTUAL_FUNDS, supportsSip: true, color: "#14213D" },
+  { key: "reit", label: "REITs", funds: REIT_FUNDS, supportsSip: true, color: "#0F6E56" },
 ];
 
 /* ------------------------------------------------------------------ */
-/* RISK_TIERS — model portfolio allocations for the Portfolio Planner  */
-/* tab. Illustrative starting weights, agreed with the user; easy to   */
-/* adjust later (just edit the "weight" numbers below). Each row's     */
-/* assumed return is derived from the real average across every fund   */
-/* we have in that category (except FD, which has no public data and   */
-/* is always a manually-set assumption).                               */
+/* Portfolio Planner v2 — every category is tweakable. Presets just    */
+/* load a starting mix; the actual risk label/theme is driven by the   */
+/* live weighted risk score, so pushing a "Conservative" mix toward    */
+/* more PMS visibly shifts it toward Aggressive as you go.             */
+/* riskScore is 1 (safest) to 10 (riskiest), used only to classify the */
+/* blend — it's a simple relative ranking, not a regulatory metric.    */
 /* ------------------------------------------------------------------ */
-const RISK_TIERS = {
-  conservative: {
-    label: "Conservative",
-    rows: [
-      { key: "fd", label: "FD (assumed rate)", weight: 25, isFD: true, defaultRate: 7.0 },
-      { key: "conservativeHybrid", label: "Conservative Hybrid MF", weight: 15, mfCategory: "Conservative Hybrid" },
-      { key: "corporateBond", label: "Corporate Bond MF", weight: 15, mfCategory: "Corporate Bond" },
-      { key: "bankingPsu", label: "Banking & PSU MF", weight: 15, mfCategory: "Banking & PSU" },
-      { key: "shortDuration", label: "Short Duration MF", weight: 15, mfCategory: "Short Duration" },
-      { key: "gilt", label: "Gilt MF", weight: 10, mfCategory: "Gilt" },
-      { key: "balancedAdvantage", label: "Balanced Advantage MF", weight: 5, mfCategory: "Balanced Advantage" },
-    ],
-  },
-  balanced: {
-    label: "Balanced",
-    rows: [
-      { key: "pms", label: "PMS", weight: 20, isPMS: true },
-      { key: "aggressiveHybrid", label: "Aggressive Hybrid MF", weight: 15, mfCategory: "Aggressive Hybrid" },
-      { key: "multiAsset", label: "Multi Asset Allocation MF", weight: 15, mfCategory: "Multi Asset Allocation" },
-      { key: "balancedAdvantage", label: "Balanced Advantage MF", weight: 15, mfCategory: "Balanced Advantage" },
-      { key: "conservativeHybrid", label: "Conservative Hybrid MF", weight: 5, mfCategory: "Conservative Hybrid" },
-      { key: "corporateBond", label: "Corporate Bond MF", weight: 10, mfCategory: "Corporate Bond" },
-      { key: "bankingPsu", label: "Banking & PSU MF", weight: 10, mfCategory: "Banking & PSU" },
-      { key: "fd", label: "FD (assumed rate)", weight: 10, isFD: true, defaultRate: 7.0 },
-    ],
-  },
-  aggressive: {
-    label: "Aggressive",
-    rows: [
-      { key: "pms", label: "PMS", weight: 45, isPMS: true },
-      { key: "aggressiveHybrid", label: "Aggressive Hybrid MF", weight: 20, mfCategory: "Aggressive Hybrid" },
-      { key: "multiAsset", label: "Multi Asset Allocation MF", weight: 20, mfCategory: "Multi Asset Allocation" },
-      { key: "balancedAdvantage", label: "Balanced Advantage MF", weight: 15, mfCategory: "Balanced Advantage" },
-    ],
-  },
+const ALLOCATION_CATEGORIES = [
+  { key: "pms", label: "PMS", riskScore: 10, isPMS: true },
+  { key: "aggressiveHybrid", label: "Aggressive Hybrid MF", riskScore: 8, mfCategory: "Aggressive Hybrid" },
+  { key: "multiAsset", label: "Multi Asset Allocation MF", riskScore: 7, mfCategory: "Multi Asset Allocation" },
+  { key: "balancedAdvantage", label: "Balanced Advantage MF", riskScore: 6, mfCategory: "Balanced Advantage" },
+  { key: "conservativeHybrid", label: "Conservative Hybrid MF", riskScore: 4, mfCategory: "Conservative Hybrid" },
+  { key: "corporateBond", label: "Corporate Bond MF", riskScore: 3, mfCategory: "Corporate Bond" },
+  { key: "bankingPsu", label: "Banking & PSU MF", riskScore: 2, mfCategory: "Banking & PSU" },
+  { key: "shortDuration", label: "Short Duration MF", riskScore: 2, mfCategory: "Short Duration" },
+  { key: "gilt", label: "Gilt MF", riskScore: 2, mfCategory: "Gilt" },
+  { key: "fd", label: "FD (assumed rate)", riskScore: 1, isFD: true, defaultRate: 7.0 },
+];
+
+const TIER_PRESETS = {
+  conservative: { fd: 25, conservativeHybrid: 15, corporateBond: 15, bankingPsu: 15, shortDuration: 15, gilt: 10, balancedAdvantage: 5 },
+  balanced: { pms: 20, aggressiveHybrid: 15, multiAsset: 15, balancedAdvantage: 15, conservativeHybrid: 5, corporateBond: 10, bankingPsu: 10, fd: 10 },
+  aggressive: { pms: 45, aggressiveHybrid: 20, multiAsset: 20, balancedAdvantage: 15 },
 };
+
+function presetWeights(tierKey) {
+  const preset = TIER_PRESETS[tierKey];
+  return Object.fromEntries(ALLOCATION_CATEGORIES.map((c) => [c.key, preset[c.key] || 0]));
+}
+
+function classifyRisk(score) {
+  if (score < 4) return "conservative";
+  if (score <= 7) return "balanced";
+  return "aggressive";
+}
+
+/* Proportionally rebalances every other category so the total always  */
+/* stays at exactly 100% — categories at 0% stay untouched rather than */
+/* being artificially pulled up.                                       */
+function adjustWeight(weights, key, delta) {
+  const keys = ALLOCATION_CATEGORIES.map((c) => c.key);
+  const current = weights[key] || 0;
+  const newValue = Math.max(0, Math.min(100, current + delta));
+  const actualDelta = newValue - current;
+  if (actualDelta === 0) return weights;
+
+  const others = keys.filter((k) => k !== key);
+  const othersTotal = others.reduce((s, k) => s + (weights[k] || 0), 0);
+  const next = { ...weights, [key]: newValue };
+
+  if (othersTotal > 0) {
+    let remaining = -actualDelta;
+    others.forEach((k, i) => {
+      const share = (weights[k] || 0) / othersTotal;
+      const change = i === others.length - 1 ? remaining : Math.round(remaining * share);
+      const newVal = Math.max(0, (weights[k] || 0) + change);
+      next[k] = newVal;
+      remaining -= newVal - (weights[k] || 0);
+    });
+  } else if (actualDelta < 0) {
+    const even = Math.round(-actualDelta / others.length);
+    others.forEach((k) => { next[k] = (weights[k] || 0) + even; });
+  }
+  const total = keys.reduce((s, k) => s + (next[k] || 0), 0);
+  if (total !== 100) next[key] = Math.max(0, Math.min(100, next[key] + (100 - total)));
+  return next;
+}
 
 const PLANNER_HORIZONS = [5, 10, 15];
 
-const INK = "#1B2430";
-const MUTED = "#6B7280";
-const GOLD = "#A6812E";
+const INK = "#14213D";
+const MUTED = "#7488AA";
+const ACCENT = "#2563EB";
 const GREEN = "#1E7145";
 const RED = "#B23A2E";
-const PAPER = "#EFEDE6";
+const PAPER = "#EEF3FC";
 const CARD = "#FFFFFF";
-const RULE = "#DAD6C9";
+const RULE = "#D6E2F5";
+
+/* Risk-tier background theming for the Portfolio Planner — the whole   */
+/* panel tints to match the selected tier, not just the button.        */
+const TIER_THEME = {
+  conservative: { bg: "#EFF7E9", border: "#CBE4BC", accent: "#639922", text: "#3B6D11" },
+  balanced: { bg: "#FDF6E9", border: "#F3DCA3", accent: "#BA7517", text: "#854F0B" },
+  aggressive: { bg: "#FCEEEE", border: "#F0B8B8", accent: "#E24B4A", text: "#A32D2D" },
+};
 
 function fmtPct(v) {
   if (v === null || v === undefined) return "—";
@@ -525,14 +593,17 @@ export default function App() {
   const [mfSortKey, setMfSortKey] = useState("r5y");
   const [mfSortDir, setMfSortDir] = useState("desc");
 
+  const [reitSortKey, setReitSortKey] = useState("r1y");
+  const [reitSortDir, setReitSortDir] = useState("desc");
+
   const [classSelections, setClassSelections] = useState({});
-  const [classAmounts, setClassAmounts] = useState({});
+  const [classAmounts, setClassAmounts] = useState({ pms: 5000000 });
   const [classModes, setClassModes] = useState({});
   const [overrides, setOverrides] = useState({});
   const [years, setYears] = useState(5);
 
   const [plannerAmount, setPlannerAmount] = useState(1000000);
-  const [plannerTier, setPlannerTier] = useState("balanced");
+  const [plannerWeights, setPlannerWeights] = useState(() => presetWeights("balanced"));
   const [plannerOverrides, setPlannerOverrides] = useState({});
 
   const mfFiltered = useMemo(() => {
@@ -562,6 +633,26 @@ export default function App() {
       setMfSortDir("desc");
     }
   }
+
+  function toggleReitSort(key) {
+    if (reitSortKey === key) {
+      setReitSortDir(reitSortDir === "asc" ? "desc" : "asc");
+    } else {
+      setReitSortKey(key);
+      setReitSortDir("desc");
+    }
+  }
+
+  const reitSorted = [...REIT_FUNDS].sort((a, b) => {
+    if (reitSortKey === "scheme") {
+      return reitSortDir === "asc" ? a.scheme.localeCompare(b.scheme) : b.scheme.localeCompare(a.scheme);
+    }
+    let av = a[reitSortKey];
+    let bv = b[reitSortKey];
+    if (av === null || av === undefined) av = -9999;
+    if (bv === null || bv === undefined) bv = -9999;
+    return reitSortDir === "asc" ? av - bv : bv - av;
+  });
 
   const filtered = useMemo(() => {
     let list = FUNDS.filter(
@@ -627,16 +718,19 @@ export default function App() {
   const totalGain = totalFV - totalInvested;
   const blendedReturn = totalInvested > 0 && years > 0 ? (Math.pow(totalFV / totalInvested, 1 / years) - 1) * 100 : 0;
 
-  const plannerRows = RISK_TIERS[plannerTier].rows.map((row) => {
+  const plannerRows = ALLOCATION_CATEGORIES.map((cat) => {
     let baseRate;
-    if (row.isFD) baseRate = row.defaultRate;
-    else if (row.isPMS) baseRate = avgCategoryReturn(FUNDS);
-    else baseRate = avgCategoryReturn(MUTUAL_FUNDS.filter((f) => f.category === row.mfCategory));
-    const overrideKey = `${plannerTier}-${row.key}`;
+    if (cat.isFD) baseRate = cat.defaultRate;
+    else if (cat.isPMS) baseRate = avgCategoryReturn(FUNDS);
+    else baseRate = avgCategoryReturn(MUTUAL_FUNDS.filter((f) => f.category === cat.mfCategory));
+    const overrideKey = `rate-${cat.key}`;
     const rate = plannerOverrides[overrideKey] ?? baseRate;
-    const rowAmount = plannerAmount * (row.weight / 100);
-    return { ...row, overrideKey, baseRate, rate, rowAmount };
+    const weight = plannerWeights[cat.key] || 0;
+    const rowAmount = plannerAmount * (weight / 100);
+    return { ...cat, overrideKey, baseRate, rate, weight, rowAmount };
   });
+  const plannerRiskScore = ALLOCATION_CATEGORIES.reduce((s, c) => s + ((plannerWeights[c.key] || 0) / 100) * c.riskScore, 0);
+  const plannerRiskTier = classifyRisk(plannerRiskScore);
   const plannerBlendedRate = plannerRows.reduce((s, r) => s + (r.rate * r.weight) / 100, 0);
   const plannerProjections = PLANNER_HORIZONS.map((h) => {
     const fv = plannerRows.reduce((s, r) => s + r.rowAmount * Math.pow(1 + r.rate / 100, h), 0);
@@ -644,48 +738,34 @@ export default function App() {
   });
 
   return (
-    <div style={{ minHeight: "100vh", background: PAPER, color: INK, fontFamily: "'Inter', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: PAPER, color: INK, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
         * { box-sizing: border-box; }
         body { margin: 0; }
-        .disp { font-family: 'Fraunces', serif; }
+        .disp { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; letter-spacing: -0.01em; }
         .mono { font-family: 'IBM Plex Mono', monospace; }
-        .row-hover:hover { background: #F8F7F2; }
+        .row-hover:hover { background: #F3F7FD; }
         ::-webkit-scrollbar { height: 8px; width: 8px; }
         ::-webkit-scrollbar-thumb { background: ${RULE}; border-radius: 4px; }
         input[type=number]::-webkit-inner-spin-button { opacity: 1; }
         button { font-family: inherit; }
+        @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-panel { animation: fadeSlideIn 0.25s ease; }
+        @keyframes sheetUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        .sheet-in { animation: sheetUp 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
+        .tier-panel { transition: background-color 0.3s ease, border-color 0.3s ease; }
       `}</style>
 
       {/* HEADER */}
-      <header style={{ borderBottom: `1px solid ${RULE}`, background: CARD }}>
+      <header style={{ borderBottom: `1px solid ${RULE}`, background: INK }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 20px 0", position: "relative" }}>
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-            <div>
-              <h1 className="disp" style={{ fontSize: 30, fontWeight: 700, margin: 0, letterSpacing: -0.5 }}>
-                PMS Ledger
-              </h1>
-              <p style={{ color: MUTED, fontSize: 13.5, margin: "4px 0 16px" }}>
-                Bank-approved PMS shelf, plus top-15-AMC mutual funds — real manager, strategy & returns data.
-              </p>
-            </div>
-            <div
-              style={{
-                border: `1.5px solid ${GOLD}`,
-                color: GOLD,
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: 10.5,
-                letterSpacing: 1,
-                padding: "6px 10px",
-                borderRadius: 3,
-                transform: "rotate(-3deg)",
-                whiteSpace: "nowrap",
-                marginBottom: 16,
-              }}
-            >
-              14 PMS · 97 MUTUAL FUNDS
-            </div>
+          <div style={{ marginBottom: 16 }}>
+            <h1 className="disp" style={{ fontSize: 34, fontWeight: 800, margin: 0, letterSpacing: -0.6, color: "#FFFFFF" }}>
+              Wealth Compass
+            </h1>
+            <p style={{ color: "#93A6C7", fontSize: 13.5, margin: "4px 0 0" }}>
+              Real, verified data on India's PMS, mutual funds and REITs.
+            </p>
           </div>
 
           {/* TABS */}
@@ -693,6 +773,7 @@ export default function App() {
             {[
               { id: "explore", label: "PMS", icon: LayoutList },
               { id: "mutualfunds", label: "Mutual Funds", icon: LayoutList },
+              { id: "reits", label: "REITs", icon: LayoutList },
               { id: "calculator", label: "Calculator", icon: CalcIcon },
               { id: "planner", label: "Portfolio Planner", icon: PieIcon },
             ].map((t) => {
@@ -709,13 +790,14 @@ export default function App() {
                     padding: "10px 16px",
                     background: "none",
                     border: "none",
-                    borderBottom: active ? `2px solid ${GOLD}` : "2px solid transparent",
-                    color: active ? INK : MUTED,
-                    fontWeight: active ? 600 : 500,
+                    borderBottom: active ? `2px solid #5B9BF5` : "2px solid transparent",
+                    color: active ? "#FFFFFF" : "#7488AA",
+                    fontWeight: active ? 700 : 500,
                     fontSize: 14,
                     cursor: "pointer",
                     whiteSpace: "nowrap",
                     flexShrink: 0,
+                    transition: "color 0.15s ease",
                   }}
                 >
                   <Icon size={15} /> {t.label}
@@ -726,7 +808,7 @@ export default function App() {
         </div>
       </header>
 
-      <main style={{ maxWidth: 1100, margin: "0 auto", padding: "24px 20px 60px" }}>
+      <main key={tab} className="tab-panel" style={{ maxWidth: 1100, margin: "0 auto", padding: "24px 20px 60px" }}>
         {tab === "explore" ? (
           <ExploreView
             funds={filtered}
@@ -748,6 +830,8 @@ export default function App() {
             sortDir={mfSortDir}
             toggleSort={toggleMfSort}
           />
+        ) : tab === "reits" ? (
+          <ReitsView funds={reitSorted} sortKey={reitSortKey} sortDir={reitSortDir} toggleSort={toggleReitSort} />
         ) : tab === "calculator" ? (
           <CalculatorView
             classData={classData}
@@ -769,10 +853,12 @@ export default function App() {
           <PlannerView
             amount={plannerAmount}
             setAmount={setPlannerAmount}
-            tier={plannerTier}
-            setTier={setPlannerTier}
+            weights={plannerWeights}
+            setWeights={setPlannerWeights}
             rows={plannerRows}
             setOverrides={setPlannerOverrides}
+            riskScore={plannerRiskScore}
+            riskTier={plannerRiskTier}
             blendedRate={plannerBlendedRate}
             projections={plannerProjections}
           />
@@ -782,14 +868,10 @@ export default function App() {
       {openFund && <FundDetail fund={openFund} onClose={() => setOpenFund(null)} />}
 
       <footer style={{ borderTop: `1px solid ${RULE}`, padding: "18px 20px", textAlign: "center" }}>
-        <p style={{ fontSize: 12, color: MUTED, margin: 0, maxWidth: 640, marginInline: "auto" }}>
-          14 PMS schemes (bank Reckoner + provider decks) and 97 mutual fund schemes across 8 categories —
-          Aggressive Hybrid, Balanced Advantage, Multi Asset Allocation, Conservative Hybrid, Banking & PSU,
-          Corporate Bond, Short Duration, Gilt — verified per-scheme against Groww's live fund pages as of
-          Aug/Sep 2026. Direct Plan – Growth throughout. Gaps are funds genuinely not offered by that AMC or
-          not reliably available, not guesses. The Portfolio Planner uses category-level averages of this same
-          data, plus a manually assumed FD rate (no public data source exists for FD rates). Past returns don't
-          guarantee future performance.
+        <p style={{ fontSize: 12, color: MUTED, margin: 0, maxWidth: 560, marginInline: "auto" }}>
+          Built from bank-approved fund lists, provider decks, and verified live data — not estimates. Gaps you
+          see are funds that genuinely aren't offered or don't have a track record yet, never a guess. Past
+          returns don't guarantee future performance.
         </p>
       </footer>
     </div>
@@ -891,13 +973,15 @@ function ExploreView({ funds, query, setQuery, sortKey, sortDir, toggleSort, onO
   );
 }
 
-function PlannerView({ amount, setAmount, tier, setTier, rows, setOverrides, blendedRate, projections }) {
+function PlannerView({ amount, setAmount, weights, setWeights, rows, setOverrides, riskScore, riskTier, blendedRate, projections }) {
+  const theme = TIER_THEME[riskTier];
+  const totalWeight = rows.reduce((s, r) => s + r.weight, 0);
+
   return (
     <div style={{ maxWidth: 680, marginInline: "auto" }}>
       <p style={{ fontSize: 12.5, color: MUTED, margin: "0 0 16px", lineHeight: 1.5 }}>
-        Enter an amount and pick a risk profile to see a suggested diversified mix and its projected value over
-        time. This shows category-level blends, not specific fund picks — for a hands-on portfolio with named
-        funds, use the Calculator tab instead.
+        Start from a preset, then tweak any category's weight — the others rebalance automatically, and the risk
+        label below updates live to match what you've actually built, not just the button you tapped.
       </p>
 
       <div style={{ marginBottom: 14 }}>
@@ -906,95 +990,159 @@ function PlannerView({ amount, setAmount, tier, setTier, rows, setOverrides, ble
           type="number"
           value={amount}
           onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
+          onFocus={(e) => e.target.select()}
           className="mono"
           style={{ width: "100%", padding: "10px 12px", border: `1px solid ${RULE}`, borderRadius: 6, fontSize: 15 }}
         />
       </div>
 
-      <div style={{ display: "flex", gap: 6, marginBottom: 18 }}>
-        {Object.entries(RISK_TIERS).map(([key, t]) => {
-          const active = key === tier;
-          return (
-            <button
-              key={key}
-              onClick={() => setTier(key)}
-              style={{
-                flex: 1,
-                padding: "10px 8px",
-                borderRadius: 8,
-                border: `1px solid ${active ? GOLD : RULE}`,
-                background: active ? GOLD : CARD,
-                color: active ? "#fff" : INK,
-                fontSize: 13,
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
-            >
-              {t.label}
-            </button>
-          );
-        })}
-      </div>
-
-      <div style={{ background: CARD, border: `1px solid ${RULE}`, borderRadius: 8, overflow: "hidden", marginBottom: 16 }}>
-        {rows.map((r, i) => (
-          <div
-            key={r.key}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              padding: "11px 14px",
-              borderBottom: i < rows.length - 1 ? `1px solid ${RULE}` : "none",
-            }}
-          >
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 13, fontWeight: 600 }}>{r.label}</div>
-              <div className="mono" style={{ fontSize: 11.5, color: MUTED, marginTop: 1 }}>
-                {r.weight}% · {fmtINR(r.rowAmount)}
-                {r.isFD && <span style={{ color: GOLD }}> · assumed, not verified data</span>}
-              </div>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 3, flexShrink: 0 }}>
+      <div style={{ marginBottom: 14 }}>
+        <label style={{ fontSize: 11.5, color: MUTED, display: "block", marginBottom: 6 }}>Quick start</label>
+        <div style={{ display: "flex", gap: 8 }}>
+          {Object.keys(TIER_PRESETS).map((key) => {
+            const th = TIER_THEME[key];
+            return (
               <button
-                onClick={() => setOverrides((o) => ({ ...o, [r.overrideKey]: Math.round((r.rate - 0.5) * 10) / 10 }))}
-                style={{ border: `1px solid ${RULE}`, background: "none", borderRadius: 4, width: 22, height: 22, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                key={key}
+                onClick={() => setWeights(presetWeights(key))}
+                style={{
+                  flex: 1,
+                  padding: "9px 8px",
+                  borderRadius: 20,
+                  border: `1px solid ${th.border}`,
+                  background: CARD,
+                  color: th.text,
+                  fontSize: 12.5,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                }}
               >
-                <Minus size={11} />
+                {key === "conservative" ? "Conservative" : key === "balanced" ? "Balanced" : "Aggressive"}
               </button>
-              <span className="mono" style={{ fontSize: 12.5, width: 52, textAlign: "center", color: colorFor(r.rate) }}>{r.rate.toFixed(1)}%</span>
-              <button
-                onClick={() => setOverrides((o) => ({ ...o, [r.overrideKey]: Math.round((r.rate + 0.5) * 10) / 10 }))}
-                style={{ border: `1px solid ${RULE}`, background: "none", borderRadius: 4, width: 22, height: 22, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
-              >
-                <Plus size={11} />
-              </button>
-            </div>
-          </div>
-        ))}
-        <div style={{ padding: "11px 14px", background: PAPER, display: "flex", justifyContent: "space-between" }}>
-          <span style={{ fontSize: 12.5, fontWeight: 700 }}>Blended assumed return</span>
-          <span className="mono" style={{ fontSize: 13, fontWeight: 700, color: colorFor(blendedRate) }}>{blendedRate.toFixed(2)}% p.a.</span>
+            );
+          })}
         </div>
       </div>
 
-      <div style={{ fontSize: 11, color: MUTED, letterSpacing: 0.4, marginBottom: 8 }}>PROJECTED VALUE</div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginBottom: 8 }}>
-        {projections.map((p) => (
-          <div key={p.years} style={{ background: INK, borderRadius: 10, padding: "14px 10px", textAlign: "center" }}>
-            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)" }}>{p.years} YEARS</div>
-            <div className="mono" style={{ fontSize: 17, fontWeight: 700, color: "#fff", marginTop: 4 }}>{fmtINR(p.fv)}</div>
-            <div className="mono" style={{ fontSize: 10.5, color: "rgba(255,255,255,0.75)", marginTop: 2 }}>
-              {p.gain >= 0 ? "+" : ""}{fmtINR(p.gain)}
+      <div className="tier-panel" style={{ background: theme.bg, border: `1px solid ${theme.border}`, borderRadius: 12, padding: 14 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+          <div>
+            <div style={{ fontSize: 10.5, color: theme.text, letterSpacing: 0.4, fontWeight: 600, opacity: 0.8 }}>CURRENT RISK PROFILE</div>
+            <div className="disp" style={{ fontSize: 20, fontWeight: 800, color: theme.text, marginTop: 2, textTransform: "capitalize" }}>
+              {riskTier}
             </div>
           </div>
-        ))}
+          <div
+            className="mono"
+            style={{
+              background: theme.accent,
+              color: "#fff",
+              fontSize: 13,
+              fontWeight: 700,
+              padding: "6px 12px",
+              borderRadius: 20,
+            }}
+          >
+            {riskScore.toFixed(1)}/10
+          </div>
+        </div>
+
+        <div style={{ background: CARD, border: `1px solid ${theme.border}`, borderRadius: 8, overflow: "hidden", marginBottom: 16 }}>
+          {rows.map((r, i) => (
+            <div
+              key={r.key}
+              style={{
+                padding: "11px 14px",
+                borderBottom: i < rows.length - 1 ? `1px solid ${RULE}` : "none",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+                <span style={{ fontSize: 13, fontWeight: 600 }}>{r.label}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
+                  <button
+                    onClick={() => setWeights((w) => adjustWeight(w, r.key, -5))}
+                    style={{ border: `1px solid ${RULE}`, background: "none", borderRadius: 4, width: 22, height: 22, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                  >
+                    <Minus size={11} />
+                  </button>
+                  <span
+                    className="mono"
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 700,
+                      width: 44,
+                      textAlign: "center",
+                      background: theme.bg,
+                      color: theme.text,
+                      borderRadius: 12,
+                      padding: "2px 0",
+                    }}
+                  >
+                    {r.weight}%
+                  </span>
+                  <button
+                    onClick={() => setWeights((w) => adjustWeight(w, r.key, 5))}
+                    style={{ border: `1px solid ${RULE}`, background: "none", borderRadius: 4, width: 22, height: 22, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                  >
+                    <Plus size={11} />
+                  </button>
+                </div>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <span className="mono" style={{ fontSize: 11.5, color: MUTED }}>
+                  {fmtINR(r.rowAmount)}
+                  {r.isFD && <span style={{ color: theme.accent }}> · assumed rate</span>}
+                </span>
+                <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
+                  <button
+                    onClick={() => setOverrides((o) => ({ ...o, [r.overrideKey]: Math.round((r.rate - 0.5) * 10) / 10 }))}
+                    style={{ border: `1px solid ${RULE}`, background: "none", borderRadius: 4, width: 20, height: 20, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                  >
+                    <Minus size={9} />
+                  </button>
+                  <span className="mono" style={{ fontSize: 11.5, width: 44, textAlign: "center", color: colorFor(r.rate) }}>{r.rate.toFixed(1)}%</span>
+                  <button
+                    onClick={() => setOverrides((o) => ({ ...o, [r.overrideKey]: Math.round((r.rate + 0.5) * 10) / 10 }))}
+                    style={{ border: `1px solid ${RULE}`, background: "none", borderRadius: 4, width: 20, height: 20, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                  >
+                    <Plus size={9} />
+                  </button>
+                </div>
+              </div>
+              {r.isPMS && r.rowAmount > 0 && r.rowAmount < 5000000 && (
+                <p style={{ fontSize: 11, color: "#A32D2D", fontWeight: 600, margin: "6px 0 0", lineHeight: 1.4 }}>
+                  PMS needs a ₹50L minimum — at {r.weight}% weight this only allocates {fmtINR(r.rowAmount)}. Raise
+                  the total amount to at least {fmtINR(5000000 / (r.weight / 100))}, or drop PMS to 0%.
+                </p>
+              )}
+            </div>
+          ))}
+          <div style={{ padding: "11px 14px", background: theme.bg, display: "flex", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 12.5, fontWeight: 700, color: theme.text }}>
+              Total {totalWeight}% · Blended return
+            </span>
+            <span className="mono" style={{ fontSize: 13, fontWeight: 700, color: theme.text }}>{blendedRate.toFixed(2)}% p.a.</span>
+          </div>
+        </div>
+
+        <div style={{ fontSize: 11, color: theme.text, letterSpacing: 0.4, marginBottom: 8, fontWeight: 600 }}>PROJECTED VALUE</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginBottom: 8 }}>
+          {projections.map((p) => (
+            <div key={p.years} style={{ background: INK, borderRadius: 10, padding: "14px 10px", textAlign: "center" }}>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)" }}>{p.years} YEARS</div>
+              <div className="mono" style={{ fontSize: 17, fontWeight: 700, color: "#fff", marginTop: 4 }}>{fmtINR(p.fv)}</div>
+              <div className="mono" style={{ fontSize: 10.5, color: "rgba(255,255,255,0.75)", marginTop: 2 }}>
+                {p.gain >= 0 ? "+" : ""}{fmtINR(p.gain)}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <p style={{ fontSize: 11.5, color: MUTED, marginTop: 14, lineHeight: 1.5, textAlign: "center" }}>
-        Category weights are an illustrative starting model, not individual recommendations. Returns per category
-        are the real average across every fund we track there (FD is always a manual assumption — editable with
-        +/−, same as every other row). Past performance doesn't predict future returns.
+        Returns per category are the real average across every fund we track there (FD is always a manual
+        assumption — editable with +/−, same as every other row). Weights always rebalance to total 100%.
+        Past performance doesn't predict future returns.
       </p>
     </div>
   );
@@ -1013,8 +1161,8 @@ function MutualFundsView({ funds, query, setQuery, category, setCategory, sortKe
               style={{
                 padding: "7px 13px",
                 borderRadius: 20,
-                border: `1px solid ${active ? GOLD : RULE}`,
-                background: active ? GOLD : CARD,
+                border: `1px solid ${active ? ACCENT : RULE}`,
+                background: active ? ACCENT : CARD,
                 color: active ? "#fff" : INK,
                 fontSize: 12.5,
                 fontWeight: 600,
@@ -1088,10 +1236,57 @@ function MutualFundsView({ funds, query, setQuery, category, setCategory, sortKe
   );
 }
 
+function ReitsView({ funds, sortKey, sortDir, toggleSort }) {
+  return (
+    <div>
+      <p style={{ fontSize: 12.5, color: MUTED, margin: "0 0 16px", lineHeight: 1.5 }}>
+        All 5 REITs listed in India — this is the complete universe, not a curated subset. Price returns (not
+        including distribution payouts), verified against INDmoney's live data as of Sept 2026.
+      </p>
+      <div style={{ background: CARD, border: `1px solid ${RULE}`, borderRadius: 8, overflow: "auto" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 480 }}>
+          <thead>
+            <tr style={{ borderBottom: `1px solid ${RULE}` }}>
+              <SortHeader label="REIT" k="scheme" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} align="left" />
+              <SortHeader label="1Y" k="r1y" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} />
+              <SortHeader label="3Y" k="r3y" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} />
+              <SortHeader label="5Y" k="r5y" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} />
+            </tr>
+          </thead>
+          <tbody>
+            {funds.map((f) => (
+              <tr key={f.id} className="row-hover" style={{ borderBottom: `1px solid ${RULE}` }}>
+                <td style={{ padding: "12px" }}>
+                  <div style={{ fontWeight: 600, fontSize: 13.5 }}>{f.scheme}</div>
+                  <div style={{ fontSize: 12, color: MUTED, marginTop: 2 }}>{f.provider}</div>
+                </td>
+                <td className="mono" style={{ padding: "12px", textAlign: "right", fontSize: 13, color: colorFor(f.r1y) }}>
+                  {fmtPct(f.r1y)}
+                </td>
+                <td className="mono" style={{ padding: "12px", textAlign: "right", fontSize: 13, color: colorFor(f.r3y) }}>
+                  {fmtPct(f.r3y)}
+                </td>
+                <td className="mono" style={{ padding: "12px", textAlign: "right", fontSize: 13, color: colorFor(f.r5y), fontWeight: 600 }}>
+                  {fmtPct(f.r5y)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p style={{ fontSize: 11.5, color: MUTED, marginTop: 12, lineHeight: 1.5 }}>
+        Knowledge Realty Trust only listed August 2025, so it genuinely has no 3Y/5Y track record yet — that's
+        not a data gap, it's just too new. REITs also pay regular income distributions on top of these price
+        returns, which aren't included in the figures above.
+      </p>
+    </div>
+  );
+}
+
 function MiniCapBar({ fund }) {
   const segs = [
     { label: "Large", value: fund.capLarge, color: INK },
-    { label: "Mid", value: fund.capMid, color: GOLD },
+    { label: "Mid", value: fund.capMid, color: ACCENT },
     { label: "Small", value: fund.capSmall, color: "#8FA998" },
     { label: "Micro", value: fund.capMicro, color: RULE },
   ].filter((s) => s.value !== null && s.value !== undefined);
@@ -1124,7 +1319,7 @@ function FundDetail({ fund, onClose }) {
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(27,36,48,0.45)",
+        background: "rgba(20,33,61,0.45)",
         display: "flex",
         alignItems: "flex-end",
         justifyContent: "center",
@@ -1133,6 +1328,7 @@ function FundDetail({ fund, onClose }) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
+        className="sheet-in"
         style={{
           background: CARD,
           width: "100%",
@@ -1218,14 +1414,14 @@ function FundDetail({ fund, onClose }) {
                 formatter={(v) => (v === null || v === undefined ? "N/A" : `${v.toFixed(2)}%`)}
                 contentStyle={{ fontSize: 12, borderRadius: 6, border: `1px solid ${RULE}` }}
               />
-              <Bar dataKey="portfolio" name="Portfolio" radius={[3, 3, 0, 0]} fill={GOLD} />
+              <Bar dataKey="portfolio" name="Portfolio" radius={[3, 3, 0, 0]} fill={ACCENT} />
               <Bar dataKey="benchmark" name="Benchmark" radius={[3, 3, 0, 0]} fill={RULE} />
             </BarChart>
           </ResponsiveContainer>
         </div>
         <div style={{ display: "flex", justifyContent: "center", gap: 16, marginTop: 4 }}>
           <span style={{ fontSize: 11, color: MUTED, display: "inline-flex", alignItems: "center", gap: 4 }}>
-            <span style={{ width: 8, height: 8, borderRadius: 2, background: GOLD, display: "inline-block" }} /> Portfolio
+            <span style={{ width: 8, height: 8, borderRadius: 2, background: ACCENT, display: "inline-block" }} /> Portfolio
           </span>
           <span style={{ fontSize: 11, color: MUTED, display: "inline-flex", alignItems: "center", gap: 4 }}>
             <span style={{ width: 8, height: 8, borderRadius: 2, background: RULE, display: "inline-block" }} /> Benchmark
@@ -1332,6 +1528,7 @@ function CalculatorView({
           max={30}
           value={years}
           onChange={(e) => setYears(Math.min(30, Math.max(1, Number(e.target.value))))}
+          onFocus={(e) => e.target.select()}
           className="mono"
           style={{ width: 110, padding: "9px 10px", border: `1px solid ${RULE}`, borderRadius: 6, fontSize: 14 }}
         />
@@ -1351,6 +1548,51 @@ function CalculatorView({
           setOverrides={setOverrides}
         />
       ))}
+
+      {classData.filter((c) => c.classInvested > 0).length > 0 && (
+        <div style={{ background: CARD, border: `1px solid ${RULE}`, borderRadius: 10, padding: 18, marginBottom: 14 }}>
+          <div style={{ fontSize: 11, color: MUTED, letterSpacing: 0.4, marginBottom: 10 }}>ALLOCATION</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+            <div style={{ width: 140, height: 140, flexShrink: 0 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={classData.filter((c) => c.classInvested > 0).map((c) => ({ name: c.label, value: c.classInvested }))}
+                    dataKey="value"
+                    nameKey="name"
+                    innerRadius={35}
+                    outerRadius={65}
+                    paddingAngle={2}
+                    isAnimationActive={true}
+                    animationDuration={450}
+                    animationEasing="ease-out"
+                  >
+                    {classData
+                      .filter((c) => c.classInvested > 0)
+                      .map((c) => (
+                        <Cell key={c.key} fill={c.color} />
+                      ))}
+                  </Pie>
+                  <Tooltip formatter={(v) => fmtINR(v)} contentStyle={{ fontSize: 12, borderRadius: 6, border: `1px solid ${RULE}` }} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div style={{ flex: 1, minWidth: 140 }}>
+              {classData
+                .filter((c) => c.classInvested > 0)
+                .map((c) => (
+                  <div key={c.key} style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 0" }}>
+                    <div style={{ width: 10, height: 10, borderRadius: 3, background: c.color, flexShrink: 0 }} />
+                    <div style={{ flex: 1, fontSize: 12.5 }}>{c.label}</div>
+                    <div className="mono" style={{ fontSize: 12.5, fontWeight: 600 }}>
+                      {totalInvested > 0 ? ((c.classInvested / totalInvested) * 100).toFixed(0) : 0}%
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div style={{ background: INK, borderRadius: 10, padding: 18, marginTop: 8, color: "#fff" }}>
         <div style={{ fontSize: 11, letterSpacing: 0.6, opacity: 0.7 }}>
@@ -1426,7 +1668,7 @@ function AssetClassCard({ cls, expanded, onToggleExpand, setClassAmounts, setCla
           </div>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-          {cls.classFV > 0 && <div className="mono" style={{ fontSize: 14, fontWeight: 700, color: GOLD }}>{fmtINR(cls.classFV)}</div>}
+          {cls.classFV > 0 && <div className="mono" style={{ fontSize: 14, fontWeight: 700, color: ACCENT }}>{fmtINR(cls.classFV)}</div>}
           <ChevronDown size={18} color={MUTED} style={{ transform: expanded ? "rotate(180deg)" : "none", transition: "transform 0.15s" }} />
         </div>
       </button>
@@ -1448,8 +1690,8 @@ function AssetClassCard({ cls, expanded, onToggleExpand, setClassAmounts, setCla
                       flex: 1,
                       padding: "7px 10px",
                       borderRadius: 6,
-                      border: `1px solid ${active ? GOLD : RULE}`,
-                      background: active ? GOLD : PAPER,
+                      border: `1px solid ${active ? ACCENT : RULE}`,
+                      background: active ? ACCENT : PAPER,
                       color: active ? "#fff" : INK,
                       fontSize: 12.5,
                       fontWeight: 600,
@@ -1470,9 +1712,18 @@ function AssetClassCard({ cls, expanded, onToggleExpand, setClassAmounts, setCla
               type="number"
               value={cls.amount}
               onChange={(e) => setClassAmounts((a) => ({ ...a, [cls.key]: Math.max(0, Number(e.target.value)) }))}
+              onFocus={(e) => e.target.select()}
               className="mono"
               style={{ width: "100%", padding: "9px 10px", border: `1px solid ${RULE}`, borderRadius: 6, fontSize: 14 }}
             />
+            {cls.key === "pms" && (
+              <p style={{ fontSize: 11, color: MUTED, margin: "5px 0 0" }}>Most PMS require a minimum of ₹50 lakhs.</p>
+            )}
+            {cls.amount > 0 && cls.ids.length === 0 && (
+              <p style={{ fontSize: 11.5, color: "#A32D2D", margin: "6px 0 0", fontWeight: 600 }}>
+                Select at least one fund below — an amount alone won't count toward your portfolio yet.
+              </p>
+            )}
           </div>
 
           <div style={{ position: "relative", marginBottom: 8 }}>
@@ -1540,7 +1791,7 @@ function AssetClassCard({ cls, expanded, onToggleExpand, setClassAmounts, setCla
               ))}
               <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 8, marginTop: 4 }}>
                 <span style={{ fontSize: 12, fontWeight: 700 }}>{cls.label} subtotal</span>
-                <span className="mono" style={{ fontSize: 13, fontWeight: 700, color: GOLD }}>{fmtINR(cls.classFV)}</span>
+                <span className="mono" style={{ fontSize: 13, fontWeight: 700, color: ACCENT }}>{fmtINR(cls.classFV)}</span>
               </div>
             </div>
           )}
