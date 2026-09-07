@@ -988,7 +988,7 @@ function PlannerView({ amount, setAmount, weights, setWeights, rows, setOverride
         <label style={{ fontSize: 11.5, color: MUTED, display: "block", marginBottom: 4 }}>Amount to invest (₹)</label>
         <input
           type="number"
-          value={amount}
+          value={amount === 0 ? "" : amount}
           onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
           onFocus={(e) => e.target.select()}
           className="mono"
@@ -1710,7 +1710,7 @@ function AssetClassCard({ cls, expanded, onToggleExpand, setClassAmounts, setCla
             </label>
             <input
               type="number"
-              value={cls.amount}
+              value={cls.amount === 0 ? "" : cls.amount}
               onChange={(e) => setClassAmounts((a) => ({ ...a, [cls.key]: Math.max(0, Number(e.target.value)) }))}
               onFocus={(e) => e.target.select()}
               className="mono"
