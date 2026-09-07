@@ -18,6 +18,7 @@ import {
   Plus,
   Minus,
   ChevronDown,
+  PieChart as PieIcon,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -409,6 +410,53 @@ const ASSET_CLASSES = [
   { key: "mf", label: "Mutual Funds", funds: MUTUAL_FUNDS, supportsSip: true },
 ];
 
+/* ------------------------------------------------------------------ */
+/* RISK_TIERS — model portfolio allocations for the Portfolio Planner  */
+/* tab. Illustrative starting weights, agreed with the user; easy to   */
+/* adjust later (just edit the "weight" numbers below). Each row's     */
+/* assumed return is derived from the real average across every fund   */
+/* we have in that category (except FD, which has no public data and   */
+/* is always a manually-set assumption).                               */
+/* ------------------------------------------------------------------ */
+const RISK_TIERS = {
+  conservative: {
+    label: "Conservative",
+    rows: [
+      { key: "fd", label: "FD (assumed rate)", weight: 25, isFD: true, defaultRate: 7.0 },
+      { key: "conservativeHybrid", label: "Conservative Hybrid MF", weight: 15, mfCategory: "Conservative Hybrid" },
+      { key: "corporateBond", label: "Corporate Bond MF", weight: 15, mfCategory: "Corporate Bond" },
+      { key: "bankingPsu", label: "Banking & PSU MF", weight: 15, mfCategory: "Banking & PSU" },
+      { key: "shortDuration", label: "Short Duration MF", weight: 15, mfCategory: "Short Duration" },
+      { key: "gilt", label: "Gilt MF", weight: 10, mfCategory: "Gilt" },
+      { key: "balancedAdvantage", label: "Balanced Advantage MF", weight: 5, mfCategory: "Balanced Advantage" },
+    ],
+  },
+  balanced: {
+    label: "Balanced",
+    rows: [
+      { key: "pms", label: "PMS", weight: 20, isPMS: true },
+      { key: "aggressiveHybrid", label: "Aggressive Hybrid MF", weight: 15, mfCategory: "Aggressive Hybrid" },
+      { key: "multiAsset", label: "Multi Asset Allocation MF", weight: 15, mfCategory: "Multi Asset Allocation" },
+      { key: "balancedAdvantage", label: "Balanced Advantage MF", weight: 15, mfCategory: "Balanced Advantage" },
+      { key: "conservativeHybrid", label: "Conservative Hybrid MF", weight: 5, mfCategory: "Conservative Hybrid" },
+      { key: "corporateBond", label: "Corporate Bond MF", weight: 10, mfCategory: "Corporate Bond" },
+      { key: "bankingPsu", label: "Banking & PSU MF", weight: 10, mfCategory: "Banking & PSU" },
+      { key: "fd", label: "FD (assumed rate)", weight: 10, isFD: true, defaultRate: 7.0 },
+    ],
+  },
+  aggressive: {
+    label: "Aggressive",
+    rows: [
+      { key: "pms", label: "PMS", weight: 45, isPMS: true },
+      { key: "aggressiveHybrid", label: "Aggressive Hybrid MF", weight: 20, mfCategory: "Aggressive Hybrid" },
+      { key: "multiAsset", label: "Multi Asset Allocation MF", weight: 20, mfCategory: "Multi Asset Allocation" },
+      { key: "balancedAdvantage", label: "Balanced Advantage MF", weight: 15, mfCategory: "Balanced Advantage" },
+    ],
+  },
+};
+
+const PLANNER_HORIZONS = [5, 10, 15];
+
 const INK = "#1B2430";
 const MUTED = "#6B7280";
 const GOLD = "#A6812E";
@@ -459,6 +507,12 @@ function investedForMode(principal, years, mode) {
   return mode === "sip" ? principal * years * 12 : principal;
 }
 
+function avgCategoryReturn(pool) {
+  if (!pool.length) return 0;
+  const total = pool.reduce((s, f) => s + bestReturn(f).value, 0);
+  return total / pool.length;
+}
+
 export default function App() {
   const [tab, setTab] = useState("explore");
   const [query, setQuery] = useState("");
@@ -476,6 +530,10 @@ export default function App() {
   const [classModes, setClassModes] = useState({});
   const [overrides, setOverrides] = useState({});
   const [years, setYears] = useState(5);
+
+  const [plannerAmount, setPlannerAmount] = useState(1000000);
+  const [plannerTier, setPlannerTier] = useState("balanced");
+  const [plannerOverrides, setPlannerOverrides] = useState({});
 
   const mfFiltered = useMemo(() => {
     let list = MUTUAL_FUNDS.filter(
@@ -569,6 +627,22 @@ export default function App() {
   const totalGain = totalFV - totalInvested;
   const blendedReturn = totalInvested > 0 && years > 0 ? (Math.pow(totalFV / totalInvested, 1 / years) - 1) * 100 : 0;
 
+  const plannerRows = RISK_TIERS[plannerTier].rows.map((row) => {
+    let baseRate;
+    if (row.isFD) baseRate = row.defaultRate;
+    else if (row.isPMS) baseRate = avgCategoryReturn(FUNDS);
+    else baseRate = avgCategoryReturn(MUTUAL_FUNDS.filter((f) => f.category === row.mfCategory));
+    const overrideKey = `${plannerTier}-${row.key}`;
+    const rate = plannerOverrides[overrideKey] ?? baseRate;
+    const rowAmount = plannerAmount * (row.weight / 100);
+    return { ...row, overrideKey, baseRate, rate, rowAmount };
+  });
+  const plannerBlendedRate = plannerRows.reduce((s, r) => s + (r.rate * r.weight) / 100, 0);
+  const plannerProjections = PLANNER_HORIZONS.map((h) => {
+    const fv = plannerRows.reduce((s, r) => s + r.rowAmount * Math.pow(1 + r.rate / 100, h), 0);
+    return { years: h, fv, gain: fv - plannerAmount };
+  });
+
   return (
     <div style={{ minHeight: "100vh", background: PAPER, color: INK, fontFamily: "'Inter', sans-serif" }}>
       <style>{`
@@ -615,11 +689,12 @@ export default function App() {
           </div>
 
           {/* TABS */}
-          <div style={{ display: "flex", gap: 4 }}>
+          <div style={{ display: "flex", gap: 4, overflowX: "auto" }}>
             {[
               { id: "explore", label: "PMS", icon: LayoutList },
               { id: "mutualfunds", label: "Mutual Funds", icon: LayoutList },
               { id: "calculator", label: "Calculator", icon: CalcIcon },
+              { id: "planner", label: "Portfolio Planner", icon: PieIcon },
             ].map((t) => {
               const Icon = t.icon;
               const active = tab === t.id;
@@ -639,6 +714,8 @@ export default function App() {
                     fontWeight: active ? 600 : 500,
                     fontSize: 14,
                     cursor: "pointer",
+                    whiteSpace: "nowrap",
+                    flexShrink: 0,
                   }}
                 >
                   <Icon size={15} /> {t.label}
@@ -671,7 +748,7 @@ export default function App() {
             sortDir={mfSortDir}
             toggleSort={toggleMfSort}
           />
-        ) : (
+        ) : tab === "calculator" ? (
           <CalculatorView
             classData={classData}
             toggleClassFund={toggleClassFund}
@@ -688,6 +765,17 @@ export default function App() {
             totalGain={totalGain}
             blendedReturn={blendedReturn}
           />
+        ) : (
+          <PlannerView
+            amount={plannerAmount}
+            setAmount={setPlannerAmount}
+            tier={plannerTier}
+            setTier={setPlannerTier}
+            rows={plannerRows}
+            setOverrides={setPlannerOverrides}
+            blendedRate={plannerBlendedRate}
+            projections={plannerProjections}
+          />
         )}
       </main>
 
@@ -699,7 +787,9 @@ export default function App() {
           Aggressive Hybrid, Balanced Advantage, Multi Asset Allocation, Conservative Hybrid, Banking & PSU,
           Corporate Bond, Short Duration, Gilt — verified per-scheme against Groww's live fund pages as of
           Aug/Sep 2026. Direct Plan – Growth throughout. Gaps are funds genuinely not offered by that AMC or
-          not reliably available, not guesses. Past returns don't guarantee future performance.
+          not reliably available, not guesses. The Portfolio Planner uses category-level averages of this same
+          data, plus a manually assumed FD rate (no public data source exists for FD rates). Past returns don't
+          guarantee future performance.
         </p>
       </footer>
     </div>
@@ -797,6 +887,115 @@ function ExploreView({ funds, query, setQuery, sortKey, sortDir, toggleSort, onO
       {funds.length === 0 && (
         <p style={{ textAlign: "center", color: MUTED, marginTop: 40 }}>No fund matches "{query}".</p>
       )}
+    </div>
+  );
+}
+
+function PlannerView({ amount, setAmount, tier, setTier, rows, setOverrides, blendedRate, projections }) {
+  return (
+    <div style={{ maxWidth: 680, marginInline: "auto" }}>
+      <p style={{ fontSize: 12.5, color: MUTED, margin: "0 0 16px", lineHeight: 1.5 }}>
+        Enter an amount and pick a risk profile to see a suggested diversified mix and its projected value over
+        time. This shows category-level blends, not specific fund picks — for a hands-on portfolio with named
+        funds, use the Calculator tab instead.
+      </p>
+
+      <div style={{ marginBottom: 14 }}>
+        <label style={{ fontSize: 11.5, color: MUTED, display: "block", marginBottom: 4 }}>Amount to invest (₹)</label>
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
+          className="mono"
+          style={{ width: "100%", padding: "10px 12px", border: `1px solid ${RULE}`, borderRadius: 6, fontSize: 15 }}
+        />
+      </div>
+
+      <div style={{ display: "flex", gap: 6, marginBottom: 18 }}>
+        {Object.entries(RISK_TIERS).map(([key, t]) => {
+          const active = key === tier;
+          return (
+            <button
+              key={key}
+              onClick={() => setTier(key)}
+              style={{
+                flex: 1,
+                padding: "10px 8px",
+                borderRadius: 8,
+                border: `1px solid ${active ? GOLD : RULE}`,
+                background: active ? GOLD : CARD,
+                color: active ? "#fff" : INK,
+                fontSize: 13,
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              {t.label}
+            </button>
+          );
+        })}
+      </div>
+
+      <div style={{ background: CARD, border: `1px solid ${RULE}`, borderRadius: 8, overflow: "hidden", marginBottom: 16 }}>
+        {rows.map((r, i) => (
+          <div
+            key={r.key}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "11px 14px",
+              borderBottom: i < rows.length - 1 ? `1px solid ${RULE}` : "none",
+            }}
+          >
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 13, fontWeight: 600 }}>{r.label}</div>
+              <div className="mono" style={{ fontSize: 11.5, color: MUTED, marginTop: 1 }}>
+                {r.weight}% · {fmtINR(r.rowAmount)}
+                {r.isFD && <span style={{ color: GOLD }}> · assumed, not verified data</span>}
+              </div>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 3, flexShrink: 0 }}>
+              <button
+                onClick={() => setOverrides((o) => ({ ...o, [r.overrideKey]: Math.round((r.rate - 0.5) * 10) / 10 }))}
+                style={{ border: `1px solid ${RULE}`, background: "none", borderRadius: 4, width: 22, height: 22, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+              >
+                <Minus size={11} />
+              </button>
+              <span className="mono" style={{ fontSize: 12.5, width: 52, textAlign: "center", color: colorFor(r.rate) }}>{r.rate.toFixed(1)}%</span>
+              <button
+                onClick={() => setOverrides((o) => ({ ...o, [r.overrideKey]: Math.round((r.rate + 0.5) * 10) / 10 }))}
+                style={{ border: `1px solid ${RULE}`, background: "none", borderRadius: 4, width: 22, height: 22, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+              >
+                <Plus size={11} />
+              </button>
+            </div>
+          </div>
+        ))}
+        <div style={{ padding: "11px 14px", background: PAPER, display: "flex", justifyContent: "space-between" }}>
+          <span style={{ fontSize: 12.5, fontWeight: 700 }}>Blended assumed return</span>
+          <span className="mono" style={{ fontSize: 13, fontWeight: 700, color: colorFor(blendedRate) }}>{blendedRate.toFixed(2)}% p.a.</span>
+        </div>
+      </div>
+
+      <div style={{ fontSize: 11, color: MUTED, letterSpacing: 0.4, marginBottom: 8 }}>PROJECTED VALUE</div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginBottom: 8 }}>
+        {projections.map((p) => (
+          <div key={p.years} style={{ background: INK, borderRadius: 10, padding: "14px 10px", textAlign: "center" }}>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)" }}>{p.years} YEARS</div>
+            <div className="mono" style={{ fontSize: 17, fontWeight: 700, color: "#fff", marginTop: 4 }}>{fmtINR(p.fv)}</div>
+            <div className="mono" style={{ fontSize: 10.5, color: "rgba(255,255,255,0.75)", marginTop: 2 }}>
+              {p.gain >= 0 ? "+" : ""}{fmtINR(p.gain)}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p style={{ fontSize: 11.5, color: MUTED, marginTop: 14, lineHeight: 1.5, textAlign: "center" }}>
+        Category weights are an illustrative starting model, not individual recommendations. Returns per category
+        are the real average across every fund we track there (FD is always a manual assumption — editable with
+        +/−, same as every other row). Past performance doesn't predict future returns.
+      </p>
     </div>
   );
 }
