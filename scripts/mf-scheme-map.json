@@ -306,5 +306,17 @@
   "ICICI Prudential Corporate Bond Fund": {
     "code": 120692,
     "matchedName": "ICICI Prudential Corporate Bond Fund - Direct Plan - Growth"
+  },
+  "DSP Banking & PSU Debt Fund": {
+    "code": 124175,
+    "matchedName": "DSP Banking and PSU Debt Fund - Direct Plan - Growth"
+  },
+  "Axis Banking & PSU Debt Fund": {
+    "code": 120438,
+    "matchedName": "Axis Banking and PSU Debt Fund - Direct Plan - Growth Option"
+  },
+  "ICICI Prudential Gold Fund": {
+    "code": 120685,
+    "matchedName": "ICICI Prudential Gold ETF FOF - Direct Plan - Growth"
   }
 }

@@ -257,6 +257,12 @@
     "r5y": 6.73,
     "asOf": "2026-09-08"
   },
+  "DSP Banking & PSU Debt Fund": {
+    "r1y": 4.97,
+    "r3y": 7.04,
+    "r5y": 6.04,
+    "asOf": "2026-09-08"
+  },
   "Kotak Banking and PSU Debt Fund": {
     "r1y": 5.92,
     "r3y": 7.47,
@@ -303,6 +309,12 @@
     "r1y": 5.17,
     "r3y": 7,
     "r5y": 5.97,
+    "asOf": "2026-09-08"
+  },
+  "Axis Banking & PSU Debt Fund": {
+    "r1y": 5.54,
+    "r3y": 7.09,
+    "r5y": 6.19,
     "asOf": "2026-09-08"
   },
   "Tata Banking & PSU Debt Fund": {
@@ -405,6 +417,12 @@
     "r1y": 4.17,
     "r3y": 6.49,
     "r5y": 5.7,
+    "asOf": "2026-09-08"
+  },
+  "ICICI Prudential Gold Fund": {
+    "r1y": 41.94,
+    "r3y": 35.89,
+    "r5y": 25.26,
     "asOf": "2026-09-08"
   },
   "SBI Gold Fund": {
