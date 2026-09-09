@@ -42,7 +42,8 @@ async function readJson(filePath, fallback) {
 async function searchScheme(query) {
   const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
   if (!res.ok) return [];
-  return res.json();
+  const json = await res.json();
+  return Array.isArray(json) ? json : [];
 }
 
 async function fetchNavHistory(code) {
@@ -87,6 +88,7 @@ function normalizeForSearch(name) {
 // If this can't be determined confidently, the caller skips the
 // scheme rather than guessing.
 function isConfidentMatch(candidateName) {
+  if (typeof candidateName !== "string") return false;
   const n = candidateName.toLowerCase();
   const isDirect = n.includes("direct");
   const isGrowth = n.includes("growth");
@@ -129,7 +131,7 @@ async function resolveCode(scheme, existingMap) {
   // start with the AMC name, so prepending our own `provider` field
   // usually duplicates it and breaks the search API's matching.
   const soloResults = await searchScheme(normalizedScheme);
-  const soloConfident = soloResults.filter(isConfidentMatch);
+  const soloConfident = soloResults.filter((r) => isConfidentMatch(r.schemeName));
 
   if (soloConfident.length === 1) {
     return { code: soloConfident[0].schemeCode, matchedName: soloConfident[0].schemeName };
@@ -139,7 +141,7 @@ async function resolveCode(scheme, existingMap) {
   // prepended — helps when the scheme name alone is too generic
   // (e.g. "Regular Savings Fund" shared across AMCs).
   const combinedResults = await searchScheme(`${normalizeForSearch(scheme.provider)} ${normalizedScheme}`);
-  const combinedConfident = combinedResults.filter(isConfidentMatch);
+  const combinedConfident = combinedResults.filter((r) => isConfidentMatch(r.schemeName));
 
   if (combinedConfident.length === 1) {
     return { code: combinedConfident[0].schemeCode, matchedName: combinedConfident[0].schemeName };
