@@ -226,5 +226,65 @@
   "Axis Gold Fund": {
     "code": 120473,
     "matchedName": "Axis Gold Fund - Direct Plan - Growth option"
+  },
+  "ABSL Balanced Advantage Fund": {
+    "code": 131670,
+    "matchedName": "Aditya Birla Sun Life Balanced Advantage Fund - Direct Plan - GROWTH"
+  },
+  "Edelweiss Balanced Advantage Fund": {
+    "code": 118615,
+    "matchedName": "Edelweiss Balanced Advantage Fund - Direct Plan - Growth"
+  },
+  "Kotak Balanced Advantage Fund": {
+    "code": 144335,
+    "matchedName": "Kotak Balanced Advantage Fund - Direct Plan - Growth Option"
+  },
+  "Parag Parikh Dynamic Asset Allocation Fund": {
+    "code": 152468,
+    "matchedName": "Parag Parikh Dynamic Asset Allocation Fund - Direct Plan - Growth"
+  },
+  "ABSL Multi Asset Allocation Fund": {
+    "code": 151307,
+    "matchedName": "Aditya Birla Sun Life Multi Asset Allocation Fund - Direct Plan - GROWTH"
+  },
+  "Parag Parikh Conservative Hybrid Fund": {
+    "code": 148958,
+    "matchedName": "Parag Parikh Conservative Hybrid Fund - Direct Plan - Growth"
+  },
+  "Kotak Banking and PSU Debt Fund": {
+    "code": 123693,
+    "matchedName": "Kotak Banking and PSU Debt Fund - Direct Plan - Growth"
+  },
+  "ABSL Corporate Bond Fund": {
+    "code": 119533,
+    "matchedName": "Aditya Birla Sun Life Corporate Bond Fund - Direct Plan - GROWTH"
+  },
+  "Tata Corporate Bond Fund": {
+    "code": 119104,
+    "matchedName": "Tata Corporate Bond Fund- Direct Plan-Growth"
+  },
+  "Kotak Corporate Bond Fund": {
+    "code": 133791,
+    "matchedName": "Kotak Corporate Bond Fund - Direct Plan - Growth Option"
+  },
+  "DSP Gold ETF FoF": {
+    "code": 152183,
+    "matchedName": "DSP Gold ETF Fund of Fund - Direct Plan - Growth"
+  },
+  "ABSL Gold Fund": {
+    "code": 120546,
+    "matchedName": "Aditya Birla Sun Life Gold Fund - Direct Plan - GROWTH"
+  },
+  "Mirae Asset Gold ETF FoF": {
+    "code": 153007,
+    "matchedName": "Mirae Asset Gold ETF Fund of Fund - Direct Plan - Growth"
+  },
+  "Tata Gold ETF FoF": {
+    "code": 152287,
+    "matchedName": "Tata Gold ETF Fund of Fund - Direct Plan - Growth Option"
+  },
+  "Invesco India Gold ETF FoF": {
+    "code": 120531,
+    "matchedName": "Invesco India Gold ETF Fund of Fund - Direct Plan - Growth"
   }
 }

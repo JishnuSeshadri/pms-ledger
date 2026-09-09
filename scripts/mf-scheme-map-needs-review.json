@@ -3,29 +3,37 @@
   "ICICI Prudential Equity & Debt Fund": [],
   "Nippon India Aggressive Hybrid Fund": [
     {
+      "schemeCode": 112936,
+      "schemeName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Regular Plan - Growth Option"
+    },
+    {
+      "schemeCode": 112937,
+      "schemeName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Regular Plan - IDCW Option"
+    },
+    {
+      "schemeCode": 118793,
+      "schemeName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Direct Plan - IDCW Option"
+    },
+    {
       "schemeCode": 118794,
       "schemeName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Direct Plan - Growth Option"
     },
     {
-      "schemeCode": 148265,
-      "schemeName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Direct Plan - Growth Option"
+      "schemeCode": 122765,
+      "schemeName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Regular Plan - QUARTERLY IDCW Option"
     }
   ],
-  "Kotak Aggressive Hybrid Fund": [],
-  "ABSL Equity Hybrid '95 Fund": [],
-  "ABSL Balanced Advantage Fund": [],
-  "Edelweiss Balanced Advantage Fund": [
+  "Kotak Aggressive Hybrid Fund": [
     {
-      "schemeCode": 140357,
-      "schemeName": "Edelweiss Balanced Advantage Fund - Direct Plan - Growth Option-deactivated"
+      "schemeCode": 119767,
+      "schemeName": "Kotak Aggressive Hybrid Fund - Direct Plan - Growth"
     },
     {
-      "schemeCode": 118615,
-      "schemeName": "Edelweiss Balanced Advantage Fund - Direct Plan - Growth"
+      "schemeCode": 133035,
+      "schemeName": "Kotak Aggressive Hybrid Fund - Direct Plan - Growth"
     }
   ],
-  "Kotak Balanced Advantage Fund": [],
-  "Parag Parikh Dynamic Asset Allocation Fund": [],
+  "ABSL Equity Hybrid '95 Fund": [],
   "ICICI Prudential Multi Asset Fund": [
     {
       "schemeCode": 120334,
@@ -36,20 +44,60 @@
       "schemeName": "ICICI Prudential Passive Multi-Asset Fund of Funds - Direct Plan - Growth"
     }
   ],
-  "ABSL Multi Asset Allocation Fund": [],
-  "Kotak Multi Asset Allocation Fund": [],
-  "Parag Parikh Conservative Hybrid Fund": [],
+  "Kotak Multi Asset Allocation Fund": [
+    {
+      "schemeCode": 152064,
+      "schemeName": "Kotak Multi Asset Allocation Fund - Direct Plan - Growth Option"
+    },
+    {
+      "schemeCode": 120160,
+      "schemeName": "Kotak Multi Asset Allocation Fund-Growth - Direct"
+    }
+  ],
   "Nippon India Conservative Hybrid Fund": [
+    {
+      "schemeCode": 102172,
+      "schemeName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Regular Plan - Growth Option"
+    },
+    {
+      "schemeCode": 102173,
+      "schemeName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Regular Plan - MONTHLY IDCW Option"
+    },
+    {
+      "schemeCode": 102174,
+      "schemeName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Regular Plan - QUARTERLY IDCW Option"
+    },
     {
       "schemeCode": 118726,
       "schemeName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Direct Plan - Growth Option"
     },
     {
-      "schemeCode": 148296,
-      "schemeName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Direct Plan - Growth Option"
+      "schemeCode": 118727,
+      "schemeName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Direct Plan - MONTHLY IDCW Option"
     }
   ],
-  "ABSL Regular Savings Fund": [],
+  "ABSL Regular Savings Fund": [
+    {
+      "schemeCode": 131736,
+      "schemeName": "Aditya Birla Sun Life Tax Savings Fund - Regular Plan - Growth Option"
+    },
+    {
+      "schemeCode": 131737,
+      "schemeName": "Aditya Birla Sun Life Tax Savings Fund - Regular Plan - Dividend Option"
+    },
+    {
+      "schemeCode": 131738,
+      "schemeName": "Aditya Birla Sun Life Tax Savings Fund - Regular Plan - Bonus Option"
+    },
+    {
+      "schemeCode": 132997,
+      "schemeName": "Aditya Birla Sun Life Equity Savings Fund - Regular Plan - IDCW"
+    },
+    {
+      "schemeCode": 132998,
+      "schemeName": "Aditya Birla Sun Life Equity Savings Fund - Regular Plan - GROWTH"
+    }
+  ],
   "SBI Conservative Hybrid Fund": [
     {
       "schemeCode": 119839,
@@ -120,8 +168,16 @@
     }
   ],
   "DSP Banking & PSU Debt Fund": [],
-  "Kotak Banking and PSU Debt Fund": [],
-  "ABSL Banking and PSU Debt Fund": [],
+  "ABSL Banking and PSU Debt Fund": [
+    {
+      "schemeCode": 120533,
+      "schemeName": "Aditya Birla Sun Life Banking & PSU Debt Fund - Growth - Direct Plan"
+    },
+    {
+      "schemeCode": 119550,
+      "schemeName": "Aditya Birla Sun Life Banking & PSU Debt Fund - Direct Plan - GROWTH"
+    }
+  ],
   "Axis Banking & PSU Debt Fund": [
     {
       "schemeCode": 128952,
@@ -154,18 +210,6 @@
       "schemeName": "ICICI Prudential Corporate Bond Fund Retail Weekly Dividend"
     }
   ],
-  "ABSL Corporate Bond Fund": [],
-  "Tata Corporate Bond Fund": [
-    {
-      "schemeCode": 119104,
-      "schemeName": "Tata Corporate Bond Fund- Direct Plan-Growth"
-    },
-    {
-      "schemeCode": 147389,
-      "schemeName": "Tata Corporate Bond Fund - Direct Plan -Growth (Segregated Portfolio 1)"
-    }
-  ],
-  "Kotak Corporate Bond Fund": [],
   "HDFC Short Term Fund": [
     {
       "schemeCode": 119114,
@@ -242,7 +286,28 @@
       "schemeName": "Nippon India Ultra Short to Short Term Fund - Regular Plan - RETAIL Plan - DAILY IDCW Option"
     }
   ],
-  "ABSL Short Term Fund": [],
+  "ABSL Short Term Fund": [
+    {
+      "schemeCode": 101975,
+      "schemeName": "Aditya Birla Sun Life Floating Rate Fund-Short Term Plan-Institutional Fortnightly Dividend"
+    },
+    {
+      "schemeCode": 103175,
+      "schemeName": "Aditya Birla Sun Life Ultra Short Term Fund- Retail Plan A(Monthly Dividend)"
+    },
+    {
+      "schemeCode": 103189,
+      "schemeName": "Aditya Birla Sun Life Govt, Securities Short Term Fund-Retail Plan A(Dividend)"
+    },
+    {
+      "schemeCode": 103190,
+      "schemeName": "Aditya Birla Sun Life Government Securities Fund - Short Term Plan - Growth - Regular Plan"
+    },
+    {
+      "schemeCode": 109213,
+      "schemeName": "Aditya Birla Sun Life Short Term Opportunities Fund-Institutional Growth Plan"
+    }
+  ],
   "Tata Short Term Bond Fund": [],
   "UTI Short Term Fund": [
     {
@@ -297,7 +362,16 @@
       "schemeName": "HDFC Gilt Fund - Direct Plan - Growth Option"
     }
   ],
-  "Kotak Gilt Fund": [],
+  "Kotak Gilt Fund": [
+    {
+      "schemeCode": 119757,
+      "schemeName": "Kotak Gilt Fund - Direct Plan - Investment Provident Fund and Trust-Growth"
+    },
+    {
+      "schemeCode": 119759,
+      "schemeName": "Kotak Gilt Fund - Direct Plan - Growth"
+    }
+  ],
   "Tata Gilt Fund": [
     {
       "schemeCode": 119944,
@@ -332,7 +406,24 @@
       "schemeName": "Axis Crisil IBX 50:50 Gilt Plus SDL September 2027 Index Fund - Direct Plan - Growth Option"
     }
   ],
-  "ABSL Gilt Fund": [],
+  "ABSL Gilt Fund": [
+    {
+      "schemeCode": 119614,
+      "schemeName": "Aditya Birla Sun Life Constant Maturity 10 Year Gilt Fund - Growth - Direct Plan"
+    },
+    {
+      "schemeCode": 119605,
+      "schemeName": "Aditya Birla Sun Life Gilt Fund - Direct Plan - GROWTH"
+    },
+    {
+      "schemeCode": 150698,
+      "schemeName": "Aditya Birla Sun Life Crisil IBX Gilt-April 2026 Index Fund-Direct Growth"
+    },
+    {
+      "schemeCode": 150702,
+      "schemeName": "Aditya Birla Sun Life Crisil IBX 50:50 Gilt Plus SDL Apr 2028 Index Fund - Direct Plan - GROWTH"
+    }
+  ],
   "UTI Gold Fund": [
     {
       "schemeCode": 105463,
@@ -344,10 +435,14 @@
     }
   ],
   "ICICI Prudential Gold Fund": [],
-  "DSP Gold ETF FoF": [],
-  "ABSL Gold Fund": [],
-  "Mirae Asset Gold ETF FoF": [],
-  "Tata Gold ETF FoF": [],
-  "Kotak Gold Fund": [],
-  "Invesco India Gold ETF FoF": []
+  "Kotak Gold Fund": [
+    {
+      "schemeCode": 133816,
+      "schemeName": "Kotak World Gold Fund- Direct Plan- Growth Option"
+    },
+    {
+      "schemeCode": 119781,
+      "schemeName": "Kotak Gold Fund - Direct Plan - Growth"
+    }
+  ]
 }
