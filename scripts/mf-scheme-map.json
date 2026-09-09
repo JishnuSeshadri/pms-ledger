@@ -394,5 +394,9 @@
   "Kotak Gold Fund": {
     "code": 119781,
     "matchedName": "Kotak Gold Fund - Direct Plan - Growth"
+  },
+  "ICICI Prudential Multi Asset Fund": {
+    "code": 120334,
+    "matchedName": "ICICI Prudential Multi Asset Allocation Fund - Direct Plan - Growth"
   }
 }

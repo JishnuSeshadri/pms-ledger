@@ -2,26 +2,6 @@
   "SBI Equity Hybrid Fund": [],
   "ICICI Prudential Equity & Debt Fund": [],
   "ABSL Equity Hybrid '95 Fund": [],
-  "ICICI Prudential Multi Asset Fund": [
-    {
-      "schemeCode": 120334,
-      "schemeName": "ICICI Prudential Multi Asset Allocation Fund - Direct Plan - Growth",
-      "isinGrowth": "INF109K015K4",
-      "isinDivReinvestment": null
-    },
-    {
-      "schemeCode": 149441,
-      "schemeName": "ICICI Prudential Passive Multi-Asset Fund of Funds - Direct Plan - Growth",
-      "isinGrowth": "INF109KC1Y15",
-      "isinDivReinvestment": null
-    },
-    {
-      "schemeCode": 154449,
-      "schemeName": "ICICI Prudential Multi-Asset Active FOF - Direct Plan - Growth",
-      "isinGrowth": "INF109K1A559",
-      "isinDivReinvestment": null
-    }
-  ],
   "ABSL Regular Savings Fund": [],
   "ICICI Prudential Regular Savings Fund": [],
   "Kotak Debt Hybrid Fund": [],
