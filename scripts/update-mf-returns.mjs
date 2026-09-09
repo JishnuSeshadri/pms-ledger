@@ -6,12 +6,25 @@
  * scripts/mf-schemes.json, using AMFI NAV history via the free
  * api.mfapi.in wrapper, and writes the result to src/data/mf-returns.json.
  *
+ * MATCHING STRATEGY: earlier versions used mfapi.in's hosted
+ * /mf/search endpoint, which turned out to silently return nothing
+ * for some large, well-known funds (e.g. SBI Equity Hybrid Fund) —
+ * a quirk in their search, not a real naming mismatch. This version
+ * instead downloads the FULL scheme list once (GET /mf) and matches
+ * locally: every significant word in our scheme name must literally
+ * appear in the candidate's official name. Stricter and fully within
+ * our control.
+ *
  * No-fabrication rule, same as everywhere else in this project:
  * - If a scheme's AMFI code can't be confidently resolved (0 or 2+
- *   Direct-Growth matches), it's skipped and logged for manual review
- *   in scripts/mf-scheme-map-needs-review.json — never guessed.
+ *   genuinely different Direct-Growth matches), it's skipped and
+ *   logged for manual review in mf-scheme-map-needs-review.json —
+ *   never guessed.
+ * - If two matches are actually the SAME fund under a reissued code
+ *   (AMFI does this occasionally), the one with more recent NAV data
+ *   is kept automatically — a data-driven tiebreak, not a guess.
  * - If NAV history doesn't reach far enough back for a period (fund
- *   too new), that period is left as null, same as the old hardcoded
+ *   too new), that period is left null, same as the old hardcoded
  *   data did for "—" entries.
  *
  * Run manually:  node scripts/update-mf-returns.mjs
@@ -39,11 +52,22 @@ async function readJson(filePath, fallback) {
   }
 }
 
-async function searchScheme(query) {
-  const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
-  if (!res.ok) return [];
-  const json = await res.json();
-  return Array.isArray(json) ? json : [];
+// Downloads every scheme mfapi.in knows about, once per run. Falls
+// back to paginating if the API caps a single request's page size.
+async function fetchAllSchemes() {
+  const all = [];
+  let offset = 0;
+  const limit = 20000;
+  for (let guard = 0; guard < 20; guard++) {
+    const res = await fetch(`${API_BASE}?limit=${limit}&offset=${offset}`);
+    if (!res.ok) break;
+    const page = await res.json();
+    if (!Array.isArray(page) || page.length === 0) break;
+    all.push(...page);
+    if (page.length < limit) break;
+    offset += limit;
+  }
+  return all;
 }
 
 async function fetchNavHistory(code) {
@@ -82,13 +106,21 @@ function normalizeForSearch(name) {
     .replace(/\bPPFAS\b/gi, "Parag Parikh");
 }
 
+const STOPWORDS = new Set(["fund", "the", "and", "of", "plan", "option"]);
+
+function significantTokens(name) {
+  return normalizeForSearch(name)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .split(" ")
+    .filter((w) => w && !STOPWORDS.has(w));
+}
+
 // A confident match must look like a Direct, Growth plan and NOT an
-// IDCW/dividend/bonus or deactivated variant. NOTE: we do NOT exclude
+// IDCW/dividend/bonus or deactivated variant. We do NOT exclude
 // "segregated portfolio" — for many debt/hybrid funds that disclosure
 // is now a permanent part of the official name and still refers to
 // the main investable Direct Growth line, not a quarantined NAV.
-// If this can't be determined confidently, the caller skips the
-// scheme rather than guessing.
 function isConfidentMatch(candidateName) {
   if (typeof candidateName !== "string") return false;
   const n = candidateName.toLowerCase();
@@ -109,6 +141,15 @@ function normalizeCandidateKey(name) {
     .replace(/\(existing number of segregated portfolios?[^)]*\)/gi, "")
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
+}
+
+function findMatches(allSchemes, scheme) {
+  const targetTokens = significantTokens(scheme.scheme);
+  return allSchemes.filter((s) => {
+    if (!isConfidentMatch(s.schemeName)) return false;
+    const nameTokens = new Set(significantTokens(s.schemeName));
+    return targetTokens.every((t) => nameTokens.has(t));
+  });
 }
 
 function computeReturns(history) {
@@ -152,32 +193,11 @@ async function pickFreshest(candidates) {
   return best;
 }
 
-async function resolveCode(scheme, existingMap) {
+async function resolveCode(scheme, existingMap, allSchemes) {
   const cached = existingMap[scheme.scheme];
   if (cached?.code) return { code: cached.code };
 
-  const normalizedScheme = normalizeForSearch(scheme.scheme);
-  const providerName = normalizeForSearch(scheme.provider);
-
-  // Three progressively more specific attempts. Most AMFI scheme names
-  // already start with the AMC name, so prepending our own `provider`
-  // field first tends to duplicate it and break matching — try plain
-  // first, then bias toward Direct/Growth explicitly, then add the
-  // provider as a last resort for generic names shared across AMCs.
-  const attempts = [
-    normalizedScheme,
-    `${normalizedScheme} Direct Growth`,
-    `${providerName} ${normalizedScheme} Direct Growth`,
-  ];
-
-  let confident = [];
-  let lastRaw = [];
-  for (const query of attempts) {
-    const results = await searchScheme(query);
-    lastRaw = results;
-    confident = results.filter((r) => isConfidentMatch(r.schemeName));
-    if (confident.length > 0) break;
-  }
+  const confident = findMatches(allSchemes, scheme);
 
   if (confident.length === 1) {
     return { code: confident[0].schemeCode, matchedName: confident[0].schemeName };
@@ -189,12 +209,12 @@ async function resolveCode(scheme, existingMap) {
       const best = await pickFreshest(confident);
       if (best) return { code: best.schemeCode, matchedName: best.schemeName };
     }
-    // Genuinely different funds sharing a confident match — don't guess.
+    // Genuinely different funds sharing all target tokens — don't guess.
     return { code: null, candidates: confident };
   }
 
-  // Nothing confident at all — don't guess, flag for manual review.
-  return { code: null, candidates: lastRaw.slice(0, 5) };
+  // Nothing matched at all — don't guess, flag for manual review.
+  return { code: null, candidates: [] };
 }
 
 async function main() {
@@ -203,8 +223,12 @@ async function main() {
   const output = {};
   const needsReview = {};
 
+  console.log("Downloading full scheme list from mfapi.in...");
+  const allSchemes = await fetchAllSchemes();
+  console.log(`Got ${allSchemes.length} schemes.`);
+
   for (const scheme of schemes) {
-    const resolved = await resolveCode(scheme, existingMap);
+    const resolved = await resolveCode(scheme, existingMap, allSchemes);
 
     if (!resolved.code) {
       needsReview[scheme.scheme] = resolved.candidates || [];
