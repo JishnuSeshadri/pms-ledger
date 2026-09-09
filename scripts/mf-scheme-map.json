@@ -1,1 +1,230 @@
-{}
+{
+  "HDFC Hybrid Equity Fund": {
+    "code": 136464,
+    "matchedName": "HDFC Retirement Fund - Hybrid-Equity Plan - Direct Plan - Growth Option"
+  },
+  "Edelweiss Aggressive Hybrid Fund": {
+    "code": 118624,
+    "matchedName": "Edelweiss Aggressive Hybrid Fund - Direct Plan - growth"
+  },
+  "Axis Aggressive Hybrid Fund": {
+    "code": 144394,
+    "matchedName": "Axis Aggressive Hybrid Fund - Direct Plan - Growth Option"
+  },
+  "Bandhan Aggressive Hybrid Fund": {
+    "code": 140382,
+    "matchedName": "Bandhan Aggressive Hybrid Fund - Direct Plan - Growth"
+  },
+  "Mirae Asset Aggressive Hybrid Fund": {
+    "code": 134813,
+    "matchedName": "Mirae Asset Aggressive Hybrid Fund - Direct Plan - Growth"
+  },
+  "UTI Aggressive Hybrid Fund": {
+    "code": 120674,
+    "matchedName": "UTI Aggressive Hybrid Fund - Direct Plan - Growth"
+  },
+  "DSP Aggressive Hybrid Fund": {
+    "code": 119019,
+    "matchedName": "DSP Aggressive Hybrid Fund - Direct Plan - Growth"
+  },
+  "Tata Aggressive Hybrid Fund": {
+    "code": 119053,
+    "matchedName": "Tata Aggressive Hybrid Fund - Direct Plan - Growth Option"
+  },
+  "Invesco India Aggressive Hybrid Fund": {
+    "code": 143537,
+    "matchedName": "Invesco India Aggressive Hybrid Fund - Direct Plan - Growth"
+  },
+  "HDFC Balanced Advantage Fund": {
+    "code": 118968,
+    "matchedName": "HDFC Balanced Advantage Fund - Direct Plan - Growth Option"
+  },
+  "ICICI Prudential Balanced Advantage Fund": {
+    "code": 120377,
+    "matchedName": "ICICI Prudential Balanced Advantage Fund - Direct Plan - Growth"
+  },
+  "Axis Balanced Advantage Fund": {
+    "code": 141642,
+    "matchedName": "Axis Balanced Advantage Fund - Direct Plan - Growth Option"
+  },
+  "Nippon India Balanced Advantage Fund": {
+    "code": 118736,
+    "matchedName": "Nippon India Balanced Advantage Fund - Direct Plan - Growth Option"
+  },
+  "Bandhan Balanced Advantage Fund": {
+    "code": 131355,
+    "matchedName": "BANDHAN Balanced Advantage Fund - Direct Plan - Growth"
+  },
+  "Invesco India Balanced Advantage Fund": {
+    "code": 120333,
+    "matchedName": "Invesco India Balanced Advantage Fund - Direct Plan - Growth"
+  },
+  "Tata Balanced Advantage Fund": {
+    "code": 146010,
+    "matchedName": "Tata Balanced Advantage Fund - Direct Plan - Growth Option"
+  },
+  "Mirae Asset Balanced Advantage Fund": {
+    "code": 150470,
+    "matchedName": "Mirae Asset Balanced Advantage Fund - Direct Plan - Growth"
+  },
+  "SBI Balanced Advantage Fund": {
+    "code": 149134,
+    "matchedName": "SBI Balanced Advantage Fund - Direct Plan - Growth"
+  },
+  "DSP Dynamic Asset Allocation Fund": {
+    "code": 126393,
+    "matchedName": "DSP Dynamic Asset Allocation Fund - Direct Plan - Growth"
+  },
+  "Nippon India Multi Asset Allocation Fund": {
+    "code": 148457,
+    "matchedName": "Nippon India Multi Asset Allocation Fund - Direct Plan - Growth Option"
+  },
+  "SBI Multi Asset Allocation Fund": {
+    "code": 119843,
+    "matchedName": "SBI MULTI ASSET ALLOCATION FUND - Direct Plan - Growth"
+  },
+  "Axis Multi Asset Allocation Fund": {
+    "code": 120524,
+    "matchedName": "Axis Multi Asset Allocation Fund - Direct Plan - Growth Option Option"
+  },
+  "UTI Multi Asset Allocation Fund": {
+    "code": 120760,
+    "matchedName": "UTI Multi Asset Allocation Fund - Direct Plan - Growth"
+  },
+  "Tata Multi Asset Allocation Fund": {
+    "code": 148053,
+    "matchedName": "Tata Multi Asset Allocation Fund - Direct Plan - Growth Option"
+  },
+  "HDFC Multi Asset Allocation Fund": {
+    "code": 119131,
+    "matchedName": "HDFC Multi Asset Allocation Fund - Direct Plan - Growth Option"
+  },
+  "Mirae Asset Multi Asset Allocation Fund": {
+    "code": 152344,
+    "matchedName": "Mirae Asset Multi Asset Allocation Fund - Direct Plan - Growth"
+  },
+  "DSP Multi Asset Allocation Fund": {
+    "code": 152056,
+    "matchedName": "DSP Multi Asset Allocation Fund - Direct Plan - Growth"
+  },
+  "Bandhan Multi Asset Allocation Fund": {
+    "code": 152324,
+    "matchedName": "BANDHAN MULTI ASSET ALLOCATION FUND - Direct Plan - Growth"
+  },
+  "Invesco India Multi Asset Allocation Fund": {
+    "code": 153047,
+    "matchedName": "Invesco India Multi Asset Allocation Fund - Direct Plan - Growth"
+  },
+  "UTI Conservative Hybrid Fund": {
+    "code": 120779,
+    "matchedName": "UTI Conservative Hybrid Fund - Direct Plan - Growth"
+  },
+  "Axis Conservative Hybrid Fund": {
+    "code": 120480,
+    "matchedName": "Axis Conservative Hybrid Fund - Direct Plan - Growth Option"
+  },
+  "HDFC Hybrid Debt Fund": {
+    "code": 136465,
+    "matchedName": "HDFC Retirement Fund - Hybrid-Debt Plan - Direct Plan - Growth Option"
+  },
+  "UTI Banking & PSU Debt Fund": {
+    "code": 126940,
+    "matchedName": "UTI Banking & PSU Debt Fund - Direct Plan - Growth"
+  },
+  "Bandhan Banking and PSU Debt Fund": {
+    "code": 121279,
+    "matchedName": "Bandhan Banking and PSU Debt Fund - Direct Plan - Growth"
+  },
+  "Invesco India Banking and PSU Fund": {
+    "code": 120444,
+    "matchedName": "Invesco India Banking and PSU Debt Fund - Direct Plan - Growth"
+  },
+  "HDFC Banking and PSU Debt Fund": {
+    "code": 128629,
+    "matchedName": "HDFC Banking and PSU Debt Fund - Direct Plan - Growth Option"
+  },
+  "Nippon India Banking and PSU Debt Fund": {
+    "code": 134547,
+    "matchedName": "Nippon India Banking and PSU Debt Fund - Direct Plan - Growth Option"
+  },
+  "SBI Banking and PSU Debt Fund": {
+    "code": 125503,
+    "matchedName": "SBI BANKING & PSU DEBT FUND - Direct Plan - Growth"
+  },
+  "Edelweiss Banking and PSU Debt Fund": {
+    "code": 140286,
+    "matchedName": "Edelweiss Banking and PSU Debt Fund - Direct Plan - Growth"
+  },
+  "Mirae Asset Banking and PSU Fund": {
+    "code": 148419,
+    "matchedName": "Mirae Asset Banking and PSU Debt Fund - Direct Plan - Growth"
+  },
+  "Tata Banking & PSU Debt Fund": {
+    "code": 147636,
+    "matchedName": "Tata Banking & PSU Debt Fund-Direct Plan-Growth"
+  },
+  "HDFC Corporate Bond Fund": {
+    "code": 118987,
+    "matchedName": "HDFC Corporate Bond Fund - Direct Plan - Growth Option"
+  },
+  "SBI Corporate Bond Fund": {
+    "code": 146215,
+    "matchedName": "SBI Corporate Bond Fund - Direct Plan - Growth"
+  },
+  "Nippon India Corporate Bond Fund": {
+    "code": 118814,
+    "matchedName": "Nippon India Corporate Bond Fund - Direct Plan - Growth Option"
+  },
+  "Axis Corporate Bond Fund": {
+    "code": 141588,
+    "matchedName": "AXIS Corporate Bond Fund - Direct Plan - Growth Option"
+  },
+  "Bandhan Corporate Bond Fund": {
+    "code": 135916,
+    "matchedName": "BANDHAN Corporate Bond Fund - Direct Plan - Growth"
+  },
+  "DSP Corporate Bond Fund": {
+    "code": 144646,
+    "matchedName": "DSP Corporate Bond Fund - Direct Plan - Growth"
+  },
+  "Invesco India Corporate Bond Fund": {
+    "code": 120497,
+    "matchedName": "Invesco India Corporate Bond Fund - Direct Plan - Growth"
+  },
+  "UTI Corporate Bond Fund": {
+    "code": 144339,
+    "matchedName": "UTI - Corporate Bond Fund - Direct Plan - Growth"
+  },
+  "ICICI Prudential Short Term Fund": {
+    "code": 120608,
+    "matchedName": "ICICI Prudential Short Term Gilt Fund - Direct Plan -  Growth"
+  },
+  "Bandhan Short Term Fund": {
+    "code": 118371,
+    "matchedName": "BANDHAN ULTRA SHORT TO SHORT TERM FUND - Direct Plan - Growth"
+  },
+  "SBI Gilt Fund": {
+    "code": 119707,
+    "matchedName": "SBI GILT FUND - Direct Plan - Growth"
+  },
+  "Nippon India Gilt Fund": {
+    "code": 118672,
+    "matchedName": "Nippon India Gilt Fund - Direct Plan - Growth Option"
+  },
+  "SBI Gold Fund": {
+    "code": 119788,
+    "matchedName": "SBI GOLD FUND - Direct Plan - Growth"
+  },
+  "HDFC Gold Fund": {
+    "code": 119132,
+    "matchedName": "HDFC Gold ETF Fund of Fund - Direct Plan - Growth Option"
+  },
+  "Nippon India Gold Savings Fund": {
+    "code": 118663,
+    "matchedName": "Nippon India Gold Savings Fund - Direct Plan - Growth Option"
+  },
+  "Axis Gold Fund": {
+    "code": 120473,
+    "matchedName": "Axis Gold Fund - Direct Plan - Growth option"
+  }
+}

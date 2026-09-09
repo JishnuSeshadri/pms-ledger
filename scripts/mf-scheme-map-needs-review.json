@@ -1,0 +1,353 @@
+{
+  "SBI Equity Hybrid Fund": [],
+  "ICICI Prudential Equity & Debt Fund": [],
+  "Nippon India Aggressive Hybrid Fund": [
+    {
+      "schemeCode": 118794,
+      "schemeName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Direct Plan - Growth Option"
+    },
+    {
+      "schemeCode": 148265,
+      "schemeName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Direct Plan - Growth Option"
+    }
+  ],
+  "Kotak Aggressive Hybrid Fund": [],
+  "ABSL Equity Hybrid '95 Fund": [],
+  "ABSL Balanced Advantage Fund": [],
+  "Edelweiss Balanced Advantage Fund": [
+    {
+      "schemeCode": 140357,
+      "schemeName": "Edelweiss Balanced Advantage Fund - Direct Plan - Growth Option-deactivated"
+    },
+    {
+      "schemeCode": 118615,
+      "schemeName": "Edelweiss Balanced Advantage Fund - Direct Plan - Growth"
+    }
+  ],
+  "Kotak Balanced Advantage Fund": [],
+  "Parag Parikh Dynamic Asset Allocation Fund": [],
+  "ICICI Prudential Multi Asset Fund": [
+    {
+      "schemeCode": 120334,
+      "schemeName": "ICICI Prudential Multi Asset Allocation Fund - Direct Plan - Growth"
+    },
+    {
+      "schemeCode": 149441,
+      "schemeName": "ICICI Prudential Passive Multi-Asset Fund of Funds - Direct Plan - Growth"
+    }
+  ],
+  "ABSL Multi Asset Allocation Fund": [],
+  "Kotak Multi Asset Allocation Fund": [],
+  "Parag Parikh Conservative Hybrid Fund": [],
+  "Nippon India Conservative Hybrid Fund": [
+    {
+      "schemeCode": 118726,
+      "schemeName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Direct Plan - Growth Option"
+    },
+    {
+      "schemeCode": 148296,
+      "schemeName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Direct Plan - Growth Option"
+    }
+  ],
+  "ABSL Regular Savings Fund": [],
+  "SBI Conservative Hybrid Fund": [
+    {
+      "schemeCode": 119839,
+      "schemeName": "SBI CONSERVATIVE HYBRID FUND - Direct Plan - Growth"
+    },
+    {
+      "schemeCode": 148690,
+      "schemeName": "SBI Retirement Benefit Fund - Conservative Hybrid Plan - Direct Plan - Growth"
+    }
+  ],
+  "ICICI Prudential Regular Savings Fund": [
+    {
+      "schemeCode": 123183,
+      "schemeName": "ICICI Prudential Regular Savings Fund - Direct Plan - Bonus"
+    },
+    {
+      "schemeCode": 128110,
+      "schemeName": "ICICI Prudential Regular Savings Fund - Plan - Bonus"
+    },
+    {
+      "schemeCode": 133051,
+      "schemeName": "ICICI Prudential Equity Savings Fund - Regular Plan - Cumulative"
+    },
+    {
+      "schemeCode": 133053,
+      "schemeName": "ICICI Prudential Equity Savings Fund - Regular Plan - Quarterly IDCW"
+    }
+  ],
+  "Kotak Debt Hybrid Fund": [],
+  "DSP Regular Savings Fund": [
+    {
+      "schemeCode": 136563,
+      "schemeName": "DSP Equity Savings Fund - Regular Plan - Growth"
+    },
+    {
+      "schemeCode": 136564,
+      "schemeName": "DSP Equity Savings Fund - Regular Plan - IDCW"
+    },
+    {
+      "schemeCode": 136565,
+      "schemeName": "DSP Equity Savings Fund - Regular Plan - Monthly IDCW"
+    },
+    {
+      "schemeCode": 136566,
+      "schemeName": "DSP Equity Savings Fund - Regular Plan - Quarterly IDCW"
+    }
+  ],
+  "ICICI Prudential Banking and PSU Debt Fund": [
+    {
+      "schemeCode": 112343,
+      "schemeName": "ICICI Prudential Banking and PSU Debt Fund -  Daily IDCW"
+    },
+    {
+      "schemeCode": 112344,
+      "schemeName": "ICICI Prudential Banking and PSU Debt Fund -  Weekly IDCW"
+    },
+    {
+      "schemeCode": 113242,
+      "schemeName": "ICICI Prudential Banking and PSU Debt Fund Retail Growth"
+    },
+    {
+      "schemeCode": 113243,
+      "schemeName": "ICICI Prudential Banking and PSU Debt Fund Retail Weekly Dividend"
+    },
+    {
+      "schemeCode": 113244,
+      "schemeName": "ICICI Prudential Banking and PSU Debt Fund Premium Growth"
+    }
+  ],
+  "DSP Banking & PSU Debt Fund": [],
+  "Kotak Banking and PSU Debt Fund": [],
+  "ABSL Banking and PSU Debt Fund": [],
+  "Axis Banking & PSU Debt Fund": [
+    {
+      "schemeCode": 128952,
+      "schemeName": "Axis Banking & PSU Debt Fund - Direct Plan - Bonus Option"
+    },
+    {
+      "schemeCode": 128953,
+      "schemeName": "Axis Banking & PSU Debt Fund - Bonus Option"
+    }
+  ],
+  "ICICI Prudential Corporate Bond Fund": [
+    {
+      "schemeCode": 111972,
+      "schemeName": "ICICI Prudential Corporate Bond Fund Retail Growth"
+    },
+    {
+      "schemeCode": 111973,
+      "schemeName": "ICICI Prudential Corporate Bond Fund - Super Premium Weekly Dividend"
+    },
+    {
+      "schemeCode": 111975,
+      "schemeName": "ICICI Prudential Corporate Bond Fund - Super Premium Monthly Dividend"
+    },
+    {
+      "schemeCode": 111976,
+      "schemeName": "ICICI Prudential Corporate Bond Fund Retail Daily Dividend"
+    },
+    {
+      "schemeCode": 111977,
+      "schemeName": "ICICI Prudential Corporate Bond Fund Retail Weekly Dividend"
+    }
+  ],
+  "ABSL Corporate Bond Fund": [],
+  "Tata Corporate Bond Fund": [
+    {
+      "schemeCode": 119104,
+      "schemeName": "Tata Corporate Bond Fund- Direct Plan-Growth"
+    },
+    {
+      "schemeCode": 147389,
+      "schemeName": "Tata Corporate Bond Fund - Direct Plan -Growth (Segregated Portfolio 1)"
+    }
+  ],
+  "Kotak Corporate Bond Fund": [],
+  "HDFC Short Term Fund": [
+    {
+      "schemeCode": 119114,
+      "schemeName": "HDFC Gilt Fund Short Term Plan -Direct Plan - Growth Option"
+    },
+    {
+      "schemeCode": 118942,
+      "schemeName": "HDFC Ultra Short to Short Term Fund - Direct Plan - Growth Option"
+    }
+  ],
+  "Axis Short Term Fund": [
+    {
+      "schemeCode": 128950,
+      "schemeName": "Axis Short Term Fund - Regular Plan - Bonus Option"
+    },
+    {
+      "schemeCode": 112354,
+      "schemeName": "Axis Short Term Fund - Regular Plan - Growth Option"
+    },
+    {
+      "schemeCode": 112214,
+      "schemeName": "Axis Ultra Short to Short Term Fund - Regular Plan - Growth Option"
+    },
+    {
+      "schemeCode": 112215,
+      "schemeName": "Axis Ultra Short to Short Term Fund - Regular Plan - Daily IDCW Option"
+    },
+    {
+      "schemeCode": 112216,
+      "schemeName": "Axis Ultra Short to Short Term Fund - Regular Plan - Weekly IDCW Option"
+    }
+  ],
+  "SBI Short Term Fund": [
+    {
+      "schemeCode": 106223,
+      "schemeName": "SBI Short Horizon Debt Fund -Ultra Short Term Fund - Institutional Plan - Fortnightly Dividend"
+    },
+    {
+      "schemeCode": 106224,
+      "schemeName": "SBI Short Horizon Debt Fund - Ultra Short Term Fund - Institutional Plan - Monthly Dividend"
+    },
+    {
+      "schemeCode": 100641,
+      "schemeName": "SBI ULTRA SHORT TERM FUND - Regular Plan - Growth"
+    },
+    {
+      "schemeCode": 103884,
+      "schemeName": "SBI ULTRA SHORT TERM FUND - Regular Plan - IDCW"
+    },
+    {
+      "schemeCode": 105080,
+      "schemeName": "SBI ULTRA SHORT TERM FUND - Regular Plan - IDCW"
+    }
+  ],
+  "Nippon India Short Term Fund": [
+    {
+      "schemeCode": 101665,
+      "schemeName": "Nippon India Short Term Fund - Regular Plan - Growth Option"
+    },
+    {
+      "schemeCode": 101667,
+      "schemeName": "Nippon India Short Term Fund - Regular Plan - MONTHLY IDCW Option"
+    },
+    {
+      "schemeCode": 101669,
+      "schemeName": "Nippon India Short Term Fund - Regular Plan - QUARTERLY IDCW OPTION"
+    },
+    {
+      "schemeCode": 111743,
+      "schemeName": "Nippon India Ultra Short to Short Term Fund - Regular Plan - Retail Plan - Bonus Option"
+    },
+    {
+      "schemeCode": 111744,
+      "schemeName": "Nippon India Ultra Short to Short Term Fund - Regular Plan - RETAIL Plan - DAILY IDCW Option"
+    }
+  ],
+  "ABSL Short Term Fund": [],
+  "Tata Short Term Bond Fund": [],
+  "UTI Short Term Fund": [
+    {
+      "schemeCode": 102003,
+      "schemeName": "UTI-  Liquid Fund-Short Term Plan-Income"
+    },
+    {
+      "schemeCode": 102004,
+      "schemeName": "UTI-  Liquid Fund-Short Term Plan-Growth"
+    },
+    {
+      "schemeCode": 112082,
+      "schemeName": "UTI - Ultra Short Term Fund - Discontinued - INSTN PLAN - PERIODIC DIVIDEND OPTION"
+    },
+    {
+      "schemeCode": 112106,
+      "schemeName": "UTI - Ultra Short Term Fund -INSTN PLAN - FLEXI Dividend OPTION"
+    },
+    {
+      "schemeCode": 102531,
+      "schemeName": "UTI Ultra Short Term Fund - Regular Plan - Weekkly IDCW (Reinvestment)"
+    }
+  ],
+  "Mirae Asset Short Duration Fund": [],
+  "Bandhan Gilt Fund": [
+    {
+      "schemeCode": 118387,
+      "schemeName": "Bandhan 10 year Constant Maturity Gilt Fund - Direct Plan - Growth"
+    },
+    {
+      "schemeCode": 118464,
+      "schemeName": "Bandhan Gilt   Fund - Direct Plan - Growth"
+    }
+  ],
+  "ICICI Prudential Gilt Fund": [
+    {
+      "schemeCode": 120605,
+      "schemeName": "ICICI Prudential Gilt Fund Investment Plan PF Option - Direct Plan -Growth Option"
+    },
+    {
+      "schemeCode": 120608,
+      "schemeName": "ICICI Prudential Short Term Gilt Fund - Direct Plan -  Growth"
+    }
+  ],
+  "HDFC Gilt Fund": [
+    {
+      "schemeCode": 119114,
+      "schemeName": "HDFC Gilt Fund Short Term Plan -Direct Plan - Growth Option"
+    },
+    {
+      "schemeCode": 119116,
+      "schemeName": "HDFC Gilt Fund - Direct Plan - Growth Option"
+    }
+  ],
+  "Kotak Gilt Fund": [],
+  "Tata Gilt Fund": [
+    {
+      "schemeCode": 119944,
+      "schemeName": "Tata Gilt Mid Term Fund - Direct Plan - Growth"
+    },
+    {
+      "schemeCode": 119955,
+      "schemeName": "Tata Gilt Short Maturity Fund - Direct Plan - Growth"
+    }
+  ],
+  "DSP Gilt Fund": [
+    {
+      "schemeCode": 119099,
+      "schemeName": "DSP Gilt Fund - Direct Plan - Growth"
+    },
+    {
+      "schemeCode": 131301,
+      "schemeName": "DSP 10 year Constant Maturity Gilt Fund - Direct Plan - Growth"
+    }
+  ],
+  "Axis Gilt Fund": [
+    {
+      "schemeCode": 120447,
+      "schemeName": "Axis Gilt Fund - Direct Plan - Growth Option"
+    },
+    {
+      "schemeCode": 151300,
+      "schemeName": "Axis CRISIL IBX 50:50 Gilt Plus SDL June 2028 Index Fund - Direct Plan - Growth Option"
+    },
+    {
+      "schemeCode": 151435,
+      "schemeName": "Axis Crisil IBX 50:50 Gilt Plus SDL September 2027 Index Fund - Direct Plan - Growth Option"
+    }
+  ],
+  "ABSL Gilt Fund": [],
+  "UTI Gold Fund": [
+    {
+      "schemeCode": 105463,
+      "schemeName": "UTI - Gold Exchange Traded Fund - Direct Plan - Growth"
+    },
+    {
+      "schemeCode": 150714,
+      "schemeName": "UTI Gold ETF Fund of Fund - Direct Plan - Growth"
+    }
+  ],
+  "ICICI Prudential Gold Fund": [],
+  "DSP Gold ETF FoF": [],
+  "ABSL Gold Fund": [],
+  "Mirae Asset Gold ETF FoF": [],
+  "Tata Gold ETF FoF": [],
+  "Kotak Gold Fund": [],
+  "Invesco India Gold ETF FoF": []
+}
