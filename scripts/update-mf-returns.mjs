@@ -109,11 +109,20 @@ function normalizeForSearch(name) {
 const STOPWORDS = new Set(["fund", "the", "and", "of", "plan", "option"]);
 
 function significantTokens(name) {
-  return normalizeForSearch(name)
+  return name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, " ")
     .split(" ")
     .filter((w) => w && !STOPWORDS.has(w));
+}
+
+// Only OUR OWN scheme/provider names use abbreviations like ABSL/FoF/
+// PPFAS — AMFI's official candidate names never do, so normalizing
+// them too would be wrong (it previously caused "FOF" in a candidate
+// name to expand into "Fund of Fund" and vanish as stopwords, quietly
+// changing that candidate's score).
+function targetSignificantTokens(name) {
+  return significantTokens(normalizeForSearch(name));
 }
 
 // A confident match must look like a Direct, Growth plan and NOT an
@@ -141,7 +150,7 @@ function normalizeCandidateKey(name) {
 }
 
 function findMatches(allSchemes, scheme) {
-  const targetTokens = significantTokens(scheme.scheme);
+  const targetTokens = targetSignificantTokens(scheme.scheme);
   return allSchemes.filter((s) => {
     if (!isConfidentMatch(s.schemeName)) return false;
     const nameTokens = new Set(significantTokens(s.schemeName));
@@ -214,7 +223,7 @@ async function resolveCode(scheme, existingMap, allSchemes) {
     // Short Term Fund"). Prefer whichever has the fewest EXTRA
     // significant words beyond our target — a more specific/derivative
     // fund variant always has more, the plain match doesn't.
-    const targetTokens = new Set(significantTokens(scheme.scheme));
+    const targetTokens = new Set(targetSignificantTokens(scheme.scheme));
     const withExtraCount = confident.map((c) => {
       const extra = significantTokens(c.schemeName).filter((t) => !targetTokens.has(t));
       return { candidate: c, extraCount: new Set(extra).size };
