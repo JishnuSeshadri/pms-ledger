@@ -5,6 +5,12 @@
     "r5y": 9.39,
     "asOf": "2026-09-08"
   },
+  "Nippon India Aggressive Hybrid Fund": {
+    "r1y": 2.71,
+    "r3y": 10.8,
+    "r5y": 11.29,
+    "asOf": "2026-09-08"
+  },
   "Edelweiss Aggressive Hybrid Fund": {
     "r1y": 4.73,
     "r3y": 13.5,
@@ -21,6 +27,12 @@
     "r1y": 9.12,
     "r3y": 14.44,
     "r5y": 11.96,
+    "asOf": "2026-09-08"
+  },
+  "Kotak Aggressive Hybrid Fund": {
+    "r1y": 5.99,
+    "r3y": 12.88,
+    "r5y": 12.57,
     "asOf": "2026-09-08"
   },
   "Mirae Asset Aggressive Hybrid Fund": {
@@ -209,6 +221,12 @@
     "r5y": 9.54,
     "asOf": "2026-09-08"
   },
+  "Nippon India Conservative Hybrid Fund": {
+    "r1y": 7.68,
+    "r3y": 8.78,
+    "r5y": 8.35,
+    "asOf": "2026-09-08"
+  },
   "UTI Conservative Hybrid Fund": {
     "r1y": 2.54,
     "r3y": 7.85,
@@ -231,6 +249,12 @@
     "r1y": 6.35,
     "r3y": 7.47,
     "r5y": 7.72,
+    "asOf": "2026-09-08"
+  },
+  "ICICI Prudential Banking and PSU Debt Fund": {
+    "r1y": 6.03,
+    "r3y": 7.4,
+    "r5y": 6.73,
     "asOf": "2026-09-08"
   },
   "Kotak Banking and PSU Debt Fund": {
@@ -286,6 +310,12 @@
     "r3y": 5.47,
     "r5y": null,
     "asOf": "2024-06-14"
+  },
+  "ICICI Prudential Corporate Bond Fund": {
+    "r1y": 6.3,
+    "r3y": 7.58,
+    "r5y": 6.84,
+    "asOf": "2026-09-08"
   },
   "HDFC Corporate Bond Fund": {
     "r1y": 5.16,

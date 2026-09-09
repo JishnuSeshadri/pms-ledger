@@ -1,38 +1,6 @@
 {
   "SBI Equity Hybrid Fund": [],
   "ICICI Prudential Equity & Debt Fund": [],
-  "Nippon India Aggressive Hybrid Fund": [
-    {
-      "schemeCode": 112936,
-      "schemeName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Regular Plan - Growth Option"
-    },
-    {
-      "schemeCode": 112937,
-      "schemeName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Regular Plan - IDCW Option"
-    },
-    {
-      "schemeCode": 118793,
-      "schemeName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Direct Plan - IDCW Option"
-    },
-    {
-      "schemeCode": 118794,
-      "schemeName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Direct Plan - Growth Option"
-    },
-    {
-      "schemeCode": 122765,
-      "schemeName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Regular Plan - QUARTERLY IDCW Option"
-    }
-  ],
-  "Kotak Aggressive Hybrid Fund": [
-    {
-      "schemeCode": 119767,
-      "schemeName": "Kotak Aggressive Hybrid Fund - Direct Plan - Growth"
-    },
-    {
-      "schemeCode": 133035,
-      "schemeName": "Kotak Aggressive Hybrid Fund - Direct Plan - Growth"
-    }
-  ],
   "ABSL Equity Hybrid '95 Fund": [],
   "ICICI Prudential Multi Asset Fund": [
     {
@@ -54,50 +22,7 @@
       "schemeName": "Kotak Multi Asset Allocation Fund-Growth - Direct"
     }
   ],
-  "Nippon India Conservative Hybrid Fund": [
-    {
-      "schemeCode": 102172,
-      "schemeName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Regular Plan - Growth Option"
-    },
-    {
-      "schemeCode": 102173,
-      "schemeName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Regular Plan - MONTHLY IDCW Option"
-    },
-    {
-      "schemeCode": 102174,
-      "schemeName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Regular Plan - QUARTERLY IDCW Option"
-    },
-    {
-      "schemeCode": 118726,
-      "schemeName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Direct Plan - Growth Option"
-    },
-    {
-      "schemeCode": 118727,
-      "schemeName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Direct Plan - MONTHLY IDCW Option"
-    }
-  ],
-  "ABSL Regular Savings Fund": [
-    {
-      "schemeCode": 131736,
-      "schemeName": "Aditya Birla Sun Life Tax Savings Fund - Regular Plan - Growth Option"
-    },
-    {
-      "schemeCode": 131737,
-      "schemeName": "Aditya Birla Sun Life Tax Savings Fund - Regular Plan - Dividend Option"
-    },
-    {
-      "schemeCode": 131738,
-      "schemeName": "Aditya Birla Sun Life Tax Savings Fund - Regular Plan - Bonus Option"
-    },
-    {
-      "schemeCode": 132997,
-      "schemeName": "Aditya Birla Sun Life Equity Savings Fund - Regular Plan - IDCW"
-    },
-    {
-      "schemeCode": 132998,
-      "schemeName": "Aditya Birla Sun Life Equity Savings Fund - Regular Plan - GROWTH"
-    }
-  ],
+  "ABSL Regular Savings Fund": [],
   "SBI Conservative Hybrid Fund": [
     {
       "schemeCode": 119839,
@@ -108,65 +33,9 @@
       "schemeName": "SBI Retirement Benefit Fund - Conservative Hybrid Plan - Direct Plan - Growth"
     }
   ],
-  "ICICI Prudential Regular Savings Fund": [
-    {
-      "schemeCode": 123183,
-      "schemeName": "ICICI Prudential Regular Savings Fund - Direct Plan - Bonus"
-    },
-    {
-      "schemeCode": 128110,
-      "schemeName": "ICICI Prudential Regular Savings Fund - Plan - Bonus"
-    },
-    {
-      "schemeCode": 133051,
-      "schemeName": "ICICI Prudential Equity Savings Fund - Regular Plan - Cumulative"
-    },
-    {
-      "schemeCode": 133053,
-      "schemeName": "ICICI Prudential Equity Savings Fund - Regular Plan - Quarterly IDCW"
-    }
-  ],
+  "ICICI Prudential Regular Savings Fund": [],
   "Kotak Debt Hybrid Fund": [],
-  "DSP Regular Savings Fund": [
-    {
-      "schemeCode": 136563,
-      "schemeName": "DSP Equity Savings Fund - Regular Plan - Growth"
-    },
-    {
-      "schemeCode": 136564,
-      "schemeName": "DSP Equity Savings Fund - Regular Plan - IDCW"
-    },
-    {
-      "schemeCode": 136565,
-      "schemeName": "DSP Equity Savings Fund - Regular Plan - Monthly IDCW"
-    },
-    {
-      "schemeCode": 136566,
-      "schemeName": "DSP Equity Savings Fund - Regular Plan - Quarterly IDCW"
-    }
-  ],
-  "ICICI Prudential Banking and PSU Debt Fund": [
-    {
-      "schemeCode": 112343,
-      "schemeName": "ICICI Prudential Banking and PSU Debt Fund -  Daily IDCW"
-    },
-    {
-      "schemeCode": 112344,
-      "schemeName": "ICICI Prudential Banking and PSU Debt Fund -  Weekly IDCW"
-    },
-    {
-      "schemeCode": 113242,
-      "schemeName": "ICICI Prudential Banking and PSU Debt Fund Retail Growth"
-    },
-    {
-      "schemeCode": 113243,
-      "schemeName": "ICICI Prudential Banking and PSU Debt Fund Retail Weekly Dividend"
-    },
-    {
-      "schemeCode": 113244,
-      "schemeName": "ICICI Prudential Banking and PSU Debt Fund Premium Growth"
-    }
-  ],
+  "DSP Regular Savings Fund": [],
   "DSP Banking & PSU Debt Fund": [],
   "ABSL Banking and PSU Debt Fund": [
     {
@@ -178,38 +47,7 @@
       "schemeName": "Aditya Birla Sun Life Banking & PSU Debt Fund - Direct Plan - GROWTH"
     }
   ],
-  "Axis Banking & PSU Debt Fund": [
-    {
-      "schemeCode": 128952,
-      "schemeName": "Axis Banking & PSU Debt Fund - Direct Plan - Bonus Option"
-    },
-    {
-      "schemeCode": 128953,
-      "schemeName": "Axis Banking & PSU Debt Fund - Bonus Option"
-    }
-  ],
-  "ICICI Prudential Corporate Bond Fund": [
-    {
-      "schemeCode": 111972,
-      "schemeName": "ICICI Prudential Corporate Bond Fund Retail Growth"
-    },
-    {
-      "schemeCode": 111973,
-      "schemeName": "ICICI Prudential Corporate Bond Fund - Super Premium Weekly Dividend"
-    },
-    {
-      "schemeCode": 111975,
-      "schemeName": "ICICI Prudential Corporate Bond Fund - Super Premium Monthly Dividend"
-    },
-    {
-      "schemeCode": 111976,
-      "schemeName": "ICICI Prudential Corporate Bond Fund Retail Daily Dividend"
-    },
-    {
-      "schemeCode": 111977,
-      "schemeName": "ICICI Prudential Corporate Bond Fund Retail Weekly Dividend"
-    }
-  ],
+  "Axis Banking & PSU Debt Fund": [],
   "HDFC Short Term Fund": [
     {
       "schemeCode": 119114,
@@ -222,113 +60,77 @@
   ],
   "Axis Short Term Fund": [
     {
-      "schemeCode": 128950,
-      "schemeName": "Axis Short Term Fund - Regular Plan - Bonus Option"
+      "schemeCode": 120510,
+      "schemeName": "Axis Short Term Fund - Direct Plan - Growth Option"
     },
     {
-      "schemeCode": 112354,
-      "schemeName": "Axis Short Term Fund - Regular Plan - Growth Option"
+      "schemeCode": 120513,
+      "schemeName": "Axis Ultra Short to Short Term Fund - Direct Plan - Growth Option"
     },
     {
-      "schemeCode": 112214,
-      "schemeName": "Axis Ultra Short to Short Term Fund - Regular Plan - Growth Option"
-    },
-    {
-      "schemeCode": 112215,
-      "schemeName": "Axis Ultra Short to Short Term Fund - Regular Plan - Daily IDCW Option"
-    },
-    {
-      "schemeCode": 112216,
-      "schemeName": "Axis Ultra Short to Short Term Fund - Regular Plan - Weekly IDCW Option"
+      "schemeCode": 144754,
+      "schemeName": "Axis Ultra Short Term Fund - Direct Plan - Growth Option"
     }
   ],
   "SBI Short Term Fund": [
     {
-      "schemeCode": 106223,
-      "schemeName": "SBI Short Horizon Debt Fund -Ultra Short Term Fund - Institutional Plan - Fortnightly Dividend"
+      "schemeCode": 119812,
+      "schemeName": "SBI Ultra Short to Short Term Fund - Direct Plan - Growth"
     },
     {
-      "schemeCode": 106224,
-      "schemeName": "SBI Short Horizon Debt Fund - Ultra Short Term Fund - Institutional Plan - Monthly Dividend"
+      "schemeCode": 119816,
+      "schemeName": "SBI SHORT TERM FUND - Direct Plan - Growth"
     },
     {
-      "schemeCode": 100641,
-      "schemeName": "SBI ULTRA SHORT TERM FUND - Regular Plan - Growth"
-    },
-    {
-      "schemeCode": 103884,
-      "schemeName": "SBI ULTRA SHORT TERM FUND - Regular Plan - IDCW"
-    },
-    {
-      "schemeCode": 105080,
-      "schemeName": "SBI ULTRA SHORT TERM FUND - Regular Plan - IDCW"
+      "schemeCode": 119828,
+      "schemeName": "SBI ULTRA SHORT TERM FUND - Direct Plan - Growth"
     }
   ],
   "Nippon India Short Term Fund": [
     {
-      "schemeCode": 101665,
-      "schemeName": "Nippon India Short Term Fund - Regular Plan - Growth Option"
+      "schemeCode": 118709,
+      "schemeName": "Nippon India Ultra Short to Short Term Fund - Direct Plan - Growth Option"
     },
     {
-      "schemeCode": 101667,
-      "schemeName": "Nippon India Short Term Fund - Regular Plan - MONTHLY IDCW Option"
+      "schemeCode": 118796,
+      "schemeName": "Nippon India Short Term Fund - Direct Plan - Growth Option"
     },
     {
-      "schemeCode": 101669,
-      "schemeName": "Nippon India Short Term Fund - Regular Plan - QUARTERLY IDCW OPTION"
-    },
-    {
-      "schemeCode": 111743,
-      "schemeName": "Nippon India Ultra Short to Short Term Fund - Regular Plan - Retail Plan - Bonus Option"
-    },
-    {
-      "schemeCode": 111744,
-      "schemeName": "Nippon India Ultra Short to Short Term Fund - Regular Plan - RETAIL Plan - DAILY IDCW Option"
+      "schemeCode": 143494,
+      "schemeName": "Nippon India Ultra Short Term Fund - Direct Plan - Growth Option"
     }
   ],
   "ABSL Short Term Fund": [
     {
-      "schemeCode": 101975,
-      "schemeName": "Aditya Birla Sun Life Floating Rate Fund-Short Term Plan-Institutional Fortnightly Dividend"
+      "schemeCode": 119529,
+      "schemeName": "Aditya Birla Sun Life Government Securities Fund - Short Term Plan - Growth - Direct Plan"
     },
     {
-      "schemeCode": 103175,
-      "schemeName": "Aditya Birla Sun Life Ultra Short Term Fund- Retail Plan A(Monthly Dividend)"
+      "schemeCode": 119498,
+      "schemeName": "Aditya Birla Sun Life Short Term Fund - Direct Plan - GROWTH"
     },
     {
-      "schemeCode": 103189,
-      "schemeName": "Aditya Birla Sun Life Govt, Securities Short Term Fund-Retail Plan A(Dividend)"
+      "schemeCode": 119501,
+      "schemeName": "Aditya Birla Sun Life Ultra Short Term Fund - Direct Plan - GROWTH"
     },
     {
-      "schemeCode": 103190,
-      "schemeName": "Aditya Birla Sun Life Government Securities Fund - Short Term Plan - Growth - Regular Plan"
-    },
-    {
-      "schemeCode": 109213,
-      "schemeName": "Aditya Birla Sun Life Short Term Opportunities Fund-Institutional Growth Plan"
+      "schemeCode": 119523,
+      "schemeName": "Aditya Birla Sun Life Ultra short to short term Fund - Direct Plan - GROWTH"
     }
   ],
   "Tata Short Term Bond Fund": [],
   "UTI Short Term Fund": [
     {
-      "schemeCode": 102003,
-      "schemeName": "UTI-  Liquid Fund-Short Term Plan-Income"
+      "schemeCode": 120718,
+      "schemeName": "UTI Short Term Fund - Direct Plan - Growth"
     },
     {
-      "schemeCode": 102004,
-      "schemeName": "UTI-  Liquid Fund-Short Term Plan-Growth"
+      "schemeCode": 120735,
+      "schemeName": "UTI Ultra Short to Short Term Fund - Direct Plan - Growth"
     },
     {
-      "schemeCode": 112082,
-      "schemeName": "UTI - Ultra Short Term Fund - Discontinued - INSTN PLAN - PERIODIC DIVIDEND OPTION"
-    },
-    {
-      "schemeCode": 112106,
-      "schemeName": "UTI - Ultra Short Term Fund -INSTN PLAN - FLEXI Dividend OPTION"
-    },
-    {
-      "schemeCode": 102531,
-      "schemeName": "UTI Ultra Short Term Fund - Regular Plan - Weekkly IDCW (Reinvestment)"
+      "schemeCode": 120746,
+      "schemeName": "UTI Ultra Short Term Fund - Direct Plan - Growth"
     }
   ],
   "Mirae Asset Short Duration Fund": [],

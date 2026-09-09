@@ -286,5 +286,25 @@
   "Invesco India Gold ETF FoF": {
     "code": 120531,
     "matchedName": "Invesco India Gold ETF Fund of Fund - Direct Plan - Growth"
+  },
+  "Nippon India Aggressive Hybrid Fund": {
+    "code": 118794,
+    "matchedName": "Nippon India Aggressive Hybrid Fund (Existing Number of Segregated Portfolios - 2) - Direct Plan - Growth Option"
+  },
+  "Kotak Aggressive Hybrid Fund": {
+    "code": 119767,
+    "matchedName": "Kotak Aggressive Hybrid Fund - Direct Plan - Growth"
+  },
+  "Nippon India Conservative Hybrid Fund": {
+    "code": 118726,
+    "matchedName": "Nippon India Conservative Hybrid Fund (Existing number of Segregated Portfolios - 1) - Direct Plan - Growth Option"
+  },
+  "ICICI Prudential Banking and PSU Debt Fund": {
+    "code": 120256,
+    "matchedName": "ICICI Prudential Banking and PSU Debt Fund - Direct Plan - Growth"
+  },
+  "ICICI Prudential Corporate Bond Fund": {
+    "code": 120692,
+    "matchedName": "ICICI Prudential Corporate Bond Fund - Direct Plan - Growth"
   }
 }
