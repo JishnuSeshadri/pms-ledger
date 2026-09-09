@@ -57,8 +57,8 @@ async function readJson(filePath, fallback) {
 async function fetchAllSchemes() {
   const all = [];
   let offset = 0;
-  const limit = 20000;
-  for (let guard = 0; guard < 20; guard++) {
+  const limit = 1000;
+  for (let guard = 0; guard < 60; guard++) {
     const res = await fetch(`${API_BASE}?limit=${limit}&offset=${offset}`);
     if (!res.ok) break;
     const page = await res.json();
@@ -131,16 +131,13 @@ function isConfidentMatch(candidateName) {
   return isDirect && isGrowth && isNotIdcw && isNotDeactivated;
 }
 
-// Strips the segregated-portfolio disclosure and punctuation so two
-// listings of the "same" fund (just reissued under a new AMFI code)
-// collapse to the same key, distinguishing that from a genuinely
-// different fund.
+// Strips the segregated-portfolio disclosure and sorts significant
+// tokens, so two listings of the "same" fund (just reissued under a
+// new AMFI code, sometimes with words reordered) collapse to the
+// same key — distinguishing that from a genuinely different fund.
 function normalizeCandidateKey(name) {
-  return name
-    .toLowerCase()
-    .replace(/\(existing number of segregated portfolios?[^)]*\)/gi, "")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
+  const stripped = name.replace(/\(existing number of segregated portfolios?[^)]*\)/gi, "");
+  return significantTokens(stripped).sort().join(" ");
 }
 
 function findMatches(allSchemes, scheme) {
@@ -204,12 +201,31 @@ async function resolveCode(scheme, existingMap, allSchemes) {
   }
 
   if (confident.length > 1) {
+    // Case A: they're really the same fund, just reissued under a new
+    // code — the one with more recent NAV data wins.
     const distinctKeys = new Set(confident.map((c) => normalizeCandidateKey(c.schemeName)));
     if (distinctKeys.size === 1) {
       const best = await pickFreshest(confident);
       if (best) return { code: best.schemeCode, matchedName: best.schemeName };
     }
-    // Genuinely different funds sharing all target tokens — don't guess.
+
+    // Case B: genuinely different funds sharing all target tokens
+    // (e.g. "Short Term Fund" is contained within "Ultra Short to
+    // Short Term Fund"). Prefer whichever has the fewest EXTRA
+    // significant words beyond our target — a more specific/derivative
+    // fund variant always has more, the plain match doesn't.
+    const targetTokens = new Set(significantTokens(scheme.scheme));
+    const withExtraCount = confident.map((c) => {
+      const extra = significantTokens(c.schemeName).filter((t) => !targetTokens.has(t));
+      return { candidate: c, extraCount: new Set(extra).size };
+    });
+    const minExtra = Math.min(...withExtraCount.map((x) => x.extraCount));
+    const tightest = withExtraCount.filter((x) => x.extraCount === minExtra);
+    if (tightest.length === 1) {
+      return { code: tightest[0].candidate.schemeCode, matchedName: tightest[0].candidate.schemeName };
+    }
+
+    // Still genuinely ambiguous — don't guess, flag for manual review.
     return { code: null, candidates: confident };
   }
 
