@@ -16,11 +16,6 @@
  *
  * Run manually:  node scripts/update-mf-returns.mjs
  * Run in CI:     .github/workflows/update-mf-returns.yml (weekly)
- *
- * First-run note: scripts/mf-scheme-map.json starts empty, so the
- * first run resolves and caches every scheme's AMFI code. Re-runs
- * reuse that cache and only refetch NAV history, so they're much
- * faster and don't re-search names.
  */
 
 import fs from "node:fs/promises";
@@ -78,15 +73,27 @@ function yearsAgo(date, years) {
   return d;
 }
 
-// Require the match to look like a Direct, Growth plan and NOT an
-// IDCW/dividend/bonus variant. If this can't be determined confidently,
-// the caller skips the scheme rather than guessing.
+// Known abbreviations that don't match AMFI's official scheme naming.
+function normalizeForSearch(name) {
+  return name
+    .replace(/\bABSL\b/gi, "Aditya Birla Sun Life")
+    .replace(/\bFoF\b/gi, "Fund of Fund")
+    .replace(/\bPPFAS\b/gi, "Parag Parikh");
+}
+
+// A confident match must look like a Direct, Growth plan, NOT an
+// IDCW/dividend/bonus variant, and NOT a segregated-portfolio or
+// deactivated line (those track a different, non-standard NAV).
+// If this can't be determined confidently, the caller skips the
+// scheme rather than guessing.
 function isConfidentMatch(candidateName) {
   const n = candidateName.toLowerCase();
   const isDirect = n.includes("direct");
   const isGrowth = n.includes("growth");
   const isNotIdcw = !n.includes("idcw") && !n.includes("dividend") && !n.includes("bonus");
-  return isDirect && isGrowth && isNotIdcw;
+  const isNotSegregated = !n.includes("segregated");
+  const isNotDeactivated = !n.includes("deactivat");
+  return isDirect && isGrowth && isNotIdcw && isNotSegregated && isNotDeactivated;
 }
 
 function computeReturns(history) {
@@ -116,14 +123,31 @@ async function resolveCode(scheme, existingMap) {
   const cached = existingMap[scheme.scheme];
   if (cached?.code) return { code: cached.code };
 
-  const results = await searchScheme(`${scheme.provider} ${scheme.scheme}`);
-  const confident = results.filter((r) => isConfidentMatch(r.schemeName));
+  const normalizedScheme = normalizeForSearch(scheme.scheme);
 
-  if (confident.length === 1) {
-    return { code: confident[0].schemeCode, matchedName: confident[0].schemeName };
+  // Try the scheme name alone first. Most AMFI scheme names already
+  // start with the AMC name, so prepending our own `provider` field
+  // usually duplicates it and breaks the search API's matching.
+  const soloResults = await searchScheme(normalizedScheme);
+  const soloConfident = soloResults.filter(isConfidentMatch);
+
+  if (soloConfident.length === 1) {
+    return { code: soloConfident[0].schemeCode, matchedName: soloConfident[0].schemeName };
   }
-  // 0 or 2+ confident matches — a human needs to pick, we don't guess.
-  return { code: null, candidates: confident.length ? confident : results.slice(0, 5) };
+
+  // If that was ambiguous or empty, retry with the normalized provider
+  // prepended — helps when the scheme name alone is too generic
+  // (e.g. "Regular Savings Fund" shared across AMCs).
+  const combinedResults = await searchScheme(`${normalizeForSearch(scheme.provider)} ${normalizedScheme}`);
+  const combinedConfident = combinedResults.filter(isConfidentMatch);
+
+  if (combinedConfident.length === 1) {
+    return { code: combinedConfident[0].schemeCode, matchedName: combinedConfident[0].schemeName };
+  }
+
+  // Still ambiguous or empty — don't guess, flag for manual review.
+  const candidates = soloConfident.length ? soloConfident : combinedConfident;
+  return { code: null, candidates: candidates.length ? candidates : soloResults.slice(0, 5) };
 }
 
 async function main() {
@@ -165,7 +189,6 @@ async function main() {
       `correct AMFI code to scripts/mf-scheme-map.json (as { "code": "..." }) and re-run.`
     );
   } else {
-    // Clean up a stale review file from a previous run, if one exists.
     await fs.rm(REVIEW_PATH, { force: true });
   }
 
