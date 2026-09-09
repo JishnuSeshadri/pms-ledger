@@ -318,5 +318,81 @@
   "ICICI Prudential Gold Fund": {
     "code": 120685,
     "matchedName": "ICICI Prudential Gold ETF FOF - Direct Plan - Growth"
+  },
+  "Kotak Multi Asset Allocation Fund": {
+    "code": 152064,
+    "matchedName": "Kotak Multi Asset Allocation Fund - Direct Plan - Growth Option"
+  },
+  "SBI Conservative Hybrid Fund": {
+    "code": 119839,
+    "matchedName": "SBI CONSERVATIVE HYBRID FUND - Direct Plan - Growth"
+  },
+  "ABSL Banking and PSU Debt Fund": {
+    "code": 119550,
+    "matchedName": "Aditya Birla Sun Life Banking & PSU Debt Fund - Direct Plan - GROWTH"
+  },
+  "HDFC Short Term Fund": {
+    "code": 119016,
+    "matchedName": "HDFC Short Term Fund - Direct Plan - Growth Option"
+  },
+  "Axis Short Term Fund": {
+    "code": 120510,
+    "matchedName": "Axis Short Term Fund - Direct Plan - Growth Option"
+  },
+  "SBI Short Term Fund": {
+    "code": 119816,
+    "matchedName": "SBI SHORT TERM FUND - Direct Plan - Growth"
+  },
+  "Nippon India Short Term Fund": {
+    "code": 118796,
+    "matchedName": "Nippon India Short Term Fund - Direct Plan - Growth Option"
+  },
+  "ABSL Short Term Fund": {
+    "code": 119498,
+    "matchedName": "Aditya Birla Sun Life Short Term Fund - Direct Plan - GROWTH"
+  },
+  "UTI Short Term Fund": {
+    "code": 120718,
+    "matchedName": "UTI Short Term Fund - Direct Plan - Growth"
+  },
+  "Bandhan Gilt Fund": {
+    "code": 118464,
+    "matchedName": "Bandhan Gilt   Fund - Direct Plan - Growth"
+  },
+  "ICICI Prudential Gilt Fund": {
+    "code": 120590,
+    "matchedName": "ICICI Prudential Gilt Fund - Direct Plan - Growth"
+  },
+  "HDFC Gilt Fund": {
+    "code": 119116,
+    "matchedName": "HDFC Gilt Fund - Direct Plan - Growth Option"
+  },
+  "Kotak Gilt Fund": {
+    "code": 119759,
+    "matchedName": "Kotak Gilt Fund - Direct Plan - Growth"
+  },
+  "Tata Gilt Fund": {
+    "code": 119953,
+    "matchedName": "Tata Gilt Fund - Direct Plan - Growth Option"
+  },
+  "DSP Gilt Fund": {
+    "code": 119099,
+    "matchedName": "DSP Gilt Fund - Direct Plan - Growth"
+  },
+  "Axis Gilt Fund": {
+    "code": 120447,
+    "matchedName": "Axis Gilt Fund - Direct Plan - Growth Option"
+  },
+  "ABSL Gilt Fund": {
+    "code": 119605,
+    "matchedName": "Aditya Birla Sun Life Gilt Fund - Direct Plan - GROWTH"
+  },
+  "UTI Gold Fund": {
+    "code": 150714,
+    "matchedName": "UTI Gold ETF Fund of Fund - Direct Plan - Growth"
+  },
+  "Kotak Gold Fund": {
+    "code": 119781,
+    "matchedName": "Kotak Gold Fund - Direct Plan - Growth"
   }
 }

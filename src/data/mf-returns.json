@@ -203,6 +203,12 @@
     "r5y": null,
     "asOf": "2026-09-08"
   },
+  "Kotak Multi Asset Allocation Fund": {
+    "r1y": 18.17,
+    "r3y": null,
+    "r5y": null,
+    "asOf": "2026-09-08"
+  },
   "Bandhan Multi Asset Allocation Fund": {
     "r1y": 15.17,
     "r3y": null,
@@ -231,6 +237,12 @@
     "r1y": 2.54,
     "r3y": 7.85,
     "r5y": 7.8,
+    "asOf": "2026-09-08"
+  },
+  "SBI Conservative Hybrid Fund": {
+    "r1y": 5.9,
+    "r3y": 8.49,
+    "r5y": 8.77,
     "asOf": "2026-09-08"
   },
   "Axis Conservative Hybrid Fund": {
@@ -303,6 +315,12 @@
     "r1y": 5.27,
     "r3y": 7.14,
     "r5y": 6.13,
+    "asOf": "2026-09-08"
+  },
+  "ABSL Banking and PSU Debt Fund": {
+    "r1y": 5.39,
+    "r3y": 7.16,
+    "r5y": 6.28,
     "asOf": "2026-09-08"
   },
   "Mirae Asset Banking and PSU Fund": {
@@ -401,10 +419,46 @@
     "r5y": 7.75,
     "asOf": "2018-05-25"
   },
+  "HDFC Short Term Fund": {
+    "r1y": 6.04,
+    "r3y": 7.6,
+    "r5y": 6.63,
+    "asOf": "2026-09-08"
+  },
+  "Axis Short Term Fund": {
+    "r1y": 6.3,
+    "r3y": 7.87,
+    "r5y": 6.82,
+    "asOf": "2026-09-08"
+  },
+  "SBI Short Term Fund": {
+    "r1y": 5.67,
+    "r3y": 7.43,
+    "r5y": 6.44,
+    "asOf": "2026-09-08"
+  },
+  "Nippon India Short Term Fund": {
+    "r1y": 6.17,
+    "r3y": 7.79,
+    "r5y": 6.74,
+    "asOf": "2026-09-08"
+  },
+  "ABSL Short Term Fund": {
+    "r1y": 6.22,
+    "r3y": 7.76,
+    "r5y": 6.89,
+    "asOf": "2026-09-08"
+  },
   "Bandhan Short Term Fund": {
     "r1y": 6.39,
     "r3y": 7.2,
     "r5y": 6.38,
+    "asOf": "2026-09-08"
+  },
+  "UTI Short Term Fund": {
+    "r1y": 5.8,
+    "r3y": 7.48,
+    "r5y": 7.58,
     "asOf": "2026-09-08"
   },
   "SBI Gilt Fund": {
@@ -413,10 +467,64 @@
     "r5y": 6.27,
     "asOf": "2026-09-08"
   },
+  "Bandhan Gilt Fund": {
+    "r1y": 7.83,
+    "r3y": 8.01,
+    "r5y": 6.4,
+    "asOf": "2026-09-08"
+  },
+  "ICICI Prudential Gilt Fund": {
+    "r1y": 5.1,
+    "r3y": 7.31,
+    "r5y": 6.67,
+    "asOf": "2026-09-08"
+  },
+  "HDFC Gilt Fund": {
+    "r1y": 3.79,
+    "r3y": 6.52,
+    "r5y": 5.54,
+    "asOf": "2026-09-08"
+  },
+  "Kotak Gilt Fund": {
+    "r1y": 3.26,
+    "r3y": 5.9,
+    "r5y": 5.54,
+    "asOf": "2026-09-08"
+  },
   "Nippon India Gilt Fund": {
     "r1y": 4.17,
     "r3y": 6.49,
     "r5y": 5.7,
+    "asOf": "2026-09-08"
+  },
+  "Tata Gilt Fund": {
+    "r1y": 3.83,
+    "r3y": 6.66,
+    "r5y": 6.02,
+    "asOf": "2026-09-08"
+  },
+  "DSP Gilt Fund": {
+    "r1y": 3.65,
+    "r3y": 6.79,
+    "r5y": 6.06,
+    "asOf": "2026-09-08"
+  },
+  "Axis Gilt Fund": {
+    "r1y": 4.7,
+    "r3y": 7.29,
+    "r5y": 6.08,
+    "asOf": "2026-09-08"
+  },
+  "ABSL Gilt Fund": {
+    "r1y": 2.54,
+    "r3y": 5.73,
+    "r5y": 5.17,
+    "asOf": "2026-09-08"
+  },
+  "UTI Gold Fund": {
+    "r1y": 39.97,
+    "r3y": 36.11,
+    "r5y": null,
     "asOf": "2026-09-08"
   },
   "ICICI Prudential Gold Fund": {
@@ -471,6 +579,12 @@
     "r1y": 38.8,
     "r3y": null,
     "r5y": null,
+    "asOf": "2026-09-08"
+  },
+  "Kotak Gold Fund": {
+    "r1y": 39.59,
+    "r3y": 35.72,
+    "r5y": 24.94,
     "asOf": "2026-09-08"
   },
   "Invesco India Gold ETF FoF": {
