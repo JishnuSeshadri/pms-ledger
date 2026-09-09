@@ -82,9 +82,11 @@ function normalizeForSearch(name) {
     .replace(/\bPPFAS\b/gi, "Parag Parikh");
 }
 
-// A confident match must look like a Direct, Growth plan, NOT an
-// IDCW/dividend/bonus variant, and NOT a segregated-portfolio or
-// deactivated line (those track a different, non-standard NAV).
+// A confident match must look like a Direct, Growth plan and NOT an
+// IDCW/dividend/bonus or deactivated variant. NOTE: we do NOT exclude
+// "segregated portfolio" — for many debt/hybrid funds that disclosure
+// is now a permanent part of the official name and still refers to
+// the main investable Direct Growth line, not a quarantined NAV.
 // If this can't be determined confidently, the caller skips the
 // scheme rather than guessing.
 function isConfidentMatch(candidateName) {
@@ -93,9 +95,20 @@ function isConfidentMatch(candidateName) {
   const isDirect = n.includes("direct");
   const isGrowth = n.includes("growth");
   const isNotIdcw = !n.includes("idcw") && !n.includes("dividend") && !n.includes("bonus");
-  const isNotSegregated = !n.includes("segregated");
   const isNotDeactivated = !n.includes("deactivat");
-  return isDirect && isGrowth && isNotIdcw && isNotSegregated && isNotDeactivated;
+  return isDirect && isGrowth && isNotIdcw && isNotDeactivated;
+}
+
+// Strips the segregated-portfolio disclosure and punctuation so two
+// listings of the "same" fund (just reissued under a new AMFI code)
+// collapse to the same key, distinguishing that from a genuinely
+// different fund.
+function normalizeCandidateKey(name) {
+  return name
+    .toLowerCase()
+    .replace(/\(existing number of segregated portfolios?[^)]*\)/gi, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
 }
 
 function computeReturns(history) {
@@ -121,35 +134,67 @@ function computeReturns(history) {
   };
 }
 
+// When several confident matches turn out to be the exact same fund
+// (just reissued under a new AMFI code — the old one typically stops
+// getting NAV updates), fetch each candidate's history and keep
+// whichever is still actively updated. Data-driven tiebreak, not a
+// guess: we're checking which code is live, not picking arbitrarily.
+async function pickFreshest(candidates) {
+  let best = null;
+  for (const c of candidates) {
+    const history = await fetchNavHistory(c.schemeCode);
+    const latestDate = history?.[0]?.date ?? null;
+    if (latestDate && (!best || latestDate > best.latestDate)) {
+      best = { ...c, latestDate };
+    }
+    await new Promise((r) => setTimeout(r, 100));
+  }
+  return best;
+}
+
 async function resolveCode(scheme, existingMap) {
   const cached = existingMap[scheme.scheme];
   if (cached?.code) return { code: cached.code };
 
   const normalizedScheme = normalizeForSearch(scheme.scheme);
+  const providerName = normalizeForSearch(scheme.provider);
 
-  // Try the scheme name alone first. Most AMFI scheme names already
-  // start with the AMC name, so prepending our own `provider` field
-  // usually duplicates it and breaks the search API's matching.
-  const soloResults = await searchScheme(normalizedScheme);
-  const soloConfident = soloResults.filter((r) => isConfidentMatch(r.schemeName));
+  // Three progressively more specific attempts. Most AMFI scheme names
+  // already start with the AMC name, so prepending our own `provider`
+  // field first tends to duplicate it and break matching — try plain
+  // first, then bias toward Direct/Growth explicitly, then add the
+  // provider as a last resort for generic names shared across AMCs.
+  const attempts = [
+    normalizedScheme,
+    `${normalizedScheme} Direct Growth`,
+    `${providerName} ${normalizedScheme} Direct Growth`,
+  ];
 
-  if (soloConfident.length === 1) {
-    return { code: soloConfident[0].schemeCode, matchedName: soloConfident[0].schemeName };
+  let confident = [];
+  let lastRaw = [];
+  for (const query of attempts) {
+    const results = await searchScheme(query);
+    lastRaw = results;
+    confident = results.filter((r) => isConfidentMatch(r.schemeName));
+    if (confident.length > 0) break;
   }
 
-  // If that was ambiguous or empty, retry with the normalized provider
-  // prepended — helps when the scheme name alone is too generic
-  // (e.g. "Regular Savings Fund" shared across AMCs).
-  const combinedResults = await searchScheme(`${normalizeForSearch(scheme.provider)} ${normalizedScheme}`);
-  const combinedConfident = combinedResults.filter((r) => isConfidentMatch(r.schemeName));
-
-  if (combinedConfident.length === 1) {
-    return { code: combinedConfident[0].schemeCode, matchedName: combinedConfident[0].schemeName };
+  if (confident.length === 1) {
+    return { code: confident[0].schemeCode, matchedName: confident[0].schemeName };
   }
 
-  // Still ambiguous or empty — don't guess, flag for manual review.
-  const candidates = soloConfident.length ? soloConfident : combinedConfident;
-  return { code: null, candidates: candidates.length ? candidates : soloResults.slice(0, 5) };
+  if (confident.length > 1) {
+    const distinctKeys = new Set(confident.map((c) => normalizeCandidateKey(c.schemeName)));
+    if (distinctKeys.size === 1) {
+      const best = await pickFreshest(confident);
+      if (best) return { code: best.schemeCode, matchedName: best.schemeName };
+    }
+    // Genuinely different funds sharing a confident match — don't guess.
+    return { code: null, candidates: confident };
+  }
+
+  // Nothing confident at all — don't guess, flag for manual review.
+  return { code: null, candidates: lastRaw.slice(0, 5) };
 }
 
 async function main() {
