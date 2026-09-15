@@ -285,6 +285,7 @@ const PERIODS = [
 /* ------------------------------------------------------------------ */
 const MF_CATEGORIES = ["Aggressive Hybrid", "Balanced Advantage", "Multi Asset Allocation", "Conservative Hybrid", "Banking & PSU", "Corporate Bond", "Short Duration", "Gilt", "Gold"];
 
+// STALE: hardcoded snapshot, not wired to the weekly-refreshed src/data/mf-returns.json — should be replaced to read from there instead.
 const MUTUAL_FUNDS = [
   // Aggressive Hybrid (14)
   { category: "Aggressive Hybrid", provider: "SBI", scheme: "SBI Equity Hybrid Fund", r1y: 8.2, r3y: 13.8, r5y: 11.6 },
