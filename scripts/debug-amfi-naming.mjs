@@ -41,24 +41,51 @@ async function fetchAllSchemes() {
   return all;
 }
 
+// Round 2 — for the 5 targets that came back with ZERO hits even under
+// the loose 3-4 keyword filter above. Drop down to 2 keywords (house +
+// one category word at a time) to find out what's actually there.
+const BROADER = [
+  { label: "SBI + hybrid", keywords: ["sbi", "hybrid"] },
+  { label: "SBI + equity", keywords: ["sbi", "equity"] },
+  { label: "ICICI Prudential + debt", keywords: ["icici", "prudential", "debt"] },
+  { label: "ICICI Prudential + equity + debt (drop &)", keywords: ["icici", "prudential", "equity", "debt"] },
+  { label: "Aditya Birla + hybrid", keywords: ["birla", "hybrid"] },
+  { label: "Aditya Birla + 95", keywords: ["birla", "95"] },
+  { label: "Tata + short + term", keywords: ["tata", "short", "term"] },
+  { label: "Tata + bond", keywords: ["tata", "bond"] },
+  { label: "Mirae + duration", keywords: ["mirae", "duration"] },
+  { label: "Mirae + short", keywords: ["mirae", "short"] },
+];
+
+function runSearch(allSchemes, label, keywords) {
+  console.log(`\n=== ${label} (keywords: ${keywords.join(", ")}) ===`);
+  const hits = allSchemes.filter((s) => {
+    const n = (s.schemeName || "").toLowerCase();
+    return keywords.every((k) => n.includes(k));
+  });
+  if (hits.length === 0) {
+    console.log("  (no schemeName contains ALL of these keywords)");
+  } else {
+    for (const h of hits) {
+      console.log(`  [${h.schemeCode}] ${h.schemeName}`);
+    }
+  }
+  return hits;
+}
+
 async function main() {
   console.log("Downloading full scheme list from mfapi.in...");
   const allSchemes = await fetchAllSchemes();
   console.log(`Got ${allSchemes.length} schemes.\n`);
 
+  console.log("\n########## ROUND 1: original loose filters ##########");
   for (const target of TARGETS) {
-    console.log(`\n=== ${target.label} (keywords: ${target.keywords.join(", ")}) ===`);
-    const hits = allSchemes.filter((s) => {
-      const n = (s.schemeName || "").toLowerCase();
-      return target.keywords.every((k) => n.includes(k));
-    });
-    if (hits.length === 0) {
-      console.log("  (no schemeName contains ALL of these keywords)");
-    } else {
-      for (const h of hits) {
-        console.log(`  [${h.schemeCode}] ${h.schemeName}`);
-      }
-    }
+    runSearch(allSchemes, target.label, target.keywords);
+  }
+
+  console.log("\n########## ROUND 2: broader 2-keyword filters for zero-hit funds ##########");
+  for (const target of BROADER) {
+    runSearch(allSchemes, target.label, target.keywords);
   }
 }
 
