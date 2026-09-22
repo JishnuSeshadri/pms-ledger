@@ -292,7 +292,7 @@ const MF_CATEGORIES = ["Aggressive Hybrid", "Balanced Advantage", "Multi Asset A
 const MUTUAL_FUNDS_SNAPSHOT = [
   // Aggressive Hybrid (14)
   { category: "Aggressive Hybrid", provider: "SBI", scheme: "SBI Aggressive Hybrid Fund", r1y: 8.2, r3y: 13.8, r5y: 11.6 },
-  { category: "Aggressive Hybrid", provider: "ICICI Prudential", scheme: "ICICI Prudential Equity & Debt Fund", r1y: 6.6, r3y: 15.4, r5y: 16.5 },
+  { category: "Aggressive Hybrid", provider: "ICICI Prudential", scheme: "ICICI Prudential Aggressive Hybrid Fund", r1y: 6.6, r3y: 15.4, r5y: 16.5 },
   { category: "Aggressive Hybrid", provider: "HDFC", scheme: "HDFC Hybrid Equity Fund", r1y: -0.5, r3y: 8.1, r5y: 9.7 },
   { category: "Aggressive Hybrid", provider: "Nippon India", scheme: "Nippon India Aggressive Hybrid Fund", r1y: 6.0, r3y: 12.6, r5y: 12.4 },
   { category: "Aggressive Hybrid", provider: "Edelweiss", scheme: "Edelweiss Aggressive Hybrid Fund", r1y: 7.2, r3y: 15.2, r5y: 15.0 },
@@ -343,7 +343,7 @@ const MUTUAL_FUNDS_SNAPSHOT = [
   { category: "Conservative Hybrid", provider: "UTI", scheme: "UTI Conservative Hybrid Fund", r1y: null, r3y: 8.7, r5y: 8.6 },
   { category: "Conservative Hybrid", provider: "Aditya Birla Sun Life", scheme: "ABSL Regular Savings Fund", r1y: 6.5, r3y: 9.3, r5y: 8.9 },
   { category: "Conservative Hybrid", provider: "SBI", scheme: "SBI Conservative Hybrid Fund", r1y: 6.9, r3y: 9.2, r5y: 9.3 },
-  { category: "Conservative Hybrid", provider: "ICICI Prudential", scheme: "ICICI Prudential Regular Savings Fund", r1y: 5.7, r3y: 9.7, r5y: 9.2 },
+  { category: "Conservative Hybrid", provider: "ICICI Prudential", scheme: "ICICI Prudential Conservative Hybrid Fund", r1y: 5.7, r3y: 9.7, r5y: 9.2 },
   { category: "Conservative Hybrid", provider: "Kotak Mahindra", scheme: "Kotak Debt Hybrid Fund", r1y: 5.2, r3y: 9.6, r5y: 9.5 },
   { category: "Conservative Hybrid", provider: "DSP", scheme: "DSP Regular Savings Fund", r1y: 5.1, r3y: 9.2, r5y: 8.0 },
   { category: "Conservative Hybrid", provider: "Axis", scheme: "Axis Conservative Hybrid Fund", r1y: null, r3y: 7.5, r5y: 6.8 },
