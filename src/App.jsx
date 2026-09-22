@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import mfReturns from "./data/mf-returns.json";
 import {
   BarChart,
   Bar,
@@ -285,10 +286,12 @@ const PERIODS = [
 /* ------------------------------------------------------------------ */
 const MF_CATEGORIES = ["Aggressive Hybrid", "Balanced Advantage", "Multi Asset Allocation", "Conservative Hybrid", "Banking & PSU", "Corporate Bond", "Short Duration", "Gilt", "Gold"];
 
-// STALE: hardcoded snapshot, not wired to the weekly-refreshed src/data/mf-returns.json — should be replaced to read from there instead.
-const MUTUAL_FUNDS = [
+// Fallback for schemes the weekly pipeline (scripts/update-mf-returns.mjs)
+// hasn't resolved to an AMFI code yet — see scripts/mf-scheme-map-needs-review.json.
+// Resolved schemes get their r1y/r3y/r5y overridden below with live data.
+const MUTUAL_FUNDS_SNAPSHOT = [
   // Aggressive Hybrid (14)
-  { category: "Aggressive Hybrid", provider: "SBI", scheme: "SBI Equity Hybrid Fund", r1y: 8.2, r3y: 13.8, r5y: 11.6 },
+  { category: "Aggressive Hybrid", provider: "SBI", scheme: "SBI Aggressive Hybrid Fund", r1y: 8.2, r3y: 13.8, r5y: 11.6 },
   { category: "Aggressive Hybrid", provider: "ICICI Prudential", scheme: "ICICI Prudential Equity & Debt Fund", r1y: 6.6, r3y: 15.4, r5y: 16.5 },
   { category: "Aggressive Hybrid", provider: "HDFC", scheme: "HDFC Hybrid Equity Fund", r1y: -0.5, r3y: 8.1, r5y: 9.7 },
   { category: "Aggressive Hybrid", provider: "Nippon India", scheme: "Nippon India Aggressive Hybrid Fund", r1y: 6.0, r3y: 12.6, r5y: 12.4 },
@@ -296,7 +299,7 @@ const MUTUAL_FUNDS = [
   { category: "Aggressive Hybrid", provider: "Axis", scheme: "Axis Aggressive Hybrid Fund", r1y: 6.2, r3y: 11.1, r5y: 8.8 },
   { category: "Aggressive Hybrid", provider: "Bandhan", scheme: "Bandhan Aggressive Hybrid Fund", r1y: 12.2, r3y: 16.1, r5y: 13.1 },
   { category: "Aggressive Hybrid", provider: "Kotak Mahindra", scheme: "Kotak Aggressive Hybrid Fund", r1y: null, r3y: null, r5y: 13.5 },
-  { category: "Aggressive Hybrid", provider: "Aditya Birla Sun Life", scheme: "ABSL Equity Hybrid '95 Fund", r1y: null, r3y: null, r5y: 9.9 },
+  { category: "Aggressive Hybrid", provider: "Aditya Birla Sun Life", scheme: "ABSL Aggressive Hybrid Fund", r1y: null, r3y: null, r5y: 9.9 },
   { category: "Aggressive Hybrid", provider: "Mirae Asset", scheme: "Mirae Asset Aggressive Hybrid Fund", r1y: null, r3y: 12.5, r5y: 11.4 },
   { category: "Aggressive Hybrid", provider: "UTI", scheme: "UTI Aggressive Hybrid Fund", r1y: null, r3y: 12.7, r5y: 12.7 },
   { category: "Aggressive Hybrid", provider: "DSP", scheme: "DSP Aggressive Hybrid Fund", r1y: null, r3y: 12.0, r5y: 10.3 },
@@ -384,7 +387,7 @@ const MUTUAL_FUNDS = [
   { category: "Short Duration", provider: "Nippon India", scheme: "Nippon India Short Term Fund", r1y: 6.0, r3y: 7.68, r5y: 6.68 },
   { category: "Short Duration", provider: "Aditya Birla Sun Life", scheme: "ABSL Short Term Fund", r1y: 6.1, r3y: 7.66, r5y: 6.84 },
   { category: "Short Duration", provider: "Bandhan", scheme: "Bandhan Short Term Fund", r1y: 6.6, r3y: 7.73, r5y: 6.46 },
-  { category: "Short Duration", provider: "Tata", scheme: "Tata Short Term Bond Fund", r1y: 7.3, r3y: 7.78, r5y: 6.36 },
+  { category: "Short Duration", provider: "Tata", scheme: "Tata Short Term Fund", r1y: 7.3, r3y: 7.78, r5y: 6.36 },
   { category: "Short Duration", provider: "UTI", scheme: "UTI Short Term Fund", r1y: 5.6, r3y: 7.39, r5y: 7.52 },
   { category: "Short Duration", provider: "Mirae Asset", scheme: "Mirae Asset Short Duration Fund", r1y: null, r3y: 6.45, r5y: 6.58 },
 
@@ -414,6 +417,14 @@ const MUTUAL_FUNDS = [
   { category: "Gold", provider: "Kotak Mahindra", scheme: "Kotak Gold Fund", r1y: null, r3y: 35.9, r5y: 25.3 },
   { category: "Gold", provider: "Invesco", scheme: "Invesco India Gold ETF FoF", r1y: null, r3y: 35.6, r5y: 25.1 },
 ].map((f, i) => ({ ...f, id: 1000 + i }));
+
+// Live returns from src/data/mf-returns.json (refreshed weekly by CI) win
+// over the snapshot above wherever the pipeline has resolved that scheme.
+const MUTUAL_FUNDS = MUTUAL_FUNDS_SNAPSHOT.map((f) => {
+  const live = mfReturns[f.scheme];
+  if (!live) return f;
+  return { ...f, r1y: live.r1y, r3y: live.r3y, r5y: live.r5y };
+});
 
 /* ------------------------------------------------------------------ */
 /* REITs — India has only 5 listed REITs, so this is a complete list,  */
