@@ -1,5 +1,5 @@
 [
-  { "category": "Aggressive Hybrid", "provider": "SBI", "scheme": "SBI Equity Hybrid Fund" },
+  { "category": "Aggressive Hybrid", "provider": "SBI", "scheme": "SBI Aggressive Hybrid Fund" },
   { "category": "Aggressive Hybrid", "provider": "ICICI Prudential", "scheme": "ICICI Prudential Equity & Debt Fund" },
   { "category": "Aggressive Hybrid", "provider": "HDFC", "scheme": "HDFC Hybrid Equity Fund" },
   { "category": "Aggressive Hybrid", "provider": "Nippon India", "scheme": "Nippon India Aggressive Hybrid Fund" },
@@ -7,7 +7,7 @@
   { "category": "Aggressive Hybrid", "provider": "Axis", "scheme": "Axis Aggressive Hybrid Fund" },
   { "category": "Aggressive Hybrid", "provider": "Bandhan", "scheme": "Bandhan Aggressive Hybrid Fund" },
   { "category": "Aggressive Hybrid", "provider": "Kotak Mahindra", "scheme": "Kotak Aggressive Hybrid Fund" },
-  { "category": "Aggressive Hybrid", "provider": "Aditya Birla Sun Life", "scheme": "ABSL Equity Hybrid '95 Fund" },
+  { "category": "Aggressive Hybrid", "provider": "Aditya Birla Sun Life", "scheme": "ABSL Aggressive Hybrid Fund" },
   { "category": "Aggressive Hybrid", "provider": "Mirae Asset", "scheme": "Mirae Asset Aggressive Hybrid Fund" },
   { "category": "Aggressive Hybrid", "provider": "UTI", "scheme": "UTI Aggressive Hybrid Fund" },
   { "category": "Aggressive Hybrid", "provider": "DSP", "scheme": "DSP Aggressive Hybrid Fund" },
@@ -89,7 +89,7 @@
   { "category": "Short Duration", "provider": "Nippon India", "scheme": "Nippon India Short Term Fund" },
   { "category": "Short Duration", "provider": "Aditya Birla Sun Life", "scheme": "ABSL Short Term Fund" },
   { "category": "Short Duration", "provider": "Bandhan", "scheme": "Bandhan Short Term Fund" },
-  { "category": "Short Duration", "provider": "Tata", "scheme": "Tata Short Term Bond Fund" },
+  { "category": "Short Duration", "provider": "Tata", "scheme": "Tata Short Term Fund" },
   { "category": "Short Duration", "provider": "UTI", "scheme": "UTI Short Term Fund" },
   { "category": "Short Duration", "provider": "Mirae Asset", "scheme": "Mirae Asset Short Duration Fund" },
 
