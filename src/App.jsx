@@ -23,6 +23,7 @@ import {
   Minus,
   ChevronDown,
   PieChart as PieIcon,
+  RefreshCw,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -426,6 +427,11 @@ const MUTUAL_FUNDS = MUTUAL_FUNDS_SNAPSHOT.map((f) => {
   return { ...f, r1y: live.r1y, r3y: live.r3y, r5y: live.r5y };
 });
 
+const MF_LATEST_ASOF = Object.values(mfReturns).reduce(
+  (max, v) => (v.asOf && v.asOf > max ? v.asOf : max),
+  ""
+);
+
 /* ------------------------------------------------------------------ */
 /* REITs — India has only 5 listed REITs, so this is a complete list,  */
 /* not a curated subset like PMS/MF. Verified against INDmoney's       */
@@ -766,6 +772,8 @@ export default function App() {
         @keyframes sheetUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
         .sheet-in { animation: sheetUp 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
         .tier-panel { transition: background-color 0.3s ease, border-color 0.3s ease; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .spin { animation: spin 0.8s linear infinite; }
       `}</style>
 
       {/* HEADER */}
@@ -1160,9 +1168,65 @@ function PlannerView({ amount, setAmount, weights, setWeights, rows, setOverride
   );
 }
 
+const MONTH_ABBR = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function fmtDateShort(iso) {
+  if (!iso) return null;
+  const [y, m, d] = iso.split("-").map(Number);
+  if (!y || !m || !d) return null;
+  return `${d} ${MONTH_ABBR[m - 1]} ${y}`;
+}
+
 function MutualFundsView({ funds, query, setQuery, category, setCategory, sortKey, sortDir, toggleSort }) {
+  const [refreshState, setRefreshState] = useState("idle"); // idle | loading | done | error
+  const [refreshMsg, setRefreshMsg] = useState("");
+
+  async function handleRefresh() {
+    setRefreshState("loading");
+    setRefreshMsg("");
+    try {
+      const res = await fetch("/api/refresh", { method: "POST" });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(body.error || `Request failed (${res.status})`);
+      setRefreshState("done");
+      setRefreshMsg("Refresh triggered — new data usually lands in a minute or two.");
+    } catch (err) {
+      setRefreshState("error");
+      setRefreshMsg(err.message || "Couldn't trigger a refresh.");
+    }
+  }
+
   return (
     <div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, flexWrap: "wrap", marginBottom: 12 }}>
+        <div style={{ fontSize: 12, color: MUTED }}>
+          {MF_LATEST_ASOF ? `Returns data as of ${fmtDateShort(MF_LATEST_ASOF)}` : "Returns data as of the latest snapshot"}
+          {refreshMsg ? (
+            <span style={{ marginLeft: 8, color: refreshState === "error" ? "#B42318" : MUTED }}>{refreshMsg}</span>
+          ) : null}
+        </div>
+        <button
+          onClick={handleRefresh}
+          disabled={refreshState === "loading"}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            padding: "6px 12px",
+            borderRadius: 6,
+            border: `1px solid ${RULE}`,
+            background: CARD,
+            color: INK,
+            fontSize: 12.5,
+            fontWeight: 600,
+            cursor: refreshState === "loading" ? "default" : "pointer",
+            opacity: refreshState === "loading" ? 0.6 : 1,
+          }}
+        >
+          <RefreshCw size={13} className={refreshState === "loading" ? "spin" : undefined} />
+          {refreshState === "loading" ? "Refreshing…" : "Refresh"}
+        </button>
+      </div>
+
       <div style={{ display: "flex", gap: 6, marginBottom: 14, flexWrap: "wrap" }}>
         {MF_CATEGORIES.map((c) => {
           const active = c === category;
