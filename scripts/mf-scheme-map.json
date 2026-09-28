@@ -398,5 +398,17 @@
   "ICICI Prudential Multi Asset Fund": {
     "code": 120334,
     "matchedName": "ICICI Prudential Multi Asset Allocation Fund - Direct Plan - Growth"
+  },
+  "SBI Aggressive Hybrid Fund": {
+    "code": 119609,
+    "matchedName": "SBI AGGRESSIVE HYBRID FUND - Direct Plan - Growth"
+  },
+  "ABSL Aggressive Hybrid Fund": {
+    "code": 120517,
+    "matchedName": "Aditya Birla Sun Life Aggressive Hybrid Fund - Direct Plan - GROWTH"
+  },
+  "Tata Short Term Fund": {
+    "code": 119949,
+    "matchedName": "Tata Short Term Fund - Direct Plan - Growth Option"
   }
 }
