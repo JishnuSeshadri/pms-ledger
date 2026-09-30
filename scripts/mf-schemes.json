@@ -1,6 +1,6 @@
 [
   { "category": "Aggressive Hybrid", "provider": "SBI", "scheme": "SBI Aggressive Hybrid Fund" },
-  { "category": "Aggressive Hybrid", "provider": "ICICI Prudential", "scheme": "ICICI Prudential Equity & Debt Fund" },
+  { "category": "Aggressive Hybrid", "provider": "ICICI Prudential", "scheme": "ICICI Prudential Aggressive Hybrid Fund" },
   { "category": "Aggressive Hybrid", "provider": "HDFC", "scheme": "HDFC Hybrid Equity Fund" },
   { "category": "Aggressive Hybrid", "provider": "Nippon India", "scheme": "Nippon India Aggressive Hybrid Fund" },
   { "category": "Aggressive Hybrid", "provider": "Edelweiss", "scheme": "Edelweiss Aggressive Hybrid Fund" },
@@ -48,7 +48,7 @@
   { "category": "Conservative Hybrid", "provider": "UTI", "scheme": "UTI Conservative Hybrid Fund" },
   { "category": "Conservative Hybrid", "provider": "Aditya Birla Sun Life", "scheme": "ABSL Regular Savings Fund" },
   { "category": "Conservative Hybrid", "provider": "SBI", "scheme": "SBI Conservative Hybrid Fund" },
-  { "category": "Conservative Hybrid", "provider": "ICICI Prudential", "scheme": "ICICI Prudential Regular Savings Fund" },
+  { "category": "Conservative Hybrid", "provider": "ICICI Prudential", "scheme": "ICICI Prudential Conservative Hybrid Fund" },
   { "category": "Conservative Hybrid", "provider": "Kotak Mahindra", "scheme": "Kotak Debt Hybrid Fund" },
   { "category": "Conservative Hybrid", "provider": "DSP", "scheme": "DSP Regular Savings Fund" },
   { "category": "Conservative Hybrid", "provider": "Axis", "scheme": "Axis Conservative Hybrid Fund" },

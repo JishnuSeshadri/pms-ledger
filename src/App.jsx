@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import mfReturns from "./data/mf-returns.json";
 import {
   BarChart,
   Bar,
@@ -22,6 +23,7 @@ import {
   Minus,
   ChevronDown,
   PieChart as PieIcon,
+  RefreshCw,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -285,18 +287,20 @@ const PERIODS = [
 /* ------------------------------------------------------------------ */
 const MF_CATEGORIES = ["Aggressive Hybrid", "Balanced Advantage", "Multi Asset Allocation", "Conservative Hybrid", "Banking & PSU", "Corporate Bond", "Short Duration", "Gilt", "Gold"];
 
-// STALE: hardcoded snapshot, not wired to the weekly-refreshed src/data/mf-returns.json — should be replaced to read from there instead.
-const MUTUAL_FUNDS = [
+// Fallback for schemes the weekly pipeline (scripts/update-mf-returns.mjs)
+// hasn't resolved to an AMFI code yet — see scripts/mf-scheme-map-needs-review.json.
+// Resolved schemes get their r1y/r3y/r5y overridden below with live data.
+const MUTUAL_FUNDS_SNAPSHOT = [
   // Aggressive Hybrid (14)
-  { category: "Aggressive Hybrid", provider: "SBI", scheme: "SBI Equity Hybrid Fund", r1y: 8.2, r3y: 13.8, r5y: 11.6 },
-  { category: "Aggressive Hybrid", provider: "ICICI Prudential", scheme: "ICICI Prudential Equity & Debt Fund", r1y: 6.6, r3y: 15.4, r5y: 16.5 },
+  { category: "Aggressive Hybrid", provider: "SBI", scheme: "SBI Aggressive Hybrid Fund", r1y: 8.2, r3y: 13.8, r5y: 11.6 },
+  { category: "Aggressive Hybrid", provider: "ICICI Prudential", scheme: "ICICI Prudential Aggressive Hybrid Fund", r1y: 6.6, r3y: 15.4, r5y: 16.5 },
   { category: "Aggressive Hybrid", provider: "HDFC", scheme: "HDFC Hybrid Equity Fund", r1y: -0.5, r3y: 8.1, r5y: 9.7 },
   { category: "Aggressive Hybrid", provider: "Nippon India", scheme: "Nippon India Aggressive Hybrid Fund", r1y: 6.0, r3y: 12.6, r5y: 12.4 },
   { category: "Aggressive Hybrid", provider: "Edelweiss", scheme: "Edelweiss Aggressive Hybrid Fund", r1y: 7.2, r3y: 15.2, r5y: 15.0 },
   { category: "Aggressive Hybrid", provider: "Axis", scheme: "Axis Aggressive Hybrid Fund", r1y: 6.2, r3y: 11.1, r5y: 8.8 },
   { category: "Aggressive Hybrid", provider: "Bandhan", scheme: "Bandhan Aggressive Hybrid Fund", r1y: 12.2, r3y: 16.1, r5y: 13.1 },
   { category: "Aggressive Hybrid", provider: "Kotak Mahindra", scheme: "Kotak Aggressive Hybrid Fund", r1y: null, r3y: null, r5y: 13.5 },
-  { category: "Aggressive Hybrid", provider: "Aditya Birla Sun Life", scheme: "ABSL Equity Hybrid '95 Fund", r1y: null, r3y: null, r5y: 9.9 },
+  { category: "Aggressive Hybrid", provider: "Aditya Birla Sun Life", scheme: "ABSL Aggressive Hybrid Fund", r1y: null, r3y: null, r5y: 9.9 },
   { category: "Aggressive Hybrid", provider: "Mirae Asset", scheme: "Mirae Asset Aggressive Hybrid Fund", r1y: null, r3y: 12.5, r5y: 11.4 },
   { category: "Aggressive Hybrid", provider: "UTI", scheme: "UTI Aggressive Hybrid Fund", r1y: null, r3y: 12.7, r5y: 12.7 },
   { category: "Aggressive Hybrid", provider: "DSP", scheme: "DSP Aggressive Hybrid Fund", r1y: null, r3y: 12.0, r5y: 10.3 },
@@ -340,7 +344,7 @@ const MUTUAL_FUNDS = [
   { category: "Conservative Hybrid", provider: "UTI", scheme: "UTI Conservative Hybrid Fund", r1y: null, r3y: 8.7, r5y: 8.6 },
   { category: "Conservative Hybrid", provider: "Aditya Birla Sun Life", scheme: "ABSL Regular Savings Fund", r1y: 6.5, r3y: 9.3, r5y: 8.9 },
   { category: "Conservative Hybrid", provider: "SBI", scheme: "SBI Conservative Hybrid Fund", r1y: 6.9, r3y: 9.2, r5y: 9.3 },
-  { category: "Conservative Hybrid", provider: "ICICI Prudential", scheme: "ICICI Prudential Regular Savings Fund", r1y: 5.7, r3y: 9.7, r5y: 9.2 },
+  { category: "Conservative Hybrid", provider: "ICICI Prudential", scheme: "ICICI Prudential Conservative Hybrid Fund", r1y: 5.7, r3y: 9.7, r5y: 9.2 },
   { category: "Conservative Hybrid", provider: "Kotak Mahindra", scheme: "Kotak Debt Hybrid Fund", r1y: 5.2, r3y: 9.6, r5y: 9.5 },
   { category: "Conservative Hybrid", provider: "DSP", scheme: "DSP Regular Savings Fund", r1y: 5.1, r3y: 9.2, r5y: 8.0 },
   { category: "Conservative Hybrid", provider: "Axis", scheme: "Axis Conservative Hybrid Fund", r1y: null, r3y: 7.5, r5y: 6.8 },
@@ -384,7 +388,7 @@ const MUTUAL_FUNDS = [
   { category: "Short Duration", provider: "Nippon India", scheme: "Nippon India Short Term Fund", r1y: 6.0, r3y: 7.68, r5y: 6.68 },
   { category: "Short Duration", provider: "Aditya Birla Sun Life", scheme: "ABSL Short Term Fund", r1y: 6.1, r3y: 7.66, r5y: 6.84 },
   { category: "Short Duration", provider: "Bandhan", scheme: "Bandhan Short Term Fund", r1y: 6.6, r3y: 7.73, r5y: 6.46 },
-  { category: "Short Duration", provider: "Tata", scheme: "Tata Short Term Bond Fund", r1y: 7.3, r3y: 7.78, r5y: 6.36 },
+  { category: "Short Duration", provider: "Tata", scheme: "Tata Short Term Fund", r1y: 7.3, r3y: 7.78, r5y: 6.36 },
   { category: "Short Duration", provider: "UTI", scheme: "UTI Short Term Fund", r1y: 5.6, r3y: 7.39, r5y: 7.52 },
   { category: "Short Duration", provider: "Mirae Asset", scheme: "Mirae Asset Short Duration Fund", r1y: null, r3y: 6.45, r5y: 6.58 },
 
@@ -414,6 +418,19 @@ const MUTUAL_FUNDS = [
   { category: "Gold", provider: "Kotak Mahindra", scheme: "Kotak Gold Fund", r1y: null, r3y: 35.9, r5y: 25.3 },
   { category: "Gold", provider: "Invesco", scheme: "Invesco India Gold ETF FoF", r1y: null, r3y: 35.6, r5y: 25.1 },
 ].map((f, i) => ({ ...f, id: 1000 + i }));
+
+// Live returns from src/data/mf-returns.json (refreshed weekly by CI) win
+// over the snapshot above wherever the pipeline has resolved that scheme.
+const MUTUAL_FUNDS = MUTUAL_FUNDS_SNAPSHOT.map((f) => {
+  const live = mfReturns[f.scheme];
+  if (!live) return f;
+  return { ...f, r1y: live.r1y, r3y: live.r3y, r5y: live.r5y };
+});
+
+const MF_LATEST_ASOF = Object.values(mfReturns).reduce(
+  (max, v) => (v.asOf && v.asOf > max ? v.asOf : max),
+  ""
+);
 
 /* ------------------------------------------------------------------ */
 /* REITs — India has only 5 listed REITs, so this is a complete list,  */
@@ -755,6 +772,8 @@ export default function App() {
         @keyframes sheetUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
         .sheet-in { animation: sheetUp 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
         .tier-panel { transition: background-color 0.3s ease, border-color 0.3s ease; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .spin { animation: spin 0.8s linear infinite; }
       `}</style>
 
       {/* HEADER */}
@@ -1149,9 +1168,65 @@ function PlannerView({ amount, setAmount, weights, setWeights, rows, setOverride
   );
 }
 
+const MONTH_ABBR = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function fmtDateShort(iso) {
+  if (!iso) return null;
+  const [y, m, d] = iso.split("-").map(Number);
+  if (!y || !m || !d) return null;
+  return `${d} ${MONTH_ABBR[m - 1]} ${y}`;
+}
+
 function MutualFundsView({ funds, query, setQuery, category, setCategory, sortKey, sortDir, toggleSort }) {
+  const [refreshState, setRefreshState] = useState("idle"); // idle | loading | done | error
+  const [refreshMsg, setRefreshMsg] = useState("");
+
+  async function handleRefresh() {
+    setRefreshState("loading");
+    setRefreshMsg("");
+    try {
+      const res = await fetch("/api/refresh", { method: "POST" });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(body.error || `Request failed (${res.status})`);
+      setRefreshState("done");
+      setRefreshMsg("Refresh triggered — new data usually lands in a minute or two.");
+    } catch (err) {
+      setRefreshState("error");
+      setRefreshMsg(err.message || "Couldn't trigger a refresh.");
+    }
+  }
+
   return (
     <div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, flexWrap: "wrap", marginBottom: 12 }}>
+        <div style={{ fontSize: 12, color: MUTED }}>
+          {MF_LATEST_ASOF ? `Returns data as of ${fmtDateShort(MF_LATEST_ASOF)}` : "Returns data as of the latest snapshot"}
+          {refreshMsg ? (
+            <span style={{ marginLeft: 8, color: refreshState === "error" ? "#B42318" : MUTED }}>{refreshMsg}</span>
+          ) : null}
+        </div>
+        <button
+          onClick={handleRefresh}
+          disabled={refreshState === "loading"}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            padding: "6px 12px",
+            borderRadius: 6,
+            border: `1px solid ${RULE}`,
+            background: CARD,
+            color: INK,
+            fontSize: 12.5,
+            fontWeight: 600,
+            cursor: refreshState === "loading" ? "default" : "pointer",
+            opacity: refreshState === "loading" ? 0.6 : 1,
+          }}
+        >
+          <RefreshCw size={13} className={refreshState === "loading" ? "spin" : undefined} />
+          {refreshState === "loading" ? "Refreshing…" : "Refresh"}
+        </button>
+      </div>
+
       <div style={{ display: "flex", gap: 6, marginBottom: 14, flexWrap: "wrap" }}>
         {MF_CATEGORIES.map((c) => {
           const active = c === category;
