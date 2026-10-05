@@ -410,5 +410,9 @@
   "Tata Short Term Fund": {
     "code": 119949,
     "matchedName": "Tata Short Term Fund - Direct Plan - Growth Option"
+  },
+  "ICICI Prudential Conservative Hybrid Fund": {
+    "code": 120616,
+    "matchedName": "ICICI Prudential Conservative Hybrid Fund - Direct Plan - Growth"
   }
 }

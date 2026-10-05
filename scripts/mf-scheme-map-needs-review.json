@@ -1,4 +1,30 @@
 {
+  "ICICI Prudential Aggressive Hybrid Fund": [
+    {
+      "schemeCode": 120251,
+      "schemeName": "ICICI Prudential Aggressive Hybrid Fund - Direct Plan - Growth",
+      "isinGrowth": "INF109K01Y07",
+      "isinDivReinvestment": null
+    },
+    {
+      "schemeCode": 120251,
+      "schemeName": "ICICI Prudential Aggressive Hybrid Fund - Direct Plan - Growth",
+      "isinGrowth": "INF109K01Y07",
+      "isinDivReinvestment": null
+    },
+    {
+      "schemeCode": 120700,
+      "schemeName": "ICICI Prudential Aggressive Hybrid Active FOF - Direct Plan - Growth",
+      "isinGrowth": "INF109K01X40",
+      "isinDivReinvestment": null
+    },
+    {
+      "schemeCode": 120700,
+      "schemeName": "ICICI Prudential Aggressive Hybrid Active FOF - Direct Plan - Growth",
+      "isinGrowth": "INF109K01X40",
+      "isinDivReinvestment": null
+    }
+  ],
   "ABSL Regular Savings Fund": [],
   "Kotak Debt Hybrid Fund": [],
   "DSP Regular Savings Fund": [],
