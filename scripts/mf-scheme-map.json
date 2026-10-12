@@ -414,5 +414,9 @@
   "ICICI Prudential Conservative Hybrid Fund": {
     "code": 120616,
     "matchedName": "ICICI Prudential Conservative Hybrid Fund - Direct Plan - Growth"
+  },
+  "ICICI Prudential Aggressive Hybrid Fund": {
+    "code": 120251,
+    "matchedName": "ICICI Prudential Aggressive Hybrid Fund - Direct Plan - Growth"
   }
 }
